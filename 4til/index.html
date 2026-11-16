@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>To'rt Til maktabi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@500;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: sticky top bar with a four-language switch; each language repaints the page in its own accent. Left-aligned working columns, dense card grids. */
+:root{
+  --bg:#f3f4ef; --surface:#ffffff; --surface-2:#eceee7; --ink:#16202b; --muted:#5a6570; --line:#d7dbd2;
+  --a-en:#1f4fd8; --a-ru:#c2283a; --a-ar:#0b7a64; --a-es:#b35900;
+  --on-accent:#ffffff; --good:#17794a; --bad:#c0392b;
+  --display:"Unbounded","Golos Text",system-ui,sans-serif;
+  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --arabic:"Noto Naskh Arabic","Geeza Pro","Segoe UI",serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f151c; --surface:#17202a; --surface-2:#1e2935; --ink:#e9edf0; --muted:#9ba7b3; --line:#2b3745;
+    --a-en:#86a8ff; --a-ru:#ff8390; --a-ar:#52d3b5; --a-es:#ffb454;
+    --on-accent:#0f151c; --good:#5fd39a; --bad:#ff8a7a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f151c; --surface:#17202a; --surface-2:#1e2935; --ink:#e9edf0; --muted:#9ba7b3; --line:#2b3745;
+  --a-en:#86a8ff; --a-ru:#ff8390; --a-ar:#52d3b5; --a-es:#ffb454;
+  --on-accent:#0f151c; --good:#5fd39a; --bad:#ff8a7a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;--accent:var(--a-en)}
+body[data-lang="ru"]{--accent:var(--a-ru)}
+body[data-lang="ar"]{--accent:var(--a-ar)}
+body[data-lang="es"]{--accent:var(--a-es)}
+body{--soft:color-mix(in srgb,var(--accent) 12%,var(--surface))}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(1.5rem,4vw,2.3rem)}
+h2{font-size:1.25rem}
+h3{font-size:.95rem;font-weight:500}
+p{margin:0}
+a{color:var(--accent)}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.ar{font-family:var(--arabic);font-size:1.35em;line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:12px 0}
+.brand{font-family:var(--display);font-weight:700;font-size:1.05rem;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:10px}
+.brand i{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:22px;height:22px}
+.brand i b{border-radius:3px}
+.brand i b:nth-child(1){background:var(--a-en)}.brand i b:nth-child(2){background:var(--a-ru)}
+.brand i b:nth-child(3){background:var(--a-ar)}.brand i b:nth-child(4){background:var(--a-es)}
+.langs{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.langs button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-weight:600;font-size:.9rem}
+.langs button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+nav{display:flex;gap:4px;overflow-x:auto;padding-bottom:0}
+nav a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:600;white-space:nowrap;border-bottom:3px solid transparent}
+nav a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+
+main{padding:28px 0 64px;display:flex;flex-direction:column;gap:28px}
+.lead{color:var(--muted);max-width:65ch}
+.head{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-weight:700;color:var(--accent);font-size:.85rem;letter-spacing:.04em;text-transform:uppercase}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch}
+.hero .txt{display:flex;flex-direction:column;gap:14px;justify-content:center}
+.hello{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hello button{border:0;border-radius:10px;padding:16px 14px;text-align:left;background:var(--surface-2);display:flex;flex-direction:column;gap:2px}
+.hello button strong{font-family:var(--display);font-size:1.35rem;line-height:1.3}
+.hello button.ar-b strong{font-family:var(--arabic);font-size:1.9rem;line-height:1.2}
+.hello button span{font-size:.85rem;color:var(--muted)}
+.hello .h-en strong{color:var(--a-en)}.hello .h-ru strong{color:var(--a-ru)}.hello .h-ar strong{color:var(--a-ar)}.hello .h-es strong{color:var(--a-es)}
+.hello button[aria-pressed="true"]{outline:2px solid var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);border-radius:10px;padding:10px 18px;font-weight:600;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:10px}
+.stat b{font-family:var(--display);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.stat small{color:var(--muted)}
+.bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.day{background:var(--soft);border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));border-radius:var(--r);padding:20px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center}
+.day .w{font-family:var(--display);font-size:1.6rem;color:var(--accent)}
+.day .w.ar{font-family:var(--arabic);font-size:2.2rem}
+.steps{counter-reset:s;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:0;margin:0;list-style:none}
+.steps li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.steps li::before{content:counter(s);font-family:var(--display);color:var(--accent);font-size:1.3rem;display:block}
+.steps a{font-weight:600}
+
+/* controls */
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.9rem;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+input[type=search],select{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;min-width:0}
+input[type=search]{flex:1 1 200px;max-width:320px}
+.switch{display:inline-flex;align-items:center;gap:8px;font-size:.9rem;font-weight:500}
+.switch input{width:18px;height:18px;accent-color:var(--accent)}
+
+/* word cards */
+.word{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-height:132px}
+.word.known{border-color:color-mix(in srgb,var(--good) 55%,var(--line))}
+.word .t{font-size:1.25rem;font-weight:700;overflow-wrap:anywhere}
+.word .t.ar{font-size:1.8rem;font-weight:700;line-height:1.5}
+.word .tr{font-size:.85rem;color:var(--muted);font-style:italic}
+.word .u{color:var(--muted)}
+.hidden-tr .u,.hidden-tr .puz{filter:blur(6px);cursor:pointer;user-select:none}
+.hidden-tr .show .u,.hidden-tr .show .puz{filter:none}
+.word .f{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:8px}
+.mini{border:1px solid var(--line);background:transparent;border-radius:8px;padding:4px 10px;font-size:.82rem;font-weight:600}
+.mini.on{background:var(--good);border-color:var(--good);color:var(--surface)}
+.say{border:0;background:var(--soft);color:var(--accent);border-radius:8px;padding:4px 10px;font-size:.82rem;font-weight:700}
+.empty{color:var(--muted);padding:24px 0}
+
+/* phrases */
+.phr{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center}
+.phr.on{background:color-mix(in srgb,var(--good) 8%,var(--surface))}
+.phr .pt{font-size:1.1rem;font-weight:600;overflow-wrap:anywhere}
+.phr .pt.ar{font-size:1.6rem;line-height:1.6}
+.phr .ptr{font-size:.85rem;color:var(--muted);font-style:italic}
+.phr .puz{color:var(--muted)}
+.phr .act{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.cat-h{margin-top:8px;color:var(--muted);font-family:var(--body);font-weight:700;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase}
+
+/* quiz */
+.quiz{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;max-width:640px;display:flex;flex-direction:column;gap:18px}
+.quiz .meta{display:flex;justify-content:space-between;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.quiz .qw{font-family:var(--display);font-size:clamp(1.4rem,5vw,2rem);color:var(--accent);overflow-wrap:anywhere}
+.quiz .qw.ar{font-family:var(--arabic);font-size:clamp(2rem,7vw,2.8rem)}
+.opts{display:grid;gap:10px}
+.opt{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 16px;text-align:left;font-weight:600;font-size:1.05rem;display:flex;gap:12px;align-items:center}
+.opt .k{flex:none;width:28px;height:28px;border-radius:8px;background:var(--surface-2);display:grid;place-items:center;font-size:.85rem;font-family:var(--body)}
+.opt:not(:disabled):hover{border-color:var(--accent)}
+.opt.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--surface))}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--surface))}
+.opt .ar{font-size:1.5rem}
+.fb{font-weight:700}.fb.ok{color:var(--good)}.fb.no{color:var(--bad)}
+.res b{font-family:var(--display);font-size:2.4rem;color:var(--accent)}
+.miss{margin:0;padding-left:18px;color:var(--muted)}
+.miss strong{color:var(--ink)}
+
+/* lessons */
+details.lesson{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+details.lesson summary{padding:16px 18px;cursor:pointer;font-family:var(--display);font-weight:500;display:flex;gap:12px;align-items:baseline}
+details.lesson summary span{color:var(--accent);font-variant-numeric:tabular-nums}
+details.lesson .in{padding:0 18px 18px;display:flex;flex-direction:column;gap:14px}
+details.lesson p{max-width:65ch}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:420px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+td:first-child{font-weight:700;color:var(--accent)}
+td.ar{white-space:nowrap}
+.tip{background:var(--soft);border-left:4px solid var(--accent);padding:12px 14px;border-radius:0 10px 10px 0;max-width:65ch}
+
+/* apps */
+.app h3{font-size:1rem;font-weight:700}
+.app .tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--muted)}
+.app p{color:var(--muted);font-size:.95rem}
+.app .use{color:var(--ink);font-size:.9rem}
+.app a{margin-top:auto;font-weight:700}
+
+.okm{font-family:var(--body);font-size:.75rem;font-style:normal;font-weight:700;color:var(--good);margin-left:auto}
+.stage{display:flex;flex-direction:column;gap:12px}
+.stage-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;margin-top:10px}
+.tag.lvl{background:var(--accent);color:var(--on-accent)}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mc{min-height:86px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface-2);font-weight:700;padding:8px;overflow-wrap:anywhere;color:var(--muted);font-size:1rem}
+.mc.open{background:var(--surface);border-color:var(--accent);color:var(--ink)}
+.mc.done{background:color-mix(in srgb,var(--good) 14%,var(--surface));border-color:var(--good);color:var(--ink)}
+.mc.tgc.open,.mc.tgc.done{color:var(--accent)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px}
+.tile{width:44px;height:50px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);font-weight:700;font-size:1.2rem;display:grid;place-items:center;padding:0}
+.tile:disabled{opacity:.25}
+.tile.on{border-color:var(--accent);color:var(--accent)}
+.tile.on:disabled{opacity:1}
+.tile.empty{border-style:dashed;background:transparent}
+.tile .ar{font-size:1.5rem;line-height:1}
+.timer{display:flex;align-items:baseline;gap:12px;color:var(--muted);font-weight:600}
+.timer b{font-family:var(--display);font-size:2.2rem;color:var(--ink);font-variant-numeric:tabular-nums}
+@media (max-width:520px){.mem{grid-template-columns:repeat(3,1fr)}}
+footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--muted);font-size:.9rem}
+
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .langs{margin-left:0;width:100%}
+  .langs button{flex:1}
+  .phr{grid-template-columns:1fr}
+  .phr .act{justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body data-lang="en">
+<header class="top">
+  <div class="wrap">
+    <div class="row">
+      <a class="brand" href="#bosh"><i aria-hidden="true"><b></b><b></b><b></b><b></b></i>To'rt Til maktabi</a>
+      <div class="langs" id="langs" role="group" aria-label="O'rganiladigan til"></div>
+    </div>
+    <nav id="nav" aria-label="Bo'limlar"></nav>
+  </div>
+</header>
+<div class="wrap"><main id="view"></main></div>
+<footer><div class="wrap">Natijalaringiz faqat shu brauzerda saqlanadi. Talaffuz tugmasi qurilmangizdagi ovoz sintezatoridan foydalanadi, shuning uchun ba'zi qurilmalarda arab yoki rus ovozi bo'lmasligi mumkin.</div></footer>
+
+<script>
+"use strict";
+/* ---------- DATA ---------- */
+var LANGS={
+  en:{name:"Ingliz tili",short:"Inglizcha",native:"English",hello:"Hello",code:"en-US",i:1},
+  ru:{name:"Rus tili",short:"Ruscha",native:"Русский",hello:"Привет",code:"ru-RU",i:2},
+  ar:{name:"Arab tili",short:"Arabcha",native:"العربية",hello:"مرحبا",code:"ar-SA",i:3},
+  es:{name:"Ispan tili",short:"Ispancha",native:"Español",hello:"Hola",code:"es-ES",i:5}
+};
+/* [o'zbekcha, inglizcha, ruscha, arabcha, arabcha o'qilishi, ispancha] */
+var WD={
+"Asosiy so'zlar":[
+["salom","hello","привет","مرحبا","marhaban","hola"],
+["rahmat","thank you","спасибо","شكرا","shukran","gracias"],
+["iltimos","please","пожалуйста","من فضلك","min fadlik","por favor"],
+["ha","yes","да","نعم","na'am","sí"],
+["yo'q","no","нет","لا","laa","no"],
+["kechirasiz","sorry","извините","آسف","aasif","perdón"],
+["xayr","goodbye","до свидания","مع السلامة","ma'a s-salaama","adiós"],
+["do'st","friend","друг","صديق","sadiiq","amigo"],
+["ism","name","имя","اسم","ism","nombre"],
+["yaxshi","good","хороший","جيد","jayyid","bueno"],
+["yomon","bad","плохой","سيء","sayyi'","malo"],
+["bugun","today","сегодня","اليوم","al-yawm","hoy"],
+["ertaga","tomorrow","завтра","غدا","ghadan","mañana"],
+["kecha","yesterday","вчера","أمس","ams","ayer"]],
+"Oila":[
+["ona","mother","мать","أم","umm","madre"],
+["ota","father","отец","أب","ab","padre"],
+["aka-uka","brother","брат","أخ","akh","hermano"],
+["opa-singil","sister","сестра","أخت","ukht","hermana"],
+["o'g'il","son","сын","ابن","ibn","hijo"],
+["qiz farzand","daughter","дочь","بنت","bint","hija"],
+["bobo","grandfather","дедушка","جد","jadd","abuelo"],
+["buvi","grandmother","бабушка","جدة","jadda","abuela"],
+["er","husband","муж","زوج","zawj","esposo"],
+["xotin","wife","жена","زوجة","zawja","esposa"],
+["bola","child","ребёнок","طفل","tifl","niño"],
+["oila","family","семья","عائلة","'aa'ila","familia"]],
+"Ovqat":[
+["non","bread","хлеб","خبز","khubz","pan"],
+["suv","water","вода","ماء","maa'","agua"],
+["choy","tea","чай","شاي","shaay","té"],
+["qahva","coffee","кофе","قهوة","qahwa","café"],
+["sut","milk","молоко","حليب","haliib","leche"],
+["go'sht","meat","мясо","لحم","lahm","carne"],
+["baliq","fish","рыба","سمك","samak","pescado"],
+["guruch","rice","рис","أرز","aruzz","arroz"],
+["tuxum","egg","яйцо","بيض","bayd","huevo"],
+["olma","apple","яблоко","تفاح","tuffaah","manzana"],
+["meva","fruit","фрукт","فاكهة","faakiha","fruta"],
+["tuz","salt","соль","ملح","milh","sal"],
+["shakar","sugar","сахар","سكر","sukkar","azúcar"]],
+"Sonlar":[
+["bir","one","один","واحد","waahid","uno"],
+["ikki","two","два","اثنان","ithnaan","dos"],
+["uch","three","три","ثلاثة","thalaatha","tres"],
+["to'rt","four","четыре","أربعة","arba'a","cuatro"],
+["besh","five","пять","خمسة","khamsa","cinco"],
+["olti","six","шесть","ستة","sitta","seis"],
+["yetti","seven","семь","سبعة","sab'a","siete"],
+["sakkiz","eight","восемь","ثمانية","thamaaniya","ocho"],
+["to'qqiz","nine","девять","تسعة","tis'a","nueve"],
+["o'n","ten","десять","عشرة","'ashara","diez"],
+["yuz","hundred","сто","مئة","mi'a","cien"],
+["ming","thousand","тысяча","ألف","alf","mil"]],
+"Ranglar":[
+["qizil","red","красный","أحمر","ahmar","rojo"],
+["ko'k","blue","синий","أزرق","azraq","azul"],
+["yashil","green","зелёный","أخضر","akhdar","verde"],
+["sariq","yellow","жёлтый","أصفر","asfar","amarillo"],
+["oq","white","белый","أبيض","abyad","blanco"],
+["qora","black","чёрный","أسود","aswad","negro"],
+["jigarrang","brown","коричневый","بني","bunnii","marrón"],
+["kulrang","gray","серый","رمادي","ramaadii","gris"]],
+"Vaqt va tabiat":[
+["kun","day","день","يوم","yawm","día"],
+["tun","night","ночь","ليل","layl","noche"],
+["hafta","week","неделя","أسبوع","usbuu'","semana"],
+["oy (30 kun)","month","месяц","شهر","shahr","mes"],
+["yil","year","год","سنة","sana","año"],
+["soat","hour","час","ساعة","saa'a","hora"],
+["quyosh","sun","солнце","شمس","shams","sol"],
+["yomg'ir","rain","дождь","مطر","matar","lluvia"],
+["qor","snow","снег","ثلج","thalj","nieve"],
+["dengiz","sea","море","بحر","bahr","mar"],
+["tog'","mountain","гора","جبل","jabal","montaña"],
+["daraxt","tree","дерево","شجرة","shajara","árbol"]],
+"Fe'llar":[
+["bormoq","to go","идти","ذهب","dhahaba","ir"],
+["kelmoq","to come","приходить","جاء","jaa'a","venir"],
+["yemoq","to eat","есть","أكل","akala","comer"],
+["ichmoq","to drink","пить","شرب","shariba","beber"],
+["o'qimoq","to read","читать","قرأ","qara'a","leer"],
+["yozmoq","to write","писать","كتب","kataba","escribir"],
+["gapirmoq","to speak","говорить","تكلم","takallama","hablar"],
+["ko'rmoq","to see","видеть","رأى","ra'aa","ver"],
+["bilmoq","to know","знать","عرف","'arafa","saber"],
+["sevmoq","to love","любить","أحب","ahabba","amar"],
+["ishlamoq","to work","работать","عمل","'amila","trabajar"],
+["uxlamoq","to sleep","спать","نام","naama","dormir"],
+["sotib olmoq","to buy","покупать","اشترى","ishtaraa","comprar"],
+["o'rganmoq","to learn","учить","تعلم","ta'allama","aprender"]],
+"Uy va shahar":[
+["uy","house","дом","بيت","bayt","casa"],
+["eshik","door","дверь","باب","baab","puerta"],
+["deraza","window","окно","نافذة","naafidha","ventana"],
+["kitob","book","книга","كتاب","kitaab","libro"],
+["maktab","school","школа","مدرسة","madrasa","escuela"],
+["ko'cha","street","улица","شارع","shaari'","calle"],
+["shahar","city","город","مدينة","madiina","ciudad"],
+["bozor","market","рынок","سوق","suuq","mercado"],
+["mashina","car","машина","سيارة","sayyaara","coche"],
+["pul","money","деньги","مال","maal","dinero"],
+["ish","job","работа","وظيفة","waziifa","trabajo"],
+["kasalxona","hospital","больница","مستشفى","mustashfaa","hospital"],
+["telefon","phone","телефон","هاتف","haatif","teléfono"]],
+"Sifatlar":[
+["katta","big","большой","كبير","kabiir","grande"],
+["kichik","small","маленький","صغير","saghiir","pequeño"],
+["yangi","new","новый","جديد","jadiid","nuevo"],
+["eski","old","старый","قديم","qadiim","viejo"],
+["chiroyli","beautiful","красивый","جميل","jamiil","hermoso"],
+["issiq","hot","горячий","حار","haarr","caliente"],
+["sovuq","cold","холодный","بارد","baarid","frío"],
+["tez","fast","быстрый","سريع","sarii'","rápido"],
+["sekin","slow","медленный","بطيء","batii'","lento"],
+["arzon","cheap","дешёвый","رخيص","rakhiis","barato"],
+["qimmat","expensive","дорогой","غالي","ghaalii","caro"],
+["oson","easy","лёгкий","سهل","sahl","fácil"],
+["qiyin","difficult","трудный","صعب","sa'b","difícil"]]
+};
+var PD={
+"Tanishuv":[
+["Ismingiz nima?","What is your name?","Как вас зовут?","ما اسمك؟","maa ismuk?","¿Cómo te llamas?"],
+["Mening ismim Aziz","My name is Aziz","Меня зовут Азиз","اسمي عزيز","ismii Aziz","Me llamo Aziz"],
+["Tanishganimdan xursandman","Nice to meet you","Приятно познакомиться","تشرفنا","tasharrafnaa","Mucho gusto"],
+["Qalaysiz?","How are you?","Как дела?","كيف حالك؟","kayfa haaluk?","¿Cómo estás?"],
+["Yaxshiman, rahmat","I'm fine, thank you","Хорошо, спасибо","أنا بخير، شكرا","ana bikhayr, shukran","Estoy bien, gracias"],
+["Qayerdansiz?","Where are you from?","Откуда вы?","من أين أنت؟","min ayna anta?","¿De dónde eres?"],
+["Men O'zbekistondanman","I am from Uzbekistan","Я из Узбекистана","أنا من أوزبكستان","ana min uzbakistaan","Soy de Uzbekistán"],
+["Necha yoshdasiz?","How old are you?","Сколько вам лет?","كم عمرك؟","kam 'umruk?","¿Cuántos años tienes?"],
+["Men talabaman","I am a student","Я студент","أنا طالب","ana taalib","Soy estudiante"]],
+"Kundalik muloqot":[
+["Xayrli tong","Good morning","Доброе утро","صباح الخير","sabaah al-khayr","Buenos días"],
+["Xayrli kech","Good evening","Добрый вечер","مساء الخير","masaa' al-khayr","Buenas tardes"],
+["Xayrli tun","Good night","Спокойной ночи","تصبح على خير","tusbih 'alaa khayr","Buenas noches"],
+["Ko'rishguncha","See you later","До встречи","إلى اللقاء","ilaa l-liqaa'","Hasta luego"],
+["Katta rahmat","Thank you very much","Большое спасибо","شكرا جزيلا","shukran jaziilan","Muchas gracias"],
+["Arzimaydi","You're welcome","Не за что","عفوا","'afwan","De nada"],
+["Tushunmadim","I don't understand","Я не понимаю","لا أفهم","laa afham","No entiendo"],
+["Sekinroq gapiring, iltimos","Please speak more slowly","Говорите медленнее, пожалуйста","تكلم ببطء من فضلك","takallam bi-but' min fadlik","Hable más despacio, por favor"],
+["Takrorlay olasizmi?","Can you repeat that?","Повторите, пожалуйста","هل يمكنك أن تعيد؟","hal yumkinuka an tu'iid?","¿Puede repetir?"],
+["Bu nima degani?","What does this mean?","Что это значит?","ماذا يعني هذا؟","maadhaa ya'nii haadhaa?","¿Qué significa esto?"],
+["Bilmayman","I don't know","Я не знаю","لا أعرف","laa a'rif","No lo sé"],
+["Albatta","Of course","Конечно","طبعا","tab'an","Por supuesto"],
+["Muammo yo'q","No problem","Без проблем","لا مشكلة","laa mushkila","No hay problema"],
+["Omad!","Good luck!","Удачи!","بالتوفيق","bit-tawfiiq","¡Buena suerte!"],
+["Tabriklayman!","Congratulations!","Поздравляю!","مبروك","mabruuk","¡Felicidades!"],
+["Men seni yaxshi ko'raman","I love you","Я тебя люблю","أحبك","uhibbuk","Te quiero"]],
+"Sayohat":[
+["Hojatxona qayerda?","Where is the restroom?","Где туалет?","أين الحمام؟","ayna l-hammaam?","¿Dónde está el baño?"],
+["Mehmonxona qayerda?","Where is the hotel?","Где гостиница?","أين الفندق؟","ayna l-funduq?","¿Dónde está el hotel?"],
+["Menga yordam kerak","I need help","Мне нужна помощь","أحتاج مساعدة","ahtaaju musaa'ada","Necesito ayuda"],
+["Men adashib qoldim","I am lost","Я заблудился","لقد تهت","laqad tuht","Estoy perdido"],
+["Chipta qancha turadi?","How much is a ticket?","Сколько стоит билет?","بكم التذكرة؟","bikam at-tadhkira?","¿Cuánto cuesta el billete?"],
+["To'g'riga yuring","Go straight","Идите прямо","اذهب مباشرة","idhhab mubaasharatan","Siga recto"],
+["Chapga buriling","Turn left","Поверните налево","انعطف يسارا","in'atif yasaaran","Gire a la izquierda"],
+["O'ngga buriling","Turn right","Поверните направо","انعطف يمينا","in'atif yamiinan","Gire a la derecha"],
+["Soat necha bo'ldi?","What time is it?","Который час?","كم الساعة؟","kam as-saa'a?","¿Qué hora es?"],
+["Taksi chaqirib bera olasizmi?","Can you call a taxi?","Вы можете вызвать такси?","هل يمكنك طلب تاكسي؟","hal yumkinuka talab taksii?","¿Puede llamar un taxi?"]],
+"Do'kon va restoran":[
+["Bu qancha turadi?","How much is this?","Сколько это стоит?","بكم هذا؟","bikam haadhaa?","¿Cuánto cuesta esto?"],
+["Juda qimmat","It's too expensive","Слишком дорого","غالي جدا","ghaalii jiddan","Es demasiado caro"],
+["Men buni olaman","I'll take this","Я возьму это","سآخذ هذا","sa-aakhudhu haadhaa","Me llevo esto"],
+["Menyuni bering, iltimos","The menu, please","Меню, пожалуйста","قائمة الطعام من فضلك","qaa'imat at-ta'aam min fadlik","La carta, por favor"],
+["Hisobni bering, iltimos","The bill, please","Счёт, пожалуйста","الحساب من فضلك","al-hisaab min fadlik","La cuenta, por favor"],
+["Juda mazali","It's delicious","Очень вкусно","لذيذ جدا","ladhiidh jiddan","Está delicioso"],
+["Men suv xohlayman","I would like water","Я хочу воды","أريد ماء","uriidu maa'an","Quiero agua"],
+["Karta bilan to'lasam bo'ladimi?","Can I pay by card?","Можно оплатить картой?","هل يمكنني الدفع بالبطاقة؟","hal yumkinunii ad-daf' bil-bitaaqa?","¿Puedo pagar con tarjeta?"]],
+"Favqulodda holat":[
+["Yordam bering!","Help!","Помогите!","النجدة!","an-najda!","¡Ayuda!"],
+["Shifokor chaqiring","Call a doctor","Вызовите врача","اتصل بالطبيب","ittasil bit-tabiib","Llame a un médico"],
+["Mazam yo'q","I feel sick","Мне плохо","أنا مريض","ana mariid","Me siento mal"],
+["Bu yerim og'riyapti","It hurts here","У меня болит здесь","يؤلمني هنا","yu'limunii hunaa","Me duele aquí"],
+["Politsiyani chaqiring","Call the police","Вызовите полицию","اتصل بالشرطة","ittasil bish-shurta","Llame a la policía"]]
+};
+var LESSONS={
+en:[
+{t:"Alifbo va talaffuz",p:"Ingliz alifbosida 26 ta harf bor. Eng katta qiyinchilik shuki, so'z yozilganidek o'qilmaydi. Quyidagi harf birikmalarini bilsangiz, ko'p so'zni to'g'ri o'qiy olasiz.",
+h:["Birikma","Misol","Qanday o'qiladi"],r:[["th","think, this","Til uchini tishlar orasiga qo'yib s yoki z deysiz"],["sh","ship","sh"],["ch","chair","ch"],["ph","phone","f"],["w","water","Lablarni cho'chchaytirib, qisqa u ga yaqin"],["ee / ea","see, tea","Cho'ziq i"],["oo","food, book","u (ba'zan cho'ziq, ba'zan qisqa)"],["kn","know","k o'qilmaydi: nou"]],
+tip:"O'zbek tilida th va w tovushlari yo'q. Kuniga besh daqiqa think, this, water, we so'zlarini ovoz chiqarib takrorlang."},
+{t:"Olmoshlar va to be fe'li",p:"O'zbekchadagi -man, -san, -dir qo'shimchalari o'rnida ingliz tilida alohida so'z ishlatiladi: am, is, are. Usiz gap tuzib bo'lmaydi.",
+h:["Inglizcha","O'zbekcha","Misol"],r:[["I am","men ...man","I am a student. (Men talabaman.)"],["You are","sen ...san / siz ...siz","You are my friend."],["He is / She is","u (erkak) / u (ayol)","She is a doctor."],["It is","u (narsa, hayvon)","It is a book."],["We are","biz ...miz","We are at home."],["They are","ular ...lar","They are happy."]],
+tip:"Inkor: am / is / are dan keyin not qo'shiladi (I am not tired). So'roq: fe'l oldinga chiqadi (Are you ready?)."},
+{t:"Artikllar: a, an, the",p:"O'zbek tilida artikl yo'q, shuning uchun bu mavzu ko'p unutiladi. Sanaladigan birlikdagi ot oldida deyarli har doim artikl turadi.",
+h:["Artikl","Qachon ishlatiladi","Misol"],r:[["a","Birinchi marta aytilgan, undosh tovush bilan boshlangan ot","a book, a car"],["an","Unli tovush bilan boshlangan ot","an apple, an hour"],["the","Aniq, ma'lum yoki yagona narsa","the sun, the book on the table"],["(artiklsiz)","Umumiy ma'nodagi ko'plik va sanalmaydigan otlar","I like tea. Books are useful."]],
+tip:"Sinab ko'ring: gapda \"bitta\" yoki \"qandaydir\" desa bo'lsa a / an, \"o'sha\" desa bo'lsa the."},
+{t:"Hozirgi oddiy zamon (Present Simple)",p:"Doimiy, takrorlanadigan ish-harakatlar uchun ishlatiladi. Yagona qoida: he, she, it bilan fe'lga -s qo'shiladi.",
+h:["Shakl","Tuzilishi","Misol"],r:[["Darak","I / you / we / they + fe'l","I work every day."],["Darak (3-shaxs)","he / she / it + fe'l + s","She works in a bank."],["Inkor","don't / doesn't + fe'l","He doesn't drink coffee."],["So'roq","Do / Does + ega + fe'l","Do you speak English?"]],
+tip:"Doesn't va Does dan keyin fe'lga -s qo'shilmaydi: She doesn't work (works emas)."},
+{t:"So'roq so'zlari",p:"Suhbatni boshlash uchun yetti so'z yetarli. Ular har doim gap boshida turadi.",
+h:["Inglizcha","O'zbekcha","Misol"],r:[["What","nima","What is this?"],["Who","kim","Who is he?"],["Where","qayerda","Where do you live?"],["When","qachon","When does the lesson start?"],["Why","nega","Why are you late?"],["How","qanday","How are you?"],["How much","qancha","How much is it?"]],
+tip:"Tartib: so'roq so'z + yordamchi fe'l + ega + asosiy fe'l. Where + do + you + live?"}
+],
+ru:[
+{t:"Alifbo va talaffuz",p:"Rus alifbosida 33 ta harf bor. O'zbek kirill yozuvini bilsangiz, ularning ko'pi tanish. E'tibor talab qiladigan harflar quyida.",
+h:["Harf","Misol","Qanday o'qiladi"],r:[["ы","сын, мы","Tilni orqaga tortib aytiladigan qattiq i"],["щ","щи, ещё","Yumshoq, cho'ziq sh"],["ц","центр","ts"],["ё","ёлка","yo, har doim urg'u oladi"],["ь","мать, день","O'zi o'qilmaydi, oldingi undoshni yumshatadi"],["ъ","объект","Undosh va unlini ajratadi"],["о (urg'usiz)","вода, молоко","a ga yaqin: vada, malako"]],
+tip:"Rus tilida urg'u so'z ma'nosini o'zgartiradi (за́мок — qasr, замо́к — qulf). Yangi so'zni urg'usi bilan yodlang."},
+{t:"Otlarning jinsi (rod)",p:"Har bir rus oti uch jinsdan biriga tegishli. Sifat, olmosh va o'tgan zamon fe'li shu jinsga moslashadi. Jinsni ko'pincha so'z oxiriga qarab bilish mumkin.",
+h:["Jins","So'z oxiri","Misol","Mening"],r:[["Мужской (erkak)","undosh, -й","стол, дом, чай","мой дом"],["Женский (ayol)","-а, -я","мама, книга, неделя","моя книга"],["Средний (o'rta)","-о, -е","окно, море","моё окно"],["Ko'plik","-ы, -и","столы, книги","мои книги"]],
+tip:"-ь bilan tugagan so'zlar erkak ham (день), ayol ham (ночь) jinsida bo'lishi mumkin. Ularni jinsi bilan birga yodlang."},
+{t:"Olmoshlar va \"menda bor\"",p:"Hozirgi zamonda rus tilida \"-man, -dir\" ma'nosidagi fe'l aytilmaydi: Я студент — Men talabaman. Egalik esa у ... есть qolipi bilan ifodalanadi.",
+h:["Olmosh","O'zbekcha","Menda bor"],r:[["я","men","у меня есть"],["ты","sen","у тебя есть"],["он / она","u (erkak / ayol)","у него / у неё есть"],["мы","biz","у нас есть"],["вы","siz, sizlar","у вас есть"],["они","ular","у них есть"]],
+tip:"Yo'qlikni нет bilan aytasiz va ot qaratqich kelishigiga o'tadi: У меня нет времени — Vaqtim yo'q."},
+{t:"Fe'l tuslanishi, hozirgi zamon",p:"Rus fe'llari shaxs va songa qarab oltita qo'shimcha oladi. Ikki asosiy guruh bor: -ать bilan tugaydiganlar va -ить bilan tugaydiganlar.",
+h:["Shaxs","читать (o'qimoq)","говорить (gapirmoq)"],r:[["я","читаю","говорю"],["ты","читаешь","говоришь"],["он / она","читает","говорит"],["мы","читаем","говорим"],["вы","читаете","говорите"],["они","читают","говорят"]],
+tip:"Inkor uchun fe'l oldiga не qo'ying: Я не говорю по-русски — Men ruscha gapirmayman."},
+{t:"Olti kelishik",p:"Rus tilida ham o'zbek tilidagi kabi kelishiklar bor, faqat qo'shimchalar jins va songa qarab o'zgaradi. Avval savollarini yodlang.",
+h:["Kelishik","Savoli","O'zbekchada","Misol"],r:[["Именительный","кто? что?","bosh kelishik","Это книга."],["Родительный","кого? чего?","-ning, yo'qlik","У меня нет книги."],["Дательный","кому? чему?","-ga","Я иду к другу."],["Винительный","кого? что?","-ni","Я читаю книгу."],["Творительный","кем? чем?","bilan","Я пишу ручкой."],["Предложный","о ком? о чём?","haqida, -da","Я живу в городе."]],
+tip:"Hammasini birdan yodlamang. Avval винительный (-у, -ю) va предложный (-е) ni o'rganing, kundalik gaplarning ko'pi shular bilan tuziladi."}
+],
+ar:[
+{t:"Alifbo",p:"Arab alifbosida 28 ta harf bor, yozuv o'ngdan chapga yoziladi. Harflar so'z boshida, o'rtasida va oxirida shaklini biroz o'zgartiradi. Quyida eng ko'p uchraydigan harflar.",
+h:["Harf","Nomi","Tovushi"],r:[["ا","alif","cho'ziq a"],["ب","baa","b"],["ت","taa","t"],["ج","jiim","j"],["ح","haa","bo'g'izdan chiqadigan h"],["خ","khaa","x"],["د","daal","d"],["ر","raa","r"],["س","siin","s"],["ش","shiin","sh"],["ع","'ayn","bo'g'izni qisib aytiladigan tovush"],["غ","ghayn","g'"],["ق","qaaf","q"],["ك","kaaf","k"],["ل","laam","l"],["م","miim","m"],["ن","nuun","n"],["ه","haa","yengil h"],["و","waaw","v yoki cho'ziq u"],["ي","yaa","y yoki cho'ziq i"]],
+tip:"O'zbek tilidagi q, g', x, h tovushlari arabchadagi ق غ خ ه ga juda yaqin. Bu tovushlarni aytish sizga boshqa tillar egalaridan ko'ra osonroq."},
+{t:"Harakatlar (qisqa unlilar)",p:"Arab yozuvida qisqa unlilar harf emas, harf ustiga yoki ostiga qo'yiladigan belgilar bilan ko'rsatiladi. Darslik va Qur'onda ular yoziladi, gazeta va kitoblarda odatda tushirib qoldiriladi.",
+h:["Belgi","Nomi","O'qilishi"],r:[["بَ","fatha","ba"],["بِ","kasra","bi"],["بُ","damma","bu"],["بْ","sukun","b (unlisiz)"],["بّ","shadda","bb (undosh ikkilanadi)"],["بًا","tanvin","ban"],["با","alif bilan","baa (cho'ziq)"],["بي","yaa bilan","bii (cho'ziq)"],["بو","waaw bilan","buu (cho'ziq)"]],
+tip:"Bu saytdagi lotincha o'qilishda ikki unli (aa, ii, uu) cho'ziq tovushni bildiradi."},
+{t:"Kishilik olmoshlari",p:"Arab tilida \"sen\" va \"u\" olmoshlari erkak va ayol uchun alohida. Hozirgi zamonda \"-man, -dir\" ma'nosidagi fe'l aytilmaydi: أنا طالب — Men talabaman.",
+h:["Arabcha","O'qilishi","O'zbekcha"],r:[["أنا","ana","men"],["أنتَ","anta","sen (erkak)"],["أنتِ","anti","sen (ayol)"],["هو","huwa","u (erkak)"],["هي","hiya","u (ayol)"],["نحن","nahnu","biz"],["أنتم","antum","sizlar"],["هم","hum","ular"]],
+tip:"Egalik qo'shimchasi so'z oxiriga ulanadi: كتاب (kitaab) — kitob, كتابي (kitaabii) — mening kitobim, كتابك (kitaabuk) — sening kitobing."},
+{t:"Al- artikli va jins",p:"Aniq narsa oldiga ال (al-) qo'shiladi. Otlar ikki jinsga bo'linadi: muzakkar (erkak) va muannas (ayol). Muannas otlar ko'pincha ة harfi bilan tugaydi.",
+h:["Arabcha","O'qilishi","Ma'nosi"],r:[["كتاب","kitaab","(qandaydir) kitob"],["الكتاب","al-kitaab","(o'sha) kitob"],["طالب","taalib","talaba yigit"],["طالبة","taaliba","talaba qiz"],["القمر","al-qamar","oy: l o'qiladi"],["الشمس","ash-shams","quyosh: l o'qilmaydi, sh ikkilanadi"]],
+tip:"ت ث د ذ ر ز س ش ص ض ط ظ ل ن harflaridan oldin al- dagi l aytilmaydi va shu harf ikkilanadi. Ular \"quyosh harflari\" deb ataladi."},
+{t:"Uch harfli o'zak tizimi",p:"Arabcha so'zlarning ko'pi uchta undoshdan iborat o'zakdan yasaladi. O'zakni bilsangiz, o'nlab so'zning ma'nosini taxmin qila olasiz. Masalan ك-ت-ب o'zagi yozish bilan bog'liq.",
+h:["Arabcha","O'qilishi","Ma'nosi"],r:[["كتب","kataba","yozdi"],["كتاب","kitaab","kitob"],["كاتب","kaatib","yozuvchi, kotib"],["مكتب","maktab","ofis, yozuv stoli"],["مكتبة","maktaba","kutubxona"],["مكتوب","maktuub","yozilgan, maktub"]],
+tip:"O'zbek tilidagi kitob, maktab, qalam, dars, ilm, vaqt, soat, savol, javob, dunyo so'zlari arabchadan kirgan. Sizda tayyor lug'at zaxirasi bor."}
+],
+es:[
+{t:"Alifbo va talaffuz",p:"Ispan alifbosida 27 ta harf bor. Yaxshi xabar: so'zlar deyarli har doim yozilganidek o'qiladi. Bir nechta qoidani bilish kifoya.",
+h:["Harf","Misol","Qanday o'qiladi"],r:[["ñ","España, niño","ny"],["ll","llamar","y"],["j","jugar","x"],["h","hola","o'qilmaydi: ola"],["rr","perro","kuchli, titroq r"],["c (e, i oldida)","cinco","s (Ispaniyada tish orasidagi s)"],["qu","que, quien","k"],["z","zapato","s (Ispaniyada tish orasidagi s)"],["v","vino","b ga yaqin"],["g (e, i oldida)","gente","x"]],
+tip:"So'roq va undov gaplar boshiga teskari belgi qo'yiladi: ¿Cómo estás? ¡Hola!"},
+{t:"Jins va artikllar",p:"Ispan tilida har bir ot erkak yoki ayol jinsida bo'ladi. Artikl va sifat ot bilan jins va sonda moslashadi.",
+h:["","Erkak jinsi","Ayol jinsi"],r:[["Aniq, birlik","el libro (kitob)","la casa (uy)"],["Aniq, ko'plik","los libros","las casas"],["Noaniq, birlik","un amigo","una amiga"],["Sifat bilan","el coche nuevo","la casa nueva"]],
+tip:"Odatda -o erkak, -a ayol jinsini bildiradi. Yodlash kerak bo'lgan istisnolar: el día (kun), el problema, la mano (qo'l)."},
+{t:"Ser va estar",p:"\"Bo'lmoq\" ma'nosida ikkita fe'l bor. Ser doimiy xususiyat, kasb, millat uchun. Estar vaqtinchalik holat va joylashuv uchun.",
+h:["Olmosh","ser","estar"],r:[["yo (men)","soy","estoy"],["tú (sen)","eres","estás"],["él / ella (u)","es","está"],["nosotros (biz)","somos","estamos"],["vosotros (sizlar)","sois","estáis"],["ellos (ular)","son","están"]],
+tip:"Soy uzbeko — Men o'zbekman (o'zgarmaydi). Estoy cansado — Charchadim (hozirgi holat). Estoy en casa — Uydaman (joy)."},
+{t:"Hozirgi zamon: -ar, -er, -ir",p:"Barcha ispan fe'llari uch guruhga bo'linadi. Qo'shimcha kim haqida gap ketayotganini ko'rsatgani uchun olmosh ko'pincha tushib qoladi: Hablo español — Men ispancha gapiraman.",
+h:["Shaxs","hablar (gapirmoq)","comer (yemoq)","vivir (yashamoq)"],r:[["yo","hablo","como","vivo"],["tú","hablas","comes","vives"],["él / ella","habla","come","vive"],["nosotros","hablamos","comemos","vivimos"],["vosotros","habláis","coméis","vivís"],["ellos","hablan","comen","viven"]],
+tip:"Inkor uchun fe'l oldiga no qo'ying: No hablo inglés — Men inglizcha gapirmayman."},
+{t:"So'roq so'zlari",p:"So'roq so'zlari doim urg'u belgisi bilan yoziladi. Ular gap boshida turadi, fe'l esa egadan oldin keladi.",
+h:["Ispancha","O'zbekcha","Misol"],r:[["¿Qué?","nima","¿Qué es esto?"],["¿Quién?","kim","¿Quién es él?"],["¿Dónde?","qayerda","¿Dónde vives?"],["¿Cuándo?","qachon","¿Cuándo llegas?"],["¿Por qué?","nega","¿Por qué estudias español?"],["¿Cómo?","qanday","¿Cómo estás?"],["¿Cuánto?","qancha","¿Cuánto cuesta?"]],
+tip:"Porque (qo'shib, urg'usiz) \"chunki\" degani: ¿Por qué? — Porque me gusta."}
+]};
+var STAGES={
+A1:["1-bosqich · A1 Boshlang'ich","O'zingizni tanishtirasiz, oddiy savol berasiz va sodda gaplarni tushunasiz."],
+A2:["2-bosqich · A2 Tayanch","O'tgan va kelasi voqealar haqida gapirasiz, do'konda, yo'lda, mehmonxonada muloqot qila olasiz."],
+B1:["3-bosqich · B1 O'rta","Tajribangiz, rejalaringiz va fikringizni bog'lab ayta olasiz. IELTS 4.0–5.0 darajasiga to'g'ri keladi."],
+B2:["4-bosqich · B2 O'rtadan yuqori","Murakkab matnlarni tushunasiz va fikringizni dalillar bilan himoya qilasiz. IELTS 5.5–6.5 uchun shu bosqich kerak."]
+};
+LESSONS.en.push(
+{lv:"A2",t:"Past Simple: o'tgan zaman",p:"Tugallangan, vaqti aniq bo'lgan ish-harakat uchun ishlatiladi: yesterday (kecha), last week (o'tgan hafta), in 2020, two days ago (ikki kun oldin).",
+h:["Shakl","Tuzilishi","Misol va tarjimasi"],r:[["To'g'ri fe'l","fe'l + ed","I worked yesterday. (Kecha ishladim.)"],["Noto'g'ri fe'l","fe'lning 2-shakli","She went home. (U uyga ketdi.)"],["Inkor","didn't + fe'l","We didn't see him. (Biz uni ko'rmadik.)"],["So'roq","Did + ega + fe'l","Did you call me? (Menga qo'ng'iroq qildingmi?)"],["to be","was / were","I was tired. They were late. (Charchagan edim. Ular kechikdi.)"]],
+x:[{p:"Eng ko'p ishlatiladigan noto'g'ri fe'llar. Uch shaklini birga yodlang.",h:["1-shakl","2-shakl","3-shakl","Tarjimasi"],r:[["go","went","gone","bormoq"],["come","came","come","kelmoq"],["see","saw","seen","ko'rmoq"],["eat","ate","eaten","yemoq"],["take","took","taken","olmoq"],["give","gave","given","bermoq"],["do","did","done","qilmoq"],["have","had","had","ega bo'lmoq"],["make","made","made","yasamoq"],["get","got","got","olmoq, erishmoq"],["say","said","said","aytmoq"],["buy","bought","bought","sotib olmoq"],["write","wrote","written","yozmoq"],["know","knew","known","bilmoq"]]}],
+tip:"didn't va Did dan keyin fe'l har doim 1-shaklda turadi: I didn't go (went emas)."},
+{lv:"A2",t:"Present Continuous: hozir bo'layotgan ish",p:"Aynan hozir yoki shu kunlarda davom etayotgan harakat uchun. O'zbekchadagi -yapman, -yapti qo'shimchasiga mos keladi.",
+h:["Shakl","Tuzilishi","Misol va tarjimasi"],r:[["Darak","am / is / are + fe'l-ing","I am reading a book. (Men kitob o'qiyapman.)"],["Inkor","am / is / are + not + fe'l-ing","He isn't sleeping. (U uxlamayapti.)"],["So'roq","Am / Is / Are + ega + fe'l-ing","Are you listening? (Eshityapsanmi?)"],["Vaqtinchalik holat","these days, this week","I'm working from home this week. (Bu hafta uydan ishlayapman.)"]],
+x:[{p:"Present Simple bilan farqi.",h:["Present Simple","Present Continuous"],r:[["I drink tea every morning. (Har kuni ertalab choy ichaman.)","I am drinking tea now. (Hozir choy ichyapman.)"],["She works in a bank. (U bankda ishlaydi.)","She is working on a new project. (U yangi loyiha ustida ishlayapti.)"]]}],
+tip:"Holat fe'llari -ing olmaydi: know, like, love, want, need, understand, believe. I know him (I am knowing emas)."},
+{lv:"A2",t:"Kelasi zamon: will, going to",p:"Ingliz tilida kelajakni aytishning uch asosiy yo'li bor. Farqi niyat va rejaning qanchalik aniqligida.",
+h:["Shakl","Qachon","Misol va tarjimasi"],r:[["will + fe'l","Shu zahoti qilingan qaror, va'da, taxmin","I'll help you. (Senga yordam beraman.)"],["be going to + fe'l","Oldindan o'ylangan reja, ko'rinib turgan natija","I'm going to study medicine. (Tibbiyotda o'qimoqchiman.)"],["Present Continuous","Kelishilgan, vaqti belgilangan uchrashuv","I'm meeting Ali at 5. (Soat 5 da Ali bilan uchrashaman.)"],["Inkor","won't / not going to","It won't rain. (Yomg'ir yog'maydi.)"],["So'roq","Will you...? / Are you going to...?","Will you come? (Kelasanmi?)"]],
+tip:"when, if, before, after dan keyin will ishlatilmaydi: When I come home, I'll call you (When I will come emas)."},
+{lv:"A2",t:"Modal fe'llar",p:"Modal fe'llar qobiliyat, ruxsat, majburiyat va maslahatni bildiradi. Ulardan keyin fe'l to siz, 1-shaklda keladi va he / she bilan -s qo'shilmaydi.",
+h:["Modal","Ma'nosi","Misol va tarjimasi"],r:[["can","qila olmoq, ruxsat","I can swim. (Men suza olaman.)"],["could","qila olardim, muloyim iltimos","Could you help me? (Yordam bera olasizmi?)"],["must","shart, kuchli majburiyat","You must wear a seat belt. (Kamar taqishingiz shart.)"],["have to","tashqi majburiyat","I have to get up early. (Erta turishim kerak.)"],["should","maslahat","You should see a doctor. (Shifokorga borganingiz ma'qul.)"],["may / might","ehtimol","It might rain. (Yomg'ir yog'ishi mumkin.)"],["mustn't","taqiq","You mustn't smoke here. (Bu yerda chekish mumkin emas.)"],["don't have to","shart emas","You don't have to come. (Kelishing shart emas.)"]],
+tip:"mustn't va don't have to ma'nosi butunlay boshqa: birinchisi taqiq, ikkinchisi zarurat yo'qligi."},
+{lv:"A2",t:"Sifat darajalari",p:"Narsalarni solishtirish uchun qiyosiy va orttirma daraja ishlatiladi. Qisqa sifatlarga qo'shimcha qo'shiladi, uzun sifatlar oldiga more / most qo'yiladi.",
+h:["Sifat turi","Qiyosiy","Orttirma","Misol va tarjimasi"],r:[["Qisqa: tall","taller","the tallest","He is taller than me. (U mendan baland.)"],["-y bilan: easy","easier","the easiest","This test is easier. (Bu test osonroq.)"],["Uzun: expensive","more expensive","the most expensive","It's the most expensive car. (Bu eng qimmat mashina.)"],["good","better","the best","Your idea is better. (Sening fikring yaxshiroq.)"],["bad","worse","the worst","Today is worse than yesterday. (Bugun kechagidan yomon.)"],["Tenglik","as ... as","","She is as tall as her mother. (U onasi bilan bir xil bo'yda.)"]],
+tip:"more va -er birga ishlatilmaydi: more better xato, to'g'risi better."},
+{lv:"A2",t:"Sanaladigan va sanalmaydigan otlar",p:"Ba'zi otlarni donalab sanab bo'lmaydi: water, money, information, advice, bread, time. Ular ko'plik qo'shimchasi olmaydi va oldiga a / an qo'yilmaydi.",
+h:["So'z","Qaysi ot bilan","Misol va tarjimasi"],r:[["many","sanaladigan","How many books? (Nechta kitob?)"],["much","sanalmaydigan","How much money? (Qancha pul?)"],["a few","sanaladigan, bir nechta","I have a few friends. (Bir nechta do'stim bor.)"],["a little","sanalmaydigan, ozgina","I speak a little English. (Ozgina inglizcha gapiraman.)"],["some","darak gap, ikkalasi bilan","I need some water. (Menga suv kerak.)"],["any","inkor va so'roq","Do you have any questions? (Savolingiz bormi?)"],["a lot of","ikkalasi bilan, ko'p","She has a lot of work. (Uning ishi ko'p.)"]],
+tip:"information, advice, news, furniture, homework ingliz tilida sanalmaydi: an advice emas, a piece of advice."},
+{lv:"B1",t:"Present Perfect",p:"O'tmishdagi ish hozir bilan bog'liq bo'lsa ishlatiladi: natijasi hozir muhim, tajriba haqida gap ketyapti yoki ish hali davom etyapti. O'zbek tilida aniq muqobili yo'q, shuning uchun ko'p mashq talab qiladi.",
+h:["Qo'llanishi","Kalit so'zlar","Misol va tarjimasi"],r:[["Hayotiy tajriba","ever, never","Have you ever been to London? (Londonda bo'lganmisiz?)"],["Hozirgi natija","just, already, yet","I have lost my keys. (Kalitimni yo'qotib qo'ydim, hozir yo'q.)"],["Hozirgacha davom etadi","for, since","I have lived here for five years. (Bu yerda besh yildan beri yashayman.)"],["Tugamagan davr","today, this week","I haven't seen her today. (Bugun uni ko'rmadim.)"]],
+x:[{p:"Past Simple bilan farqi: vaqt aniq aytilsa Past Simple, aytilmasa Present Perfect.",h:["Present Perfect","Past Simple"],r:[["I have visited Paris. (Parijda bo'lganman.)","I visited Paris in 2019. (2019-yilda Parijga borganman.)"],["She has finished the report. (U hisobotni tugatdi, tayyor.)","She finished it yesterday. (Uni kecha tugatdi.)"]]}],
+tip:"for muddatni (for two hours), since boshlanish nuqtasini (since Monday, since 2020) bildiradi."},
+{lv:"B1",t:"Past Continuous",p:"O'tmishda ma'lum bir paytda davom etib turgan harakat. Ko'pincha boshqa qisqa harakat uni bo'lib qo'yadi.",
+h:["Shakl","Tuzilishi","Misol va tarjimasi"],r:[["Darak","was / were + fe'l-ing","I was sleeping at 10. (Soat 10 da uxlayotgan edim.)"],["when bilan","uzun harakat + when + qisqa harakat","I was cooking when he called. (U qo'ng'iroq qilganda ovqat pishirayotgan edim.)"],["while bilan","ikki harakat bir vaqtda","While I was reading, she was watching TV. (Men o'qiyotganimda u televizor ko'rayotgan edi.)"],["So'roq","Was / Were + ega + fe'l-ing","What were you doing? (Nima qilayotgan eding?)"]],
+tip:"Hikoya aytishda fon uchun Past Continuous, asosiy voqealar uchun Past Simple ishlating."},
+{lv:"B1",t:"Shart gaplar: 0, 1 va 2-tur",p:"If bilan boshlanadigan gaplar uch asosiy turga bo'linadi. Farqi shartning qanchalik real ekanida.",
+h:["Tur","Tuzilishi","Misol va tarjimasi"],r:[["0-tur: doimiy haqiqat","If + Present, Present","If you heat ice, it melts. (Muzni qizdirsangiz, eriydi.)"],["1-tur: real kelajak","If + Present, will + fe'l","If it rains, I will stay home. (Yomg'ir yog'sa, uyda qolaman.)"],["2-tur: xayoliy holat","If + Past, would + fe'l","If I had money, I would travel. (Pulim bo'lganida, sayohat qilardim.)"],["Maslahat","If I were you, I would...","If I were you, I would apologise. (O'rningda bo'lganimda, uzr so'rardim.)"],["unless","agar ...masa","I won't go unless you come. (Sen kelmasang, bormayman.)"]],
+tip:"If li qismda will va would ishlatilmaydi. 2-turda barcha shaxslar bilan were to'g'ri hisoblanadi: If I were, If he were."},
+{lv:"B1",t:"Majhul nisbat (Passive)",p:"Ishni kim bajargani muhim bo'lmasa yoki noma'lum bo'lsa ishlatiladi. Ilmiy matnlarda va IELTS Writing Task 1 da juda ko'p uchraydi.",
+h:["Zamon","Tuzilishi","Misol va tarjimasi"],r:[["Present Simple","am / is / are + V3","English is spoken here. (Bu yerda inglizcha gapiriladi.)"],["Past Simple","was / were + V3","The house was built in 1990. (Uy 1990-yilda qurilgan.)"],["Present Perfect","has / have been + V3","The letter has been sent. (Xat yuborildi.)"],["Future","will be + V3","The results will be announced tomorrow. (Natijalar ertaga e'lon qilinadi.)"],["Modal","can / must be + V3","It must be done today. (Bu bugun bajarilishi shart.)"],["Bajaruvchi","by + kim","It was written by Navoi. (U Navoiy tomonidan yozilgan.)"]],
+tip:"Aniq gapdagi to'ldiruvchi majhul gapda ega bo'ladi: They built the bridge → The bridge was built."},
+{lv:"B1",t:"Aniqlovchi ergash gaplar",p:"who, which, that, where, whose so'zlari ikki gapni birlashtiradi va otni aniqlab keladi. O'zbekchada bu vazifani -gan qo'shimchasi bajaradi.",
+h:["So'z","Nima uchun","Misol va tarjimasi"],r:[["who","odam","The man who lives next door is a doctor. (Qo'shni uyda yashaydigan kishi shifokor.)"],["which","narsa, hayvon","The book which I bought is interesting. (Men sotib olgan kitob qiziqarli.)"],["that","odam va narsa","The film that we watched was long. (Biz ko'rgan film uzun edi.)"],["where","joy","This is the city where I was born. (Bu men tug'ilgan shahar.)"],["whose","egalik","She is the girl whose father is a pilot. (U otasi uchuvchi bo'lgan qiz.)"]],
+tip:"Vergul bilan ajratilgan qo'shimcha ma'lumotda that ishlatilmaydi: My brother, who lives in Tashkent, is a teacher."},
+{lv:"B1",t:"Gerund va infinitiv",p:"Ikki fe'l ketma-ket kelganda ikkinchisi yo -ing, yo to bilan keladi. Bu birinchi fe'lga bog'liq va yodlash kerak.",
+h:["Qolip","Fe'llar","Misol va tarjimasi"],r:[["fe'l + -ing","enjoy, finish, avoid, mind, suggest, keep","I enjoy reading. (O'qishni yoqtiraman.)"],["fe'l + to","want, decide, hope, plan, agree, need","I decided to stay. (Qolishga qaror qildim.)"],["Ikkalasi ham, ma'no bir xil","like, love, start, begin","It started raining / to rain. (Yomg'ir yog'a boshladi.)"],["stop + -ing","ishni to'xtatmoq","He stopped smoking. (U chekishni tashladi.)"],["stop + to","boshqa ish uchun to'xtamoq","He stopped to smoke. (U chekish uchun to'xtadi.)"],["Predlogdan keyin","har doim -ing","I'm good at cooking. (Ovqat pishirishga ustaman.)"]],
+tip:"look forward to dan keyin -ing keladi: I look forward to hearing from you. Rasmiy xatlarda juda kerak bo'ladi."},
+{lv:"B2",t:"Past Perfect va Perfect Continuous",p:"Voqealar ketma-ketligini va davomiyligini aniq ko'rsatish uchun. B2 darajada hikoya va insho shu zamonlarsiz to'liq chiqmaydi.",
+h:["Zamon","Tuzilishi","Misol va tarjimasi"],r:[["Past Perfect","had + V3","When I arrived, the train had left. (Men kelganimda poyezd ketib bo'lgan edi.)"],["Present Perfect Continuous","have / has been + fe'l-ing","I have been waiting for an hour. (Bir soatdan beri kutyapman.)"],["Past Perfect Continuous","had been + fe'l-ing","She was tired because she had been working all day. (U kun bo'yi ishlagani uchun charchagan edi.)"],["Future Perfect","will have + V3","By 2030 I will have graduated. (2030-yilga kelib o'qishni tugatgan bo'laman.)"]],
+tip:"Past Perfect faqat ikki o'tmish voqeadan qaysi biri oldin bo'lganini ko'rsatish kerak bo'lganda ishlatiladi. Har gapda ishlatish xato."},
+{lv:"B2",t:"3-tur shart gap va wish",p:"O'tmishda bo'lmagan narsa haqida afsus yoki taxmin bildirish uchun. O'zbekchada \"-ganimda edi\" ma'nosini beradi.",
+h:["Tur","Tuzilishi","Misol va tarjimasi"],r:[["3-tur","If + had V3, would have V3","If I had studied, I would have passed. (O'qiganimda, imtihondan o'tgan bo'lardim.)"],["Aralash tur","If + had V3, would + fe'l","If I had slept well, I wouldn't be tired now. (Yaxshi uxlaganimda, hozir charchamagan bo'lardim.)"],["wish + Past","hozirgi holatdan norozilik","I wish I had more time. (Qaniydi ko'proq vaqtim bo'lsa.)"],["wish + had V3","o'tmishdan afsus","I wish I had told her. (Unga aytganimda edi.)"],["should have V3","qilish kerak edi","You should have called. (Qo'ng'iroq qilishing kerak edi.)"]],
+tip:"IELTS Speaking 3-qismida taxminiy savollarga 2 va 3-tur shart gap bilan javob bersangiz, grammatika bahosi oshadi."},
+{lv:"B2",t:"O'zlashtirma gap (Reported speech)",p:"Birovning gapini o'z so'zingiz bilan yetkazganda zamon bir pog'ona orqaga suriladi, olmosh va vaqt so'zlari ham o'zgaradi.",
+h:["Ko'chirma gapda","O'zlashtirma gapda","Misol va tarjimasi"],r:[["Present Simple","Past Simple","\"I work here\" → He said he worked there. (U o'sha yerda ishlashini aytdi.)"],["Present Continuous","Past Continuous","\"I'm leaving\" → She said she was leaving. (U ketayotganini aytdi.)"],["Past Simple / Present Perfect","Past Perfect","\"I saw it\" → He said he had seen it. (U buni ko'rganini aytdi.)"],["will","would","\"I'll call\" → She said she would call. (U qo'ng'iroq qilishini aytdi.)"],["can","could","\"I can help\" → He said he could help. (U yordam bera olishini aytdi.)"],["So'roq","if / so'roq so'z + darak tartibi","He asked where I lived. (U qayerda yashashimni so'radi.)"],["Buyruq","told + kim + to","She told me to wait. (U menga kutishni aytdi.)"]],
+tip:"say dan keyin shaxs kelmaydi, tell dan keyin keladi: He said that..., He told me that..."},
+{lv:"B2",t:"Bog'lovchi so'zlar",p:"Fikrlarni bir-biriga bog'laydigan so'zlar insho va nutqni ravon qiladi. IELTS Writing va Speaking mezonlarida alohida baholanadi.",
+h:["Vazifasi","So'zlar","Misol va tarjimasi"],r:[["Qo'shish","moreover, in addition, furthermore","In addition, it saves time. (Bundan tashqari, u vaqtni tejaydi.)"],["Qarama-qarshilik","however, although, despite, whereas","Although it was late, we continued. (Kech bo'lsa-da, davom etdik.)"],["Sabab","because, since, due to","Due to the rain, the match was cancelled. (Yomg'ir tufayli o'yin bekor qilindi.)"],["Natija","therefore, as a result, consequently","Therefore, prices rose. (Shuning uchun narxlar ko'tarildi.)"],["Misol","for example, for instance, such as","For instance, Japan. (Masalan, Yaponiya.)"],["Xulosa","in conclusion, to sum up, overall","In conclusion, both views have merit. (Xulosa qilib aytganda, ikkala fikrda ham asos bor.)"]],
+tip:"despite dan keyin ot yoki -ing keladi (despite the rain), although dan keyin to'liq gap (although it rained)."},
+{lv:"B2",t:"Phrasal verbs: iborali fe'llar",p:"Fe'l va predlog birikib yangi ma'no beradi. Og'zaki nutqda til egalari ularni juda ko'p ishlatadi, shuning uchun kino va suhbatni tushunish uchun zarur.",
+h:["Phrasal verb","Tarjimasi","Misol"],r:[["give up","tashlamoq, voz kechmoq","Don't give up. (Taslim bo'lma.)"],["look for","qidirmoq","I'm looking for my phone. (Telefonimni qidiryapman.)"],["find out","bilib olmoq","I found out the truth. (Haqiqatni bilib oldim.)"],["put off","keyinga surmoq","They put off the meeting. (Ular yig'ilishni keyinga surdi.)"],["turn on / off","yoqmoq / o'chirmoq","Turn off the light. (Chiroqni o'chir.)"],["get along with","chiqishmoq","I get along with my colleagues. (Hamkasblarim bilan chiqishaman.)"],["run out of","tugab qolmoq","We ran out of milk. (Sutimiz tugab qoldi.)"],["look forward to","intizorlik bilan kutmoq","I look forward to the trip. (Sayohatni intizor kutyapman.)"],["pick up","olib ketmoq, o'rganib olmoq","I'll pick you up at 7. (Seni soat 7 da olib ketaman.)"],["carry on","davom ettirmoq","Carry on reading. (O'qishda davom et.)"],["come across","duch kelmoq","I came across an old photo. (Eski rasmga duch keldim.)"],["set up","tashkil qilmoq","She set up a company. (U kompaniya ochdi.)"]],
+tip:"Phrasal verb ni alohida so'z sifatida emas, butun gap ichida yodlang. Kinolar bo'limidagi filmlar bunga eng yaxshi manba."}
+);
+
+var IELTS=[
+{t:"Imtihon bilan tanishuv",p:"IELTS (International English Language Testing System) to'rt ko'nikmani tekshiradi: Listening (tinglash), Reading (o'qish), Writing (yozish), Speaking (gapirish). Imtihon taxminan 2 soat 45 daqiqa davom etadi. Listening, Reading va Writing bir kunda, tanaffussiz o'tadi. Speaking shu kuni yoki bir hafta oldin yoxud keyin bo'lishi mumkin.",
+h:["Bo'lim","Vaqti","Tarkibi"],r:[["Listening","taxminan 30 daqiqa","4 qism, 40 ta savol"],["Reading","60 daqiqa","3 ta matn, 40 ta savol"],["Writing","60 daqiqa","2 ta topshiriq: Task 1 va Task 2"],["Speaking","11–14 daqiqa","3 qism, imtihon oluvchi bilan yuzma-yuz suhbat"]],
+x:[{p:"Ikki turi bor. Listening va Speaking ikkalasida bir xil, Reading va Writing farq qiladi.",h:["Turi","Kimlar uchun"],r:[["Academic","Chet el universitetiga o'qishga kirish uchun"],["General Training","Ish, immigratsiya yoki o'rta maxsus ta'lim uchun"]]},
+{p:"Natija 0 dan 9 gacha band ballida, yarim ball aniqligida beriladi. Umumiy ball to'rt bo'limning o'rtachasi.",h:["Band","Daraja","Ma'nosi"],r:[["9","Expert user","Tilni to'liq egallagan"],["8","Very good user","Juda yaxshi, kamdan-kam xato qiladi"],["7","Good user","Yaxshi, murakkab tilni tushunadi"],["6","Competent user","Yetarli darajada, ba'zi xatolar bilan"],["5","Modest user","O'rtacha, umumiy ma'noni tushunadi"],["4","Limited user","Cheklangan, faqat tanish vaziyatlarda"]]}],
+tip:"Avval maqsadingizni aniqlang: tanlagan universitet yoki dastur qaysi turni va necha ball so'rashini uning rasmiy saytidan tekshiring. Tayyorgarlik rejasi shunga qarab tuziladi."},
+{t:"Listening: tinglab tushunish",p:"Yozuv faqat bir marta qo'yiladi. Qog'oz imtihonda javoblarni varaqqa ko'chirish uchun oxirida qo'shimcha 10 daqiqa beriladi. Qismlar osondan qiyinga qarab boradi.",
+h:["Qism","Mazmuni","Misol"],r:[["Part 1","Kundalik mavzuda ikki kishining suhbati","Mehmonxona band qilish, kursga yozilish"],["Part 2","Kundalik mavzuda bir kishining nutqi","Muzey bo'ylab ekskursiya haqida ma'lumot"],["Part 3","Ta'lim mavzusida bir necha kishining suhbati","Talabalar va o'qituvchi loyihani muhokama qiladi"],["Part 4","Akademik ma'ruza","Universitet leksiyasi"]],
+x:[{p:"Savol turlari va ularga yondashuv.",h:["Savol turi","Tarjimasi","Maslahat"],r:[["Form / note completion","Blanka yoki konspektni to'ldirish","So'z soni chegarasiga qarang: NO MORE THAN TWO WORDS"],["Multiple choice","Variantlardan tanlash","Uchala variant ham aytiladi, to'g'risi boshqacha so'zlar bilan beriladi"],["Map / plan labelling","Xarita yoki rejani belgilash","left, right, opposite, next to so'zlariga e'tibor bering"],["Matching","Moslashtirish","Variantlarni oldindan o'qib chiqing"],["Sentence completion","Gapni to'ldirish","Grammatik jihatdan mos so'z qidiring"]]}],
+tip:"Har bir qism oldidan beriladigan vaqtda savollarni o'qib, kalit so'zlarning tagiga chizing. Imlo xatosi bilan yozilgan javob noto'g'ri hisoblanadi."},
+{t:"Reading: o'qib tushunish",p:"60 daqiqada 3 ta matn va 40 ta savol. Javoblarni ko'chirish uchun qo'shimcha vaqt berilmaydi. Academic turida matnlar kitob, jurnal va gazetalardan olinadi.",
+h:["Usul","Tarjimasi","Qachon ishlatiladi"],r:[["Skimming","Ko'z yugurtirib chiqish","Matnning umumiy mazmunini 2–3 daqiqada bilish uchun"],["Scanning","Aniq ma'lumotni qidirish","Ism, sana, raqam kabi kalit so'zni topish uchun"],["Paraphrase","Boshqa so'zlar bilan aytilgan fikr","Savoldagi so'z matnda sinonimi bilan keladi"]],
+x:[{p:"Eng ko'p uchraydigan savol turlari.",h:["Savol turi","Tarjimasi","Maslahat"],r:[["True / False / Not Given","To'g'ri / Noto'g'ri / Aytilmagan","Matnda ma'lumot yo'q bo'lsa Not Given, zid bo'lsa False"],["Matching headings","Sarlavhalarni moslashtirish","Har bir xatboshining birinchi va oxirgi gapini o'qing"],["Multiple choice","Variantlardan tanlash","Avval savolni, keyin matnning tegishli joyini o'qing"],["Summary completion","Xulosani to'ldirish","Bo'sh joydan oldingi va keyingi so'zga qarang"],["Matching information","Ma'lumotni xatboshiga moslashtirish","Eng ko'p vaqt oladi, oxiriga qoldiring"]]}],
+tip:"Har bir matnga 20 daqiqadan ko'p sarflamang. Bitta savolda bir daqiqadan ortiq to'xtab qolsangiz, belgilab qo'yib keyingisiga o'ting."},
+{t:"Writing Task 1",p:"Tavsiya etilgan vaqt 20 daqiqa, kamida 150 so'z. Academic turida grafik, jadval, diagramma yoki jarayon tasvirlanadi. General Training turida xat yoziladi. O'z fikringizni yozmaysiz, faqat ko'rsatilgan ma'lumotni tasvirlaysiz.",
+h:["Qism","Nima yoziladi","Namuna va tarjimasi"],r:[["Introduction","Topshiriqni o'z so'zingiz bilan qayta yozing","The line graph shows... (Chiziqli grafik ...ni ko'rsatadi.)"],["Overview","Eng asosiy 2 ta tendensiya","Overall, it is clear that... (Umuman olganda, ...ligi ko'rinib turibdi.)"],["Body 1","Birinchi guruh ma'lumotlar, raqamlar bilan","In 2010, the figure stood at 20%. (2010-yilda ko'rsatkich 20% edi.)"],["Body 2","Ikkinchi guruh ma'lumotlar, taqqoslash bilan","By contrast, ... (Aksincha, ...)"]],
+x:[{p:"O'zgarishni tasvirlash uchun lug'at.",h:["Inglizcha","Tarjimasi"],r:[["increase, rise, grow, climb","o'smoq, ko'tarilmoq"],["decrease, fall, drop, decline","kamaymoq, tushmoq"],["remain stable, level off","barqaror qolmoq"],["fluctuate","tebranib turmoq"],["reach a peak","eng yuqori nuqtaga yetmoq"],["sharply, dramatically","keskin"],["gradually, steadily","asta-sekin, bir tekisda"],["slightly","biroz"],["approximately, roughly","taxminan"],["twice as much as","ikki baravar ko'p"]]}],
+tip:"Overview yozilmasa, Task Achievement mezoni bo'yicha yuqori ball olish qiyin. Barcha raqamlarni sanab chiqmang, eng muhimlarini tanlang."},
+{t:"Writing Task 2: insho",p:"Tavsiya etilgan vaqt 40 daqiqa, kamida 250 so'z. Task 2 Writing bahosida Task 1 ga qaraganda ikki baravar ko'p ahamiyatga ega, shuning uchun unga ko'proq vaqt ajrating.",
+h:["Insho turi","Savol qanday beriladi","Tarjimasi"],r:[["Opinion","To what extent do you agree or disagree?","Qay darajada qo'shilasiz yoki qo'shilmaysiz?"],["Discussion","Discuss both views and give your opinion.","Ikkala fikrni muhokama qiling va o'z fikringizni bildiring."],["Advantages / Disadvantages","Do the advantages outweigh the disadvantages?","Afzalliklari kamchiliklaridan ustunmi?"],["Problem / Solution","What are the causes? What solutions can you suggest?","Sabablari nima? Qanday yechim taklif qilasiz?"],["Two-part question","Ikki alohida savol","Har biriga alohida xatboshi yozing."]],
+x:[{p:"Inshoning tuzilishi va foydali iboralar.",h:["Qism","Ibora","Tarjimasi"],r:[["Kirish","It is often argued that...","Ko'pincha ...deb ta'kidlanadi."],["Fikr bildirish","I firmly believe that...","Men ...ga qat'iy ishonaman."],["Birinchi dalil","One of the main reasons is that...","Asosiy sabablardan biri shuki, ..."],["Misol","For instance, ...","Masalan, ..."],["Qarama-qarshi fikr","On the other hand, ...","Boshqa tomondan, ..."],["Xulosa","In conclusion, ...","Xulosa qilib aytganda, ..."]]},
+{p:"Writing to'rt mezon bo'yicha baholanadi, har biri bahoning to'rtdan birini tashkil qiladi.",h:["Mezon","Tarjimasi","Nimaga qaraladi"],r:[["Task Response","Topshiriqqa javob","Savolning hamma qismiga javob berilganmi, fikr aniqmi"],["Coherence and Cohesion","Mantiqiylik va bog'liqlik","Xatboshilar, bog'lovchi so'zlar"],["Lexical Resource","Lug'at boyligi","So'z tanlash aniqligi, sinonimlar, imlo"],["Grammatical Range and Accuracy","Grammatika","Murakkab gaplar va xatosizlik"]]}],
+tip:"Yozishdan oldin 5 daqiqa reja tuzing: fikringiz, ikki asosiy dalil va har biriga misol. Rejasiz yozilgan insho ko'pincha mavzudan chetga chiqadi."},
+{t:"Speaking: og'zaki nutq",p:"Imtihon oluvchi bilan yakkama-yakka suhbat, 11–14 daqiqa davom etadi va yozib olinadi. Uch qismdan iborat.",
+h:["Qism","Davomiyligi","Mazmuni","Namuna savol va tarjimasi"],r:[["Part 1","4–5 daqiqa","O'zingiz, uy, ish, o'qish, qiziqishlar","Do you work or study? (Ishlaysizmi yoki o'qiysizmi?)"],["Part 2","3–4 daqiqa","Kartochka bo'yicha 1–2 daqiqalik nutq, 1 daqiqa tayyorgarlik","Describe a book you enjoyed. (Sizga yoqqan kitobni tasvirlang.)"],["Part 3","4–5 daqiqa","Part 2 mavzusi bo'yicha chuqurroq muhokama","Why do people read less nowadays? (Nega hozir odamlar kam o'qiydi?)"]],
+x:[{p:"Vaqt yutish va fikrni tartibga solish uchun iboralar.",h:["Ibora","Tarjimasi"],r:[["That's an interesting question.","Bu qiziq savol."],["Let me think for a moment.","Bir zum o'ylab ko'ray."],["As far as I'm concerned, ...","Menga qolsa, ..."],["To be honest, ...","Rostini aytsam, ..."],["It depends on the situation.","Bu vaziyatga bog'liq."],["What I mean is ...","Aytmoqchi bo'lganim ..."],["Could you repeat the question, please?","Savolni takrorlay olasizmi?"]]},
+{p:"Speaking ham to'rt mezon bo'yicha baholanadi.",h:["Mezon","Tarjimasi"],r:[["Fluency and Coherence","Ravonlik va mantiqiylik"],["Lexical Resource","Lug'at boyligi"],["Grammatical Range and Accuracy","Grammatika"],["Pronunciation","Talaffuz"]]}],
+tip:"Yodlangan javoblar seziladi va ball pasaytiradi. Qisqa \"ha\" yoki \"yo'q\" bilan cheklanmang: javob, sabab va misol qolipida gapiring."},
+{t:"Akademik lug'at",p:"IELTS matnlari va insholarida eng ko'p uchraydigan so'zlar. Ularni sinonimlari bilan birga o'rganing, chunki Reading va Listening savollari paraphrase asosida tuziladi.",
+h:["So'z","Tarjimasi","Sinonimi"],r:[["significant","sezilarli, muhim","considerable"],["affect","ta'sir qilmoq","influence"],["benefit","foyda","advantage"],["drawback","kamchilik","disadvantage"],["issue","muammo, masala","problem"],["require","talab qilmoq","need"],["provide","ta'minlamoq","supply"],["increase","oshmoq, oshirmoq","rise"],["reduce","kamaytirmoq","decrease"],["essential","zarur","crucial"],["approach","yondashuv","method"],["evidence","dalil","proof"],["environment","atrof-muhit","surroundings"],["government","hukumat","authorities"],["society","jamiyat","community"],["research","tadqiqot","study"],["factor","omil","cause"],["consequence","oqibat","result"],["opportunity","imkoniyat","chance"],["maintain","saqlab turmoq","keep"]],
+tip:"Bu so'zlar O'yinlar bo'limidagi \"IELTS so'zlari\" rejimida ham bor. Har kuni besh daqiqa o'ynab mustahkamlang."},
+{t:"8 haftalik tayyorgarlik rejasi",p:"Bu reja B1 darajadan boshlab 6.0–6.5 ball olishni maqsad qilganlar uchun. Darajangiz pastroq bo'lsa, avval Darsliklar bo'limidagi A2 va B1 bosqichlarini tugating.",
+h:["Hafta","Asosiy ish","Kunlik mashq"],r:[["1","Format bilan tanishish, bitta to'liq sinov testi ishlab darajani aniqlash","30 daqiqa lug'at, 30 daqiqa tinglash"],["2","Listening Part 1–2 va Reading uchun skimming, scanning","Har kuni bitta Listening qismi"],["3","Listening Part 3–4, True / False / Not Given savollari","Har kuni bitta Reading matni, 20 daqiqa ichida"],["4","Writing Task 1: tuzilish va o'zgarish lug'ati","Kunora bitta Task 1 yozish"],["5","Writing Task 2: insho turlari va reja tuzish","Kunora bitta insho, 40 daqiqa ichida"],["6","Speaking Part 1–2, o'z ovozingizni yozib tinglash","Har kuni 15 daqiqa ovoz chiqarib gapirish"],["7","Speaking Part 3, zaif tomonlar ustida ishlash","Xatolar daftarini takrorlash"],["8","Vaqtga qarshi ikkita to'liq sinov testi","Imtihondan bir kun oldin dam olish"]],
+tip:"Rasmiy sinov testlari ielts.org, British Council va IDP saytlarida bepul bor. Xatolaringizni daftarga yozib boring: bir xil xato ikki marta takrorlansa, o'sha mavzuga qayting."}
+];
+var IW=[["sezilarli","significant"],["ta'sir qilmoq","affect"],["foyda","benefit"],["kamchilik","drawback"],["masala","issue"],["talab qilmoq","require"],["ta'minlamoq","provide"],["kamaytirmoq","reduce"],["zarur","essential"],["yondashuv","approach"],["dalil","evidence"],["atrof-muhit","environment"],["hukumat","government"],["jamiyat","society"],["tadqiqot","research"],["omil","factor"],["oqibat","consequence"],["imkoniyat","opportunity"],["saqlab turmoq","maintain"],["tebranib turmoq","fluctuate"]];
+
+var MOVIES=[
+{n:"Peppa Pig",y:"2004 yildan",k:"Multserial",lv:"A1",ac:"Britaniya",d:"Besh daqiqalik qismlar, juda sodda va sekin nutq. Kattalar uchun ham birinchi qadam sifatida yaxshi.",v:"Oila, uy, kundalik ishlar"},
+{n:"Finding Nemo",y:"2003",k:"Multfilm",lv:"A2",ac:"Amerika",d:"Aniq talaffuz va qisqa gaplar. Syujetni tasvirdan ham tushunish oson.",v:"Dengiz, oila, his-tuyg'ular"},
+{n:"Toy Story",y:"1995",k:"Multfilm",lv:"A2",ac:"Amerika",d:"Do'stlik haqidagi sodda dialoglar. Kundalik buyruq va iltimos gaplari ko'p.",v:"O'yinchoqlar, do'stlik, uy"},
+{n:"Paddington",y:"2014",k:"Oilaviy komediya",lv:"A2",ac:"Britaniya",d:"Muloyim, toza britancha nutq. Xushmuomalalik iboralarini o'rganish uchun qulay.",v:"Shahar, odob, oila"},
+{n:"Up",y:"2009",k:"Multfilm",lv:"A2",ac:"Amerika",d:"Dialog kam, lekin har bir gap aniq eshitiladi. Yangi boshlovchilarni charchatmaydi.",v:"Sayohat, orzu, tabiat"},
+{n:"Home Alone",y:"1990",k:"Komediya",lv:"B1",ac:"Amerika",d:"Oddiy maishiy nutq va bolalar tili. Ko'pchilik syujetni biladi, shuning uchun tilga e'tibor qaratish oson.",v:"Uy, bayram, oila"},
+{n:"Forrest Gump",y:"1994",k:"Drama",lv:"B1",ac:"Amerika (janubiy)",d:"Bosh qahramon sekin va sodda gapiradi. O'tgan zamonda hikoya qilishning yaxshi namunasi.",v:"Hayot yo'li, tarix, do'stlik"},
+{n:"The Pursuit of Happyness",y:"2006",k:"Drama",lv:"B1",ac:"Amerika",d:"Ish qidirish, suhbat va pul haqidagi real hayotiy dialoglar.",v:"Ish, pul, intervyu"},
+{n:"Harry Potter and the Philosopher's Stone",y:"2001",k:"Fantastika",lv:"B1",ac:"Britaniya",d:"Britancha talaffuzga quloqni o'rgatadi. Birinchi filmning tili keyingilariga qaraganda sodda.",v:"Maktab, sehr, do'stlik"},
+{n:"Friends",y:"1994–2004",k:"Serial",lv:"B1",ac:"Amerika",d:"Og'zaki ingliz tilini o'rganish uchun eng ko'p tavsiya qilinadigan serial. Qismlari qisqa, iboralar ko'p takrorlanadi.",v:"Do'stlar, ish, munosabatlar"},
+{n:"The Intern",y:"2015",k:"Komediya",lv:"B1",ac:"Amerika",d:"Zamonaviy ofis tili va muloyim ish muloqoti.",v:"Ofis, biznes, yozishmalar"},
+{n:"The Devil Wears Prada",y:"2006",k:"Komediya-drama",lv:"B2",ac:"Amerika",d:"Tez, ishbilarmon nutq. Rahbar va xodim o'rtasidagi muloqot namunalari.",v:"Ish, moda, martaba"},
+{n:"The King's Speech",y:"2010",k:"Tarixiy drama",lv:"B2",ac:"Britaniya",d:"Nutq va talaffuzning o'zi film mavzusi. Rasmiy britancha ingliz tili.",v:"Nutq, tarix, rasmiy til"},
+{n:"The Social Network",y:"2010",k:"Drama",lv:"B2",ac:"Amerika",d:"Juda tez dialoglar. Tinglab tushunish tezligini oshirish uchun yaxshi sinov.",v:"Texnologiya, biznes, huquq"},
+{n:"Inception",y:"2010",k:"Fantastik triller",lv:"B2",ac:"Aralash",d:"Murakkab g'oyalarni tushuntirish tili. Shart gaplar va taxmin iboralari ko'p.",v:"Tush, reja, fan"},
+{n:"Sherlock",y:"2010–2017",k:"Serial",lv:"C1",ac:"Britaniya",d:"Juda tez va boy lug'atli nutq. IELTS Listening 7.0 dan yuqori maqsad qilganlar uchun mashq.",v:"Tergov, mantiq, shahar"}
+];
+var MOVIEWORDS=[["subtitles","subtitrlar"],["plot","syujet"],["scene","sahna"],["character","qahramon"],["main character","bosh qahramon"],["actor / actress","aktyor / aktrisa"],["director","rejissyor"],["episode","qism"],["season","mavsum"],["sequel","davomi"],["soundtrack","film musiqasi"],["ending","yakun"]];
+
+var APPS=[
+{n:"Duolingo",u:"https://www.duolingo.com",l:["en","ru","ar","es"],d:"Dunyodagi eng ommabop til ilovalaridan biri. Darslar o'yin shaklida: har kuni 5–10 daqiqalik mashq, ball va ketma-ket kunlar hisobi. Asosiy darslar bepul.",use:"Qanday qo'shish kerak: har kuni bitta Duolingo darsi, keyin shu saytdagi testda yangi so'zlarni tekshiring."},
+{n:"Memrise",u:"https://www.memrise.com",l:["en","ru","ar","es"],d:"So'z va iboralarni til egalarining qisqa videolari orqali o'rgatadi. Jonli talaffuzga quloqni o'rgatish uchun qulay.",use:"Iboralar bo'limida yodlagan gaplaringizni Memrise'da til egasidan eshiting."},
+{n:"Busuu",u:"https://www.busuu.com",l:["en","ru","ar","es"],d:"A1 dan B2 gacha tartibli kurslar. Yozgan mashqlaringizni til egalari tekshirib beradi.",use:"Darsliklar bo'limidagi grammatikani mustahkamlash uchun mos."},
+{n:"Anki",u:"https://apps.ankiweb.net",l:["en","ru","ar","es"],d:"Oraliqli takrorlash usulidagi kartochkalar dasturi. So'zni unutay deganingizda qayta ko'rsatadi. Kompyuter va Android uchun bepul.",use:"Testda xato qilgan so'zlaringizdan o'z kartochka to'plamingizni tuzing."},
+{n:"Quizlet",u:"https://quizlet.com",l:["en","ru","ar","es"],d:"Tayyor kartochka to'plamlari va o'yinlar. Maktab va universitet darsliklari bo'yicha millionlab to'plam bor.",use:"O'zbekcha tarjimali to'plam yaratib, do'stlaringiz bilan ulashing."},
+{n:"HelloTalk",u:"https://www.hellotalk.com",l:["en","ru","ar","es"],d:"Til egalari bilan yozishma va ovozli suhbat. Siz ularga o'zbek yoki rus tilini o'rgatasiz, ular sizga o'z tilini.",use:"Tanishuv iboralarini yodlagach, birinchi suhbatni shu yerda boshlang."},
+{n:"Tandem",u:"https://www.tandem.net",l:["en","ru","ar","es"],d:"Til almashish hamkorini topish ilovasi. Matn, ovoz va video orqali mashq qilish mumkin.",use:"Haftasiga bir marta 15 daqiqalik jonli suhbat rejalashtiring."},
+{n:"BBC Learning English",u:"https://www.bbc.co.uk/learningenglish",l:["en"],d:"BBC ning bepul ingliz tili darslari: qisqa videolar, podkastlar, grammatika va talaffuz kurslari.",use:"6 Minute English podkastini tinglab, notanish so'zlarni lug'atdan qidiring."},
+{n:"SpanishDict",u:"https://www.spanishdict.com",l:["es"],d:"Ispan tili lug'ati, fe'l tuslanishi jadvallari va grammatika qo'llanmalari. Tushuntirishlar ingliz tilida.",use:"Har bir yangi fe'lning tuslanishini shu yerdan tekshiring."},
+{n:"LingQ",u:"https://www.lingq.com",l:["en","ru","ar","es"],d:"Matn o'qish va audio tinglash orqali o'rganish. Notanish so'zni bosib, tarjimasini ko'rasiz va saqlaysiz.",use:"Asosiy so'zlarni o'zlashtirgach, sodda matnlarga o'ting."},
+{n:"italki",u:"https://www.italki.com",l:["en","ru","ar","es"],d:"Onlayn o'qituvchilar bilan yakkama-yakka darslar. Narxni har bir o'qituvchi o'zi belgilaydi.",use:"Gapirishdagi to'siqni yengish uchun oyiga bir necha dars oling."},
+{n:"Google Translate",u:"https://translate.google.com",l:["en","ru","ar","es"],d:"O'zbek tilini qo'llab-quvvatlaydigan tarjimon. Matn, rasm va ovozni tarjima qiladi.",use:"Butun gapni emas, alohida so'zni tekshirish uchun ishlating, shunda ko'proq yodda qoladi."},
+{n:"Forvo",u:"https://forvo.com",l:["en","ru","ar","es"],d:"Talaffuz lug'ati. Har bir so'zni til egalari o'z ovozi bilan yozib qoldirgan.",use:"Qurilmangizda arab yoki rus ovozi bo'lmasa, talaffuzni shu yerdan tinglang."}
+];
+
+/* ---------- STATE ---------- */
+var W=[],P=[],WCATS=Object.keys(WD),PCATS=Object.keys(PD);
+WCATS.forEach(function(c){WD[c].forEach(function(r){W.push({k:"w"+W.length,cat:c,row:r});});});
+PCATS.forEach(function(c){PD[c].forEach(function(r){P.push({k:"p"+P.length,cat:c,row:r});});});
+var VIEWS=[["bosh","Bosh sahifa"],["darslar","Darsliklar"],["ielts","IELTS"],["lugat","Lug'at"],["test","Test"],["iboralar","Iboralar"],["kinolar","Kinolar"],["oyinlar","O'yinlar"],["ilovalar","Ilovalar"]];
+var S={lang:"en",done:{},best:{}};
+try{var sv=JSON.parse(localStorage.getItem("tort-til")||"null");if(sv&&LANGS[sv.lang]){S=sv;S.done=S.done||{};S.best=S.best||{};}}catch(e){}
+function save(){try{localStorage.setItem("tort-til",JSON.stringify(S));}catch(e){}}
+var UI={mlv:"all",cat:"all",q:"",hide:false,pcat:"all",phide:false};
+var Q={src:"w",dir:"t2u",cat:"all",qs:null,n:0,score:0,picked:null,wrong:[]};
+var canSpeak=("speechSynthesis" in window)&&("SpeechSynthesisUtterance" in window);
+var $=function(id){return document.getElementById(id);};
+
+function L(){return LANGS[S.lang];}
+function tg(row){return row[L().i];}
+function trl(row){return S.lang==="ar"?row[4]:"";}
+function isDone(k,lang){return !!S.done[(lang||S.lang)+":"+k];}
+function setDone(k,v,lang){var key=(lang||S.lang)+":"+k;if(v){S.done[key]=1;}else{delete S.done[key];}save();}
+function countDone(lang,prefix,total){var n=0;for(var i=0;i<total;i++){if(S.done[lang+":"+prefix+i])n++;}return n;}
+function arc(){return S.lang==="ar"?' ar" dir="rtl" lang="ar':'';}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function find(k){return k.charAt(0)==="w"?W[+k.slice(1)]:P[+k.slice(1)];}
+function speak(k){
+  if(!canSpeak)return;
+  try{var u=new SpeechSynthesisUtterance(tg(find(k).row));u.lang=L().code;u.rate=0.85;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}
+}
+function sayBtn(k){return canSpeak?'<button class="say" data-act="say" data-k="'+k+'" aria-label="Talaffuzni tinglash">Tinglash</button>':'';}
+
+/* ---------- VIEWS ---------- */
+function view(){var h=(location.hash||"").slice(1);for(var i=0;i<VIEWS.length;i++){if(VIEWS[i][0]===h)return h;}return "bosh";}
+function head(eyebrow,title,lead){return '<div class="head"><span class="eyebrow">'+eyebrow+'</span><h1>'+title+'</h1><p class="lead">'+lead+'</p></div>';}
+
+function vHome(){
+  var day=Math.floor(Date.now()/864e5)%W.length,wd=W[day];
+  var hello="";["en","ru","ar","es"].forEach(function(c){
+    hello+='<button class="h-'+c+(c==="ar"?" ar-b":"")+'" data-act="lang" data-v="'+c+'" aria-pressed="'+(S.lang===c)+'"><strong'+(c==="ar"?' dir="rtl" lang="ar"':'')+'>'+LANGS[c].hello+'</strong><span>'+LANGS[c].name+'</span></button>';
+  });
+  var kw=countDone(S.lang,"w",W.length),kp=countDone(S.lang,"p",P.length),NL=LESSONS[S.lang].length,kl=countDone(S.lang,"l",NL),best=S.best[S.lang];
+  function stat(n,t,label,href){return '<a class="card stat" href="#'+href+'" style="text-decoration:none;color:inherit"><small>'+label+'</small><b>'+n+' / '+t+'</b><div class="bar"><i style="width:'+Math.round(n/t*100)+'%"></i></div></a>';}
+  return '<section class="hero"><div class="txt"><span class="eyebrow">O\'zbek tilida tushuntirilgan</span><h1>Ingliz, rus, arab va ispan tillarini bir joyda o\'rganing</h1>'+
+  '<p class="lead">Har bir til uchun darsliklar, '+W.length+' ta so\'z, '+P.length+' ta tayyor ibora va uch variantli testlar. Ingliz tili uchun A1 dan B2 gacha '+LESSONS.en.length+' darslik kurs, IELTS, kinolar va o\'yinlar bor.</p>'+
+  '<div class="btns"><a class="btn" href="#darslar">'+L().name+'ni boshlash</a><a class="btn ghost" href="#test">Testni sinab ko\'rish</a></div></div>'+
+  '<div class="hello" role="group" aria-label="Tilni tanlang">'+hello+'</div></section>'+
+  '<section class="grid"><h2>'+L().name+' bo\'yicha natijangiz</h2><div class="grid g4">'+
+  stat(kl,NL,"O'qilgan darsliklar","darslar")+stat(kw,W.length,"Bilgan so'zlaringiz","lugat")+stat(kp,P.length,"Yodlangan iboralar","iboralar")+
+  '<a class="card stat" href="#test" style="text-decoration:none;color:inherit"><small>Testdagi eng yaxshi natija</small><b>'+(best!=null?best+' / 10':'hali yo\'q')+'</b><div class="bar"><i style="width:'+((best||0)*10)+'%"></i></div></a></div></section>'+
+  '<section class="day"><div><small class="eyebrow">Bugungi so\'z</small><div class="w'+arc()+'">'+tg(wd.row)+'</div></div><div><strong>'+wd.row[0]+'</strong>'+(trl(wd.row)?'<div class="lead">o\'qilishi: '+trl(wd.row)+'</div>':'')+'<div class="lead">'+wd.cat+'</div></div>'+sayBtn(wd.k)+'</section>'+
+  '<section class="grid"><h2>Ingliz tili uchun maxsus bo\'limlar</h2><div class="grid g4">'+'<a class="card" href="#darslar" data-act="lang" data-v="en" style="text-decoration:none;color:inherit"><h3>Bosqichma-bosqich kurs</h3><p class="lead">A1 dan B2 gacha '+LESSONS.en.length+' ta dars, tarjimali misollar bilan.</p></a>'+'<a class="card" href="#ielts" style="text-decoration:none;color:inherit"><h3>IELTS</h3><p class="lead">Imtihon tuzilishi, har bir bo\'lim strategiyasi va 8 haftalik reja.</p></a>'+'<a class="card" href="#kinolar" style="text-decoration:none;color:inherit"><h3>Kinolar</h3><p class="lead">Darajaga mos '+MOVIES.length+' ta film va serial, tomosha qilish usuli bilan.</p></a>'+'<a class="card" href="#oyinlar" style="text-decoration:none;color:inherit"><h3>O\'yinlar</h3><p class="lead">Juftini top, harflardan so\'z ter va 60 soniyalik tezkor o\'yin.</p></a></div></section>'+'<section class="grid"><h2>Kunlik 20 daqiqalik reja</h2><ol class="steps">'+
+  '<li><a href="#darslar">Darslik</a><p class="lead">Bitta mavzuni o\'qing va jadvaldagi misollarni ovoz chiqarib takrorlang.</p></li>'+
+  '<li><a href="#lugat">Lug\'at</a><p class="lead">Bitta mavzudan 10 ta so\'zni ko\'rib chiqing, bilganlaringizni belgilang.</p></li>'+
+  '<li><a href="#test">Test</a><p class="lead">10 ta savolga javob bering. Xatolar oxirida ro\'yxat bo\'lib chiqadi.</p></li>'+
+  '<li><a href="#iboralar">Iboralar</a><p class="lead">Uchta yangi gapni yodlang va tarjimani yashirib o\'zingizni tekshiring.</p></li></ol></section>';
+}
+
+function chips(list,cur,act){var o='<button class="chip" data-act="'+act+'" data-v="all" aria-pressed="'+(cur==="all")+'">Hammasi</button>';list.forEach(function(c,i){o+='<button class="chip" data-act="'+act+'" data-v="'+i+'" aria-pressed="'+(cur===c)+'">'+c+'</button>';});return o;}
+
+function vVocab(){
+  return head(L().name,"Lug'at",W.length+" ta eng kerakli so'z to'qqiz mavzuga bo'lingan. Tarjimani yashirib, kartani bosib o'zingizni tekshirishingiz mumkin.")+
+  '<div class="tools"><input type="search" id="q" placeholder="So\'z qidirish (o\'zbekcha yoki '+L().short.toLowerCase()+')" value="'+UI.q+'" aria-label="So\'z qidirish"><label class="switch"><input type="checkbox" id="hide" data-act="hide"'+(UI.hide?" checked":"")+'>Tarjimani yashirish</label></div>'+
+  '<div class="chips">'+chips(WCATS,UI.cat,"cat")+'</div><div id="grid" class="grid g4'+(UI.hide?" hidden-tr":"")+'"></div>';
+}
+function fillGrid(){
+  var g=$("grid");if(!g)return;var q=UI.q.trim().toLowerCase(),o="";
+  W.forEach(function(w){
+    if(UI.cat!=="all"&&w.cat!==UI.cat)return;
+    if(q&&w.row[0].toLowerCase().indexOf(q)<0&&tg(w.row).toLowerCase().indexOf(q)<0)return;
+    var kn=isDone(w.k);
+    o+='<div class="word'+(kn?" known":"")+'" data-act="reveal"><div class="t'+arc()+'">'+tg(w.row)+'</div>'+(trl(w.row)?'<div class="tr">'+trl(w.row)+'</div>':'')+'<div class="u">'+w.row[0]+'</div><div class="f">'+sayBtn(w.k)+'<button class="mini'+(kn?" on":"")+'" data-act="known" data-k="'+w.k+'" aria-pressed="'+kn+'">'+(kn?"Bilaman":"Belgilash")+'</button></div></div>';
+  });
+  g.innerHTML=o||'<p class="empty">Bunday so\'z topilmadi. Boshqa mavzuni tanlang yoki qidiruvni tozalang.</p>';
+}
+
+function vPhrases(){
+  var n=countDone(S.lang,"p",P.length);
+  var out=head(L().name,"So'zlashuv iboralari","Kundalik hayotda eng ko'p ishlatiladigan "+P.length+" ta gap. Yodlaganingizni belgilang: hozircha "+n+" tasi yodlangan.")+
+  '<div class="tools"><label class="switch"><input type="checkbox" id="phide" data-act="phide"'+(UI.phide?" checked":"")+'>Yodlash rejimi: o\'zbekchasini yashirish</label></div><div class="chips">'+chips(PCATS,UI.pcat,"pcat")+'</div><div class="grid'+(UI.phide?" hidden-tr":"")+'">';
+  var last="";
+  P.forEach(function(p){
+    if(UI.pcat!=="all"&&p.cat!==UI.pcat)return;
+    if(p.cat!==last){out+='<h3 class="cat-h">'+p.cat+'</h3>';last=p.cat;}
+    var on=isDone(p.k);
+    out+='<div class="phr'+(on?" on":"")+'" data-act="reveal"><div><div class="pt'+arc()+'">'+tg(p.row)+'</div>'+(trl(p.row)?'<div class="ptr">'+trl(p.row)+'</div>':'')+'<div class="puz">'+p.row[0]+'</div></div><div class="act">'+sayBtn(p.k)+'<button class="mini'+(on?" on":"")+'" data-act="mem" data-k="'+p.k+'" aria-pressed="'+on+'">'+(on?"Yodladim":"Yodlash kerak")+'</button></div></div>';
+  });
+  return out+'</div>';
+}
+
+function newQuiz(){
+  var all=Q.src==="w"?W:P,pool=all;
+  if(Q.cat!=="all"){pool=all.filter(function(x){return x.cat===Q.cat;});}
+  if(!pool.length){pool=all;Q.cat="all";}
+  var ai=Q.dir==="t2u"?0:L().i;
+  Q.qs=shuffle(pool).slice(0,10).map(function(it){
+    var same=shuffle(all.filter(function(x){return x!==it&&x.cat===it.cat&&x.row[ai]!==it.row[ai];}));
+    var rest=shuffle(all.filter(function(x){return x!==it&&x.cat!==it.cat&&x.row[ai]!==it.row[ai];}));
+    var others=same.concat(rest).slice(0,2);
+    return {it:it,opts:shuffle([it].concat(others))};
+  });
+  Q.n=0;Q.score=0;Q.picked=null;Q.wrong=[];
+}
+function seg(act,cur,items){return items.map(function(x){return '<button class="chip" data-act="'+act+'" data-v="'+x[0]+'" aria-pressed="'+(cur===x[0])+'">'+x[1]+'</button>';}).join("");}
+function vQuiz(){
+  if(!Q.qs)newQuiz();
+  var cats=Q.src==="w"?WCATS:PCATS;
+  var sel='<select id="qcat" aria-label="Mavzu"><option value="all">Barcha mavzular</option>'+cats.map(function(c,i){return '<option value="'+i+'"'+(Q.cat===c?" selected":"")+'>'+c+'</option>';}).join("")+'</select>';
+  var out=head(L().name,"Lug'at testi","Har bir savolda uchta variant bor, bittasi to'g'ri. To'g'ri topilgan so'zlar lug'atda avtomatik belgilanadi.")+
+  '<div class="tools"><div class="chips">'+seg("qsrc",Q.src,[["w","So'zlar"],["p","Iboralar"]])+'</div><div class="chips">'+seg("qdir",Q.dir,[["t2u",L().short+" → o'zbekcha"],["u2t","O'zbekcha → "+L().short.toLowerCase()]])+'</div>'+sel+'</div>';
+  if(Q.n>=Q.qs.length){
+    var tot=Q.qs.length,msg=Q.score===tot?"A'lo! Hammasi to'g'ri.":Q.score>=tot*0.7?"Yaxshi natija. Xatolarni yana bir ko'rib chiqing.":"Mashq qilishda davom eting, keyingi safar yaxshiroq bo'ladi.";
+    out+='<div class="quiz res"><div class="meta"><span>Test yakunlandi</span></div><div><b>'+Q.score+' / '+tot+'</b></div><p>'+msg+'</p>';
+    if(Q.wrong.length){out+='<div><strong>Takrorlash kerak:</strong><ul class="miss">'+Q.wrong.map(function(it){return '<li><strong'+(S.lang==="ar"?' class="ar" dir="rtl" lang="ar"':'')+'>'+tg(it.row)+'</strong> — '+it.row[0]+'</li>';}).join("")+'</ul></div>';}
+    return out+'<div class="btns"><button class="btn" data-act="restart">Yangi test</button><a class="btn ghost" href="#lugat">Lug\'atga o\'tish</a></div></div>';
+  }
+  var q=Q.qs[Q.n],t2u=Q.dir==="t2u",done=Q.picked!==null;
+  out+='<div class="quiz"><div class="meta"><span>Savol '+(Q.n+1)+' / '+Q.qs.length+'</span><span>To\'g\'ri: '+Q.score+'</span></div><div class="bar"><i style="width:'+(Q.n/Q.qs.length*100)+'%"></i></div>'+
+  '<div><div class="qw'+(t2u?arc():"")+'">'+(t2u?tg(q.it.row):q.it.row[0])+'</div>'+(t2u&&trl(q.it.row)?'<div class="lead"><em>'+trl(q.it.row)+'</em></div>':'')+
+  '<p class="lead">'+(t2u?"o'zbekchada nima degani?":L().short.toLowerCase()+" qanday bo'ladi?")+'</p></div><div class="opts">';
+  q.opts.forEach(function(o,i){
+    var cls="";if(done){if(o===q.it)cls=" ok";else if(i===Q.picked)cls=" no";}
+    out+='<button class="opt'+cls+'" data-act="opt" data-v="'+i+'"'+(done?" disabled":"")+'><span class="k">'+"ABC".charAt(i)+'</span><span'+(!t2u&&S.lang==="ar"?' class="ar" dir="rtl" lang="ar"':'')+'>'+(t2u?o.row[0]:tg(o.row))+'</span></button>';
+  });
+  out+='</div>';
+  if(done){
+    var ok=q.opts[Q.picked]===q.it;
+    out+='<div class="fb '+(ok?"ok":"no")+'" role="status">'+(ok?"To'g'ri!":"Noto'g'ri. To'g'ri javob: "+(t2u?q.it.row[0]:tg(q.it.row)))+'</div><div class="btns"><button class="btn" data-act="next" id="nextb">'+(Q.n+1<Q.qs.length?"Keyingi savol":"Natijani ko'rish")+'</button>'+sayBtn(q.it.k)+'</div>';
+  }
+  return out+'</div>';
+}
+
+function vApps(){
+  var out=head("Tashqi manbalar","Mashhur til ilovalari","Dunyoda eng ko'p ishlatiladigan ilovalarning o'zbekcha tavsifi va ularni shu sayt bilan birga ishlatish yo'li. Ilovalarni sahifa ichida ochib bo'lmaydi, havola ularning rasmiy saytiga olib boradi. Narx va shartlarni o'sha saytdan tekshiring.")+'<div class="grid g3">';
+  var list=APPS.filter(function(a){return a.l.indexOf(S.lang)>=0;}).concat(APPS.filter(function(a){return a.l.indexOf(S.lang)<0;}));
+  list.forEach(function(a){
+    var fit=a.l.indexOf(S.lang)>=0;
+    out+='<article class="card app"><h3>'+a.n+'</h3><div class="tags">'+a.l.map(function(c){return '<span class="tag">'+LANGS[c].short+'</span>';}).join("")+(fit?'':'<span class="tag">'+L().short+' uchun emas</span>')+'</div><p>'+a.d+'</p><p class="use">'+a.use+'</p><a href="'+a.u+'" target="_blank" rel="noopener">'+a.u.replace("https://","").replace("www.","")+' saytini ochish</a></article>';
+  });
+  return out+'</div>';
+}
+
+/* ---------- LESSONS, IELTS, MOVIES, GAMES ---------- */
+function tableHTML(h,r){
+  var th=h.map(function(x){return "<th>"+x+"</th>";}).join("");
+  var tr=r.map(function(row){return "<tr>"+row.map(function(c){return /[؀-ۿ]/.test(c)?'<td class="ar" dir="rtl" lang="ar">'+c+'</td>':"<td>"+c+"</td>";}).join("")+"</tr>";}).join("");
+  return '<div class="tw"><table><thead><tr>'+th+'</tr></thead><tbody>'+tr+'</tbody></table></div>';
+}
+function lessonHTML(ls,key,label,lang,open){
+  var body="";[ls].concat(ls.x||[]).forEach(function(b){if(b.p)body+="<p>"+b.p+"</p>";if(b.h)body+=tableHTML(b.h,b.r);});
+  var dn=isDone(key,lang);
+  return '<details class="lesson"'+(open?" open":"")+'><summary><span>'+label+'</span>'+ls.t+(dn?'<em class="okm">o\'qildi</em>':'')+'</summary><div class="in">'+body+'<p class="tip"><strong>Maslahat.</strong> '+ls.tip+'</p>'+
+  '<label class="switch"><input type="checkbox" id="c-'+lang+key+'" data-act="lesson" data-k="'+key+'" data-l="'+lang+'"'+(dn?" checked":"")+'>Bu darsni o\'qib chiqdim</label></div></details>';
+}
+function vLessons(){
+  var list=LESSONS[S.lang],out;
+  if(S.lang!=="en"){
+    out=head(L().name,"Darsliklar","Besh mavzu noldan boshlovchilar uchun tartib bilan berilgan. O'qib bo'lgach belgilab qo'ying, natija bosh sahifada ko'rinadi.");
+    list.forEach(function(ls,i){out+=lessonHTML(ls,"l"+i,(i+1)+"-dars",S.lang,true);});
+    return out;
+  }
+  out=head("Ingliz tili","Bosqichma-bosqich kurs","A1 dan B2 gacha to'rt bosqich, jami "+list.length+" ta dars. Har bir misol o'zbekcha tarjimasi bilan berilgan. Bosqichni tugatmasdan keyingisiga o'tmang: har bir mavzu oldingisiga tayanadi.");
+  var cur=null,keys=Object.keys(STAGES);
+  keys.forEach(function(s){if(cur)return;list.forEach(function(ls,i){if((ls.lv||"A1")===s&&!isDone("l"+i,"en")&&!cur)cur=s;});});
+  keys.forEach(function(s){
+    var items=[],dn=0;list.forEach(function(ls,i){if((ls.lv||"A1")===s){items.push([ls,i]);if(isDone("l"+i,"en"))dn++;}});
+    out+='<section class="stage"><div class="stage-h"><h2>'+STAGES[s][0]+'</h2><strong>'+dn+' / '+items.length+' dars o\'qildi</strong></div><p class="lead">'+STAGES[s][1]+'</p><div class="bar"><i style="width:'+(dn/items.length*100)+'%"></i></div>';
+    items.forEach(function(x,n){out+=lessonHTML(x[0],"l"+x[1],(n+1)+"-dars","en",s===cur);});
+    out+='</section>';
+  });
+  return out+'<p class="tip">B2 bosqichini tugatgach, <a href="#ielts">IELTS bo\'limiga</a> o\'ting.</p>';
+}
+function vIelts(){
+  var dn=countDone("en","i",IELTS.length),first=-1;
+  IELTS.forEach(function(ls,i){if(first<0&&!isDone("i"+i,"en"))first=i;});
+  var out=head("Ingliz tili · imtihon","IELTS ga tayyorgarlik","Sakkiz qadam: imtihon tuzilishidan boshlab har bir bo'lim strategiyasi, foydali iboralar tarjimasi bilan va 8 haftalik reja. Tavsiya etilgan boshlang'ich daraja: B1.")+
+  '<div class="card stat" style="max-width:420px"><small>O\'qilgan qadamlar</small><b>'+dn+' / '+IELTS.length+'</b><div class="bar"><i style="width:'+(dn/IELTS.length*100)+'%"></i></div></div>';
+  IELTS.forEach(function(ls,i){out+=lessonHTML(ls,"i"+i,(i+1)+"-qadam","en",i===first||(first<0&&i===0));});
+  return out+'<p class="lead">Imtihon tartibi va narxi vaqt o\'tishi bilan o\'zgarishi mumkin. Ro\'yxatdan o\'tishdan oldin ielts.org yoki o\'zingiz topshiradigan markaz saytidan tekshiring.</p>';
+}
+function vMovies(){
+  var lv=["A1","A2","B1","B2","C1"];
+  var out=head("Ingliz tili · tinglash","Kinolar bilan o'rganish","Darajangizga mos "+MOVIES.length+" ta film va serial. Filmlarning o'zi saytga joylanmagan: ularni o'zingiz foydalanadigan rasmiy onlayn kinoteatrda inglizcha ovoz va subtitr bilan tomosha qiling.")+
+  '<ol class="steps"><li><strong>Tanish filmdan boshlang</strong><p class="lead">Avval o\'zbekcha yoki ruscha ko\'rgan filmingizni tanlang, syujetni bilsangiz tilga e\'tibor berasiz.</p></li>'+
+  '<li><strong>Inglizcha subtitr yoqing</strong><p class="lead">O\'zbekcha subtitr bilan faqat o\'qiysiz. Inglizcha subtitr eshitgan so\'zni ko\'z bilan mustahkamlaydi.</p></li>'+
+  '<li><strong>10 daqiqalik bo\'laklarga bo\'ling</strong><p class="lead">Butun filmni emas, bitta sahnani ikki marta ko\'ring va 5 ta yangi iborani yozib oling.</p></li>'+
+  '<li><strong>Ovoz chiqarib takrorlang</strong><p class="lead">To\'xtatib, qahramon gapini xuddi shu ohangda qaytaring. Talaffuz uchun eng samarali mashq.</p></li></ol>'+
+  '<div class="chips"><button class="chip" data-act="mlv" data-v="all" aria-pressed="'+(UI.mlv==="all")+'">Barcha darajalar</button>'+lv.map(function(x){return '<button class="chip" data-act="mlv" data-v="'+x+'" aria-pressed="'+(UI.mlv===x)+'">'+x+'</button>';}).join("")+'</div><div class="grid g3">';
+  MOVIES.forEach(function(m){
+    if(UI.mlv!=="all"&&m.lv!==UI.mlv)return;
+    out+='<article class="card app"><h3>'+m.n+'</h3><div class="tags"><span class="tag lvl">'+m.lv+'</span><span class="tag">'+m.k+'</span><span class="tag">'+m.y+'</span><span class="tag">'+m.ac+' talaffuzi</span></div><p>'+m.d+'</p><p class="use"><strong>Lug\'at mavzusi:</strong> '+m.v+'</p></article>';
+  });
+  return out+'</div><section class="grid"><h2>Kino lug\'ati</h2>'+tableHTML(["Inglizcha","O'zbekcha"],MOVIEWORDS)+'</section>';
+}
+
+var G={game:"mem",pool:"w",m:null,s:null,t:{on:false,left:60,score:0,total:0,cur:null,ended:false},timer:null};
+function gpool(){
+  if(G.pool==="i")return IW.map(function(x){return {u:x[0],t:x[1],ar:false};});
+  return W.map(function(w){return {u:w.row[0],t:tg(w.row),ar:S.lang==="ar"};});
+}
+function gAr(it){return it.ar?' class="ar" dir="rtl" lang="ar"':'';}
+function memNew(){
+  var six=shuffle(gpool()).slice(0,6),cards=[];
+  six.forEach(function(it,p){cards.push({p:p,text:it.t,ar:it.ar,tg:true});cards.push({p:p,text:it.u,ar:false,tg:false});});
+  G.m={cards:shuffle(cards),open:[],done:{},moves:0,lock:false};
+}
+function scrNew(keep){
+  var pool=gpool().filter(function(it){var n=Array.from(it.t).length;return it.t.indexOf(" ")<0&&n>=3&&n<=11;});
+  var it=pool[Math.floor(Math.random()*pool.length)],ch=Array.from(it.t),tiles=shuffle(ch),n=0;
+  while(tiles.join("")===it.t&&n++<10)tiles=shuffle(ch);
+  G.s={it:it,tiles:tiles,pick:[],state:null,streak:keep&&G.s?G.s.streak:0};
+}
+function spdNext(){
+  var pool=gpool(),it=pool[Math.floor(Math.random()*pool.length)],ok=Math.random()<0.5,shown=it.u;
+  if(!ok){var o=pool[Math.floor(Math.random()*pool.length)];if(o.u===it.u){ok=true;}else{shown=o.u;}}
+  G.t.cur={it:it,shown:shown,ok:ok};
+}
+function spdStop(){if(G.timer){clearInterval(G.timer);G.timer=null;}}
+function spdStart(){
+  spdStop();G.t={on:true,left:60,score:0,total:0,cur:null,ended:false};spdNext();
+  G.timer=setInterval(function(){
+    G.t.left--;var el=$("tleft");if(el)el.textContent=G.t.left;
+    if(G.t.left<=0){spdStop();G.t.on=false;G.t.ended=true;var b=S.best.spd||0;if(G.t.score>b){S.best.spd=G.t.score;save();}if(view()==="oyinlar")render(true);}
+  },1000);
+}
+function vGames(){
+  var out=head(G.pool==="i"?"Ingliz tili · IELTS":L().name,"O'yinlar","So'zlarni o'yin orqali mustahkamlang. Uch xil o'yin bor, so'zlar lug'at bo'limidan yoki IELTS akademik lug'atidan olinadi.")+
+  '<div class="tools"><div class="chips">'+seg("game",G.game,[["mem","Juftini top"],["scr","Harflardan so'z ter"],["spd","60 soniya"]])+'</div><div class="chips">'+seg("gpool",G.pool,[["w",L().short+" lug'at"],["i","IELTS so'zlari (inglizcha)"]])+'</div></div>';
+  if(G.game==="mem"){
+    if(!G.m)memNew();
+    var m=G.m,won=Object.keys(m.done).length===6;
+    out+='<div class="quiz" style="max-width:680px"><div class="meta"><span>Har bir so\'zning tarjimasini toping</span><span>Urinishlar: '+m.moves+'</span></div><div class="mem">';
+    m.cards.forEach(function(c,i){
+      var dn=m.done[c.p],op=m.open.indexOf(i)>=0;
+      out+='<button class="mc'+(dn?" done":op?" open":"")+(c.tg?" tgc":"")+'" data-act="mcard" data-v="'+i+'"'+(dn?" disabled":"")+' aria-label="'+(dn||op?"":"Yopiq karta")+'">'+(dn||op?'<span'+(c.ar?' class="ar" dir="rtl" lang="ar"':'')+'>'+c.text+'</span>':"?")+'</button>';
+    });
+    out+='</div>';
+    if(won)out+='<div class="fb ok" role="status">Barakalla! '+m.moves+' ta urinishda topdingiz.'+(S.best.mem?' Eng yaxshi natijangiz: '+S.best.mem+'.':'')+'</div>';
+    out+='<div class="btns"><button class="btn'+(won?"":" ghost")+'" data-act="mnew">Yangi o\'yin</button></div></div>';
+  }else if(G.game==="scr"){
+    if(!G.s)scrNew(false);
+    var s=G.s,rtl=s.it.ar?' dir="rtl"':'';
+    out+='<div class="quiz"><div class="meta"><span>Harflarni to\'g\'ri tartibda bosing</span><span>Ketma-ket to\'g\'ri: '+s.streak+'</span></div><div><p class="lead">O\'zbekchasi</p><div class="qw">'+s.it.u+'</div></div><div class="tiles slots"'+rtl+'>';
+    for(var i=0;i<s.tiles.length;i++){
+      out+=i<s.pick.length?'<button class="tile on" data-act="sun" data-v="'+i+'"'+(s.state==="ok"?" disabled":"")+' aria-label="Harfni olib tashlash"><span'+gAr(s.it)+'>'+s.tiles[s.pick[i]]+'</span></button>':'<span class="tile empty"></span>';
+    }
+    out+='</div><div class="tiles"'+rtl+'>';
+    s.tiles.forEach(function(ch,i){out+='<button class="tile" data-act="stile" data-v="'+i+'"'+(s.pick.indexOf(i)>=0||s.state==="ok"?" disabled":"")+'><span'+gAr(s.it)+'>'+ch+'</span></button>';});
+    out+='</div>';
+    if(s.state==="ok")out+='<div class="fb ok" role="status">To\'g\'ri: <span'+gAr(s.it)+'>'+s.it.t+'</span></div>';
+    else if(s.state==="no")out+='<div class="fb no" role="status">Hali to\'g\'ri emas. Harflarni olib tashlab, qayta terib ko\'ring.</div>';
+    else if(s.state==="show")out+='<div class="fb" role="status">Javob: <span'+gAr(s.it)+'>'+s.it.t+'</span></div>';
+    out+='<div class="btns">'+(s.state==="ok"||s.state==="show"?'<button class="btn" data-act="snext" id="nextb">Keyingi so\'z</button>':'<button class="btn ghost" data-act="sclear">Tozalash</button><button class="btn ghost" data-act="sshow">Javobni ko\'rsatish</button>')+'</div></div>';
+  }else{
+    var t=G.t;
+    out+='<div class="quiz"><div class="meta"><span>Tarjima to\'g\'rimi yoki noto\'g\'ri?</span><span>Eng yaxshi natija: '+(S.best.spd||0)+'</span></div>';
+    if(t.on){
+      out+='<div class="timer"><b id="tleft">'+t.left+'</b><span>soniya qoldi · ball: '+t.score+'</span></div><div><div class="qw"><span'+gAr(t.cur.it)+'>'+t.cur.it.t+'</span></div><p class="lead">bu «'+t.cur.shown+'» deganimi?</p></div>'+
+      '<div class="btns"><button class="btn" data-act="tans" data-v="1">To\'g\'ri</button><button class="btn ghost" data-act="tans" data-v="0">Noto\'g\'ri</button></div>';
+    }else{
+      out+=(t.ended?'<div class="res"><b>'+t.score+'</b><p>'+t.total+' ta savoldan '+t.score+' tasiga to\'g\'ri javob berdingiz.</p></div>':'<p>60 soniya ichida iloji boricha ko\'p so\'zni tekshiring. Ekranda so\'z va uning tarjimasi chiqadi, siz tarjima to\'g\'ri yoki noto\'g\'riligini belgilaysiz. Har bir to\'g\'ri javob 1 ball.</p>')+
+      '<div class="btns"><button class="btn" data-act="tstart">'+(t.ended?"Yana o'ynash":"Boshlash")+'</button></div>';
+    }
+    out+='</div>';
+  }
+  return out;
+}
+function gameClick(a,v){
+  if(a==="game"){G.game=v;spdStop();G.t.on=false;render(true);return true;}
+  if(a==="gpool"){G.pool=v;G.m=null;G.s=null;spdStop();G.t={on:false,left:60,score:0,total:0,cur:null,ended:false};render(true);return true;}
+  if(a==="mnew"){memNew();render(true);return true;}
+  if(a==="mcard"){
+    var m=G.m,i=+v;if(m.lock||m.open.indexOf(i)>=0||m.done[m.cards[i].p])return true;
+    m.open.push(i);
+    if(m.open.length===2){
+      m.moves++;var x=m.cards[m.open[0]],y=m.cards[m.open[1]];
+      if(x.p===y.p){m.done[x.p]=1;m.open=[];if(Object.keys(m.done).length===6&&(!S.best.mem||m.moves<S.best.mem)){S.best.mem=m.moves;save();}}
+      else{m.lock=true;setTimeout(function(){m.open=[];m.lock=false;if(view()==="oyinlar"&&G.game==="mem"&&G.m===m)render(true);},900);}
+    }
+    render(true);return true;
+  }
+  if(a==="stile"){var s=G.s;s.pick.push(+v);s.state=null;if(s.pick.length===s.tiles.length){var word=s.pick.map(function(k){return s.tiles[k];}).join("");if(word===s.it.t){s.state="ok";s.streak++;}else{s.state="no";s.streak=0;}}render(true);var nb=$("nextb");if(nb)nb.focus();return true;}
+  if(a==="sun"){G.s.pick.splice(+v,1);G.s.state=null;render(true);return true;}
+  if(a==="sclear"){G.s.pick=[];G.s.state=null;render(true);return true;}
+  if(a==="sshow"){G.s.state="show";G.s.streak=0;render(true);return true;}
+  if(a==="snext"){scrNew(true);render(true);return true;}
+  if(a==="tstart"){spdStart();render(true);return true;}
+  if(a==="tans"){var t=G.t;if(!t.on)return true;t.total++;if((v==="1")===t.cur.ok)t.score++;spdNext();render(true);return true;}
+  if(a==="mlv"){UI.mlv=v;render(true);return true;}
+  return false;
+}
+
+/* ---------- RENDER ---------- */
+function render(keepScroll){
+  var v=view();
+  document.body.setAttribute("data-lang",(v==="ielts"||v==="kinolar"||(v==="oyinlar"&&G.pool==="i"))?"en":S.lang);if(v!=="oyinlar"){spdStop();G.t.on=false;}
+  $("langs").innerHTML=["en","ru","ar","es"].map(function(c){return '<button data-act="lang" data-v="'+c+'" aria-pressed="'+(S.lang===c)+'">'+LANGS[c].short+'</button>';}).join("");
+  $("nav").innerHTML=VIEWS.map(function(x){return '<a href="#'+x[0]+'"'+(x[0]===v?' aria-current="page"':'')+'>'+x[1]+'</a>';}).join("");
+  var html=v==="darslar"?vLessons():v==="lugat"?vVocab():v==="test"?vQuiz():v==="iboralar"?vPhrases():v==="ilovalar"?vApps():v==="ielts"?vIelts():v==="kinolar"?vMovies():v==="oyinlar"?vGames():vHome();
+  $("view").innerHTML=html;
+  if(v==="lugat")fillGrid();
+  if(!keepScroll)window.scrollTo(0,0);
+}
+
+document.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]");if(!el)return;
+  var a=el.getAttribute("data-act"),v=el.getAttribute("data-v"),k=el.getAttribute("data-k");
+  if(gameClick(a,v))return;
+  if(a==="lang"){S.lang=v;save();Q.qs=null;G.m=null;G.s=null;render(true);}
+  else if(a==="say"){e.stopPropagation();speak(k);}
+  else if(a==="cat"){UI.cat=v==="all"?"all":WCATS[+v];render(true);}
+  else if(a==="pcat"){UI.pcat=v==="all"?"all":PCATS[+v];render(true);}
+  else if(a==="known"||a==="mem"){setDone(k,!isDone(k));if(a==="known"){fillGrid();}else{render(true);}}
+  else if(a==="reveal"){el.classList.toggle("show");}
+  else if(a==="qsrc"){Q.src=v;Q.cat="all";Q.qs=null;render(true);}
+  else if(a==="qdir"){Q.dir=v;Q.qs=null;render(true);}
+  else if(a==="restart"){Q.qs=null;render(true);}
+  else if(a==="opt"){
+    if(Q.picked!==null)return;
+    Q.picked=+v;var q=Q.qs[Q.n];
+    if(q.opts[Q.picked]===q.it){Q.score++;setDone(q.it.k,true);}else{Q.wrong.push(q.it);}
+    render(true);var nb=$("nextb");if(nb)nb.focus();
+  }
+  else if(a==="next"){
+    Q.n++;Q.picked=null;
+    if(Q.n>=Q.qs.length&&Q.qs.length===10){var b=S.best[S.lang];if(b==null||Q.score>b){S.best[S.lang]=Q.score;save();}}
+    render(true);
+  }
+});
+document.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.id==="hide"){UI.hide=t.checked;$("grid").classList.toggle("hidden-tr",UI.hide);}
+  else if(t.id==="phide"){UI.phide=t.checked;render(true);}
+  else if(t.id==="qcat"){var c=Q.src==="w"?WCATS:PCATS;Q.cat=t.value==="all"?"all":c[+t.value];Q.qs=null;render(true);}
+  else if(t.getAttribute("data-act")==="lesson"){setDone(t.getAttribute("data-k"),t.checked,t.getAttribute("data-l"));}
+});
+document.addEventListener("input",function(e){if(e.target.id==="q"){UI.q=e.target.value;fillGrid();}});
+window.addEventListener("hashchange",function(){render(false);});
+render(true);
+</script>
+</body>
+</html>
