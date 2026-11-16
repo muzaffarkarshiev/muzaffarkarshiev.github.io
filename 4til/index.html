@@ -196,6 +196,10 @@ td.ar{white-space:nowrap}
 .author{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;max-width:520px}
 .author img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid var(--accent)}
 .aname{font-family:var(--display);font-weight:700;font-size:1.2rem}
+.author{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px}
+.author img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none;border:2px solid var(--accent)}
+.author div{display:flex;flex-direction:column;gap:2px}
+.author strong{font-family:var(--display);font-size:1.15rem}
 footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--muted);font-size:.9rem}
 
 @media (max-width:760px){
@@ -219,7 +223,7 @@ footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--muted);f
   </div>
 </header>
 <div class="wrap"><main id="view"></main></div>
-<footer><div class="wrap"><strong>Sayt Muzaffar tomonidan yaratilgan.</strong> Natijalaringiz faqat shu brauzerda saqlanadi. Talaffuz tugmasi qurilmangizdagi ovoz sintezatoridan foydalanadi, shuning uchun ba'zi qurilmalarda arab yoki rus ovozi bo'lmasligi mumkin.</div></footer>
+<footer><div class="wrap"><strong>Sayt Muzaffar tomonidan yaratilgan.</strong> Sayt Muzaffar tomonidan yaratilgan. Natijalaringiz faqat shu brauzerda saqlanadi. Talaffuz tugmasi qurilmangizdagi ovoz sintezatoridan foydalanadi, shuning uchun ba'zi qurilmalarda arab yoki rus ovozi bo'lmasligi mumkin.</div></footer>
 
 <script>
 "use strict";
@@ -656,6 +660,7 @@ function vHome(){
   '<p class="lead">Har bir til uchun darsliklar, '+W.length+' ta so\'z, '+P.length+' ta tayyor ibora va uch variantli testlar. Ingliz tili uchun A1 dan B2 gacha '+LESSONS.en.length+' darslik kurs, IELTS, kinolar va o\'yinlar bor.</p>'+
   '<div class="btns"><a class="btn" href="#darslar">'+L().name+'ni boshlash</a><a class="btn ghost" href="#test">Testni sinab ko\'rish</a></div></div>'+
   '<div class="hello" role="group" aria-label="Tilni tanlang">'+hello+'</div></section>'+
+  '<section class="author"><img src="muzaffar.jpg" alt="Muzaffar" width="72" height="72"><div><small class="eyebrow">Sayt muallifi</small><strong>Muzaffar</strong><p class="lead">Bu sayt Muzaffar tomonidan o\'zbek tilida til o\'rganuvchilar uchun yaratilgan.</p></div></section>'+
   '<section class="author"><img src="muzaffar.jpg" alt="Muzaffar" width="72" height="72"><div><small class="eyebrow">Sayt muallifi</small><div class="aname">Muzaffar</div><p class="lead">Bu sayt Muzaffar tomonidan yaratilgan.</p></div></section>'+'<section class="grid"><h2>'+L().name+' bo\'yicha natijangiz</h2><div class="grid g4">'+
   stat(kl,NL,"O'qilgan darsliklar","darslar")+stat(kw,W.length,"Bilgan so'zlaringiz","lugat")+stat(kp,P.length,"Yodlangan iboralar","iboralar")+
   '<a class="card stat" href="#test" style="text-decoration:none;color:inherit"><small>Testdagi eng yaxshi natija</small><b>'+(best!=null?best+' / 10':'hali yo\'q')+'</b><div class="bar"><i style="width:'+((best||0)*10)+'%"></i></div></a></div></section>'+
