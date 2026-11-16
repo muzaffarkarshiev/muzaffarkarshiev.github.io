@@ -198,6 +198,23 @@ td.ar{white-space:nowrap}
 .aname{font-family:var(--display);font-weight:700;font-size:1.2rem}
 .author div{display:flex;flex-direction:column;gap:2px}
 .author strong{font-family:var(--display);font-size:1.15rem}
+
+.stack3d{display:flex;flex-direction:column;gap:18px;max-width:720px;perspective:1100px;padding:6px 0 14px}
+.d3{--edge:color-mix(in srgb,var(--accent) 62%,#000);display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:16px;text-decoration:none;color:var(--ink);background:linear-gradient(180deg,var(--surface),var(--soft));border:1px solid color-mix(in srgb,var(--accent) 30%,var(--line));
+  transform:rotateX(14deg) translateZ(0);transform-origin:50% 100%;box-shadow:0 7px 0 var(--edge),0 18px 26px -8px color-mix(in srgb,var(--edge) 45%,transparent);transition:transform .18s ease,box-shadow .18s ease}
+.d3:hover,.d3:focus-visible{transform:rotateX(0deg) translateY(-4px);box-shadow:0 11px 0 var(--edge),0 26px 32px -10px color-mix(in srgb,var(--edge) 50%,transparent)}
+.d3:active{transform:rotateX(0deg) translateY(5px);box-shadow:0 2px 0 var(--edge),0 6px 10px -6px color-mix(in srgb,var(--edge) 50%,transparent)}
+.d3 .n{flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1.15rem;background:var(--accent);color:var(--on-accent);box-shadow:0 4px 0 var(--edge)}
+.d3 .tx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.d3 .tx strong{font-family:var(--display);font-size:1.05rem}
+.d3 .tx small{color:var(--muted);font-size:.9rem}
+.d3 .go{font-size:1.4rem;color:var(--accent);font-weight:700}
+.btn{box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 60%,#000);transition:transform .12s ease,box-shadow .12s ease}
+.btn.ghost{box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 35%,var(--line))}
+.btn:active{transform:translateY(4px);box-shadow:0 0 0 transparent}
+.card,.word,.phr,.quiz,details.lesson{box-shadow:0 4px 0 var(--line)}
+@media (prefers-reduced-motion:reduce){.d3,.btn{transition:none}}
+@media (max-width:520px){.d3{transform:rotateX(8deg);padding:14px}.d3 .tag{display:none}}
 footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--muted);font-size:.9rem}
 
 @media (max-width:760px){
@@ -619,7 +636,7 @@ var APPS=[
 var W=[],P=[],WCATS=Object.keys(WD),PCATS=Object.keys(PD);
 WCATS.forEach(function(c){WD[c].forEach(function(r){W.push({k:"w"+W.length,cat:c,row:r});});});
 PCATS.forEach(function(c){PD[c].forEach(function(r){P.push({k:"p"+P.length,cat:c,row:r});});});
-var VIEWS=[["bosh","Bosh sahifa"],["darslar","Darsliklar"],["ielts","IELTS"],["lugat","Lug'at"],["test","Test"],["iboralar","Iboralar"],["kinolar","Kinolar"],["oyinlar","O'yinlar"],["ilovalar","Ilovalar"]];
+var VIEWS=[["bosh","Bosh sahifa"],["darslar","Darsliklar"],["lugat","Lug'at"],["iboralar","Iboralar"],["test","Test"],["oyinlar","O'yinlar"],["ielts","IELTS"],["kinolar","Kinolar"],["ilovalar","Ilovalar"]];
 var S={lang:"en",done:{},best:{}};
 try{var sv=JSON.parse(localStorage.getItem("tort-til")||"null");if(sv&&LANGS[sv.lang]){S=sv;S.done=S.done||{};S.best=S.best||{};}}catch(e){}
 function save(){try{localStorage.setItem("tort-til",JSON.stringify(S));}catch(e){}}
@@ -647,6 +664,23 @@ function sayBtn(k){return canSpeak?'<button class="say" data-act="say" data-k="'
 function view(){var h=(location.hash||"").slice(1);for(var i=0;i<VIEWS.length;i++){if(VIEWS[i][0]===h)return h;}return "bosh";}
 function head(eyebrow,title,lead){return '<div class="head"><span class="eyebrow">'+eyebrow+'</span><h1>'+title+'</h1><p class="lead">'+lead+'</p></div>';}
 
+function menu3d(){
+  var NL=LESSONS[S.lang].length,en=S.lang==="en";
+  var items=[
+    ["darslar","Darsliklar",en?"A1 dan B2 gacha "+NL+" ta dars, tarjimali misollar bilan":NL+" ta dars: alifbo, talaffuz va asosiy grammatika",0],
+    ["lugat","Lug'at",W.length+" ta so'z, 9 mavzu, qidiruv va talaffuz",0],
+    ["iboralar","Iboralar",P.length+" ta so'zlashuv gapi tarjimasi bilan",0],
+    ["test","Test","10 savol, har birida 3 variant",0],
+    ["oyinlar","O'yinlar","Juftini top, harflardan so'z ter, 60 soniya",0],
+    ["ielts","IELTS","8 qadam: imtihon tuzilishi, strategiya va reja",1],
+    ["kinolar","Kinolar",MOVIES.length+" ta film va serial darajalar bo'yicha",1],
+    ["ilovalar","Ilovalar","Mashhur til ilovalari o'zbekcha tavsifi bilan",0]];
+  var o='<section class="grid"><h2>'+L().name+' bo\'limlari</h2><p class="lead">Yuqoridan pastga shu tartibda o\'ting.</p><div class="stack3d">';
+  items.forEach(function(x,i){
+    o+='<a class="d3" href="#'+x[0]+'" style="--i:'+i+'"><span class="n">'+(i+1)+'</span><span class="tx"><strong>'+x[1]+'</strong><small>'+x[2]+'</small></span>'+(x[3]&&!en?'<span class="tag">faqat ingliz tili</span>':'')+'<span class="go" aria-hidden="true">&rarr;</span></a>';
+  });
+  return o+'</div></section>';
+}
 function vHome(){
   var day=Math.floor(Date.now()/864e5)%W.length,wd=W[day];
   var hello="";["en","ru","ar","es"].forEach(function(c){
@@ -662,7 +696,8 @@ function vHome(){
   stat(kl,NL,"O'qilgan darsliklar","darslar")+stat(kw,W.length,"Bilgan so'zlaringiz","lugat")+stat(kp,P.length,"Yodlangan iboralar","iboralar")+
   '<a class="card stat" href="#test" style="text-decoration:none;color:inherit"><small>Testdagi eng yaxshi natija</small><b>'+(best!=null?best+' / 10':'hali yo\'q')+'</b><div class="bar"><i style="width:'+((best||0)*10)+'%"></i></div></a></div></section>'+
   '<section class="day"><div><small class="eyebrow">Bugungi so\'z</small><div class="w'+arc()+'">'+tg(wd.row)+'</div></div><div><strong>'+wd.row[0]+'</strong>'+(trl(wd.row)?'<div class="lead">o\'qilishi: '+trl(wd.row)+'</div>':'')+'<div class="lead">'+wd.cat+'</div></div>'+sayBtn(wd.k)+'</section>'+
-  '<section class="grid"><h2>Ingliz tili uchun maxsus bo\'limlar</h2><div class="grid g4">'+'<a class="card" href="#darslar" data-act="lang" data-v="en" style="text-decoration:none;color:inherit"><h3>Bosqichma-bosqich kurs</h3><p class="lead">A1 dan B2 gacha '+LESSONS.en.length+' ta dars, tarjimali misollar bilan.</p></a>'+'<a class="card" href="#ielts" style="text-decoration:none;color:inherit"><h3>IELTS</h3><p class="lead">Imtihon tuzilishi, har bir bo\'lim strategiyasi va 8 haftalik reja.</p></a>'+'<a class="card" href="#kinolar" style="text-decoration:none;color:inherit"><h3>Kinolar</h3><p class="lead">Darajaga mos '+MOVIES.length+' ta film va serial, tomosha qilish usuli bilan.</p></a>'+'<a class="card" href="#oyinlar" style="text-decoration:none;color:inherit"><h3>O\'yinlar</h3><p class="lead">Juftini top, harflardan so\'z ter va 60 soniyalik tezkor o\'yin.</p></a></div></section>'+'<section class="grid"><h2>Kunlik 20 daqiqalik reja</h2><ol class="steps">'+
+  menu3d()+
+  '<section class="grid"><h2>Kunlik 20 daqiqalik reja</h2><ol class="steps">'+
   '<li><a href="#darslar">Darslik</a><p class="lead">Bitta mavzuni o\'qing va jadvaldagi misollarni ovoz chiqarib takrorlang.</p></li>'+
   '<li><a href="#lugat">Lug\'at</a><p class="lead">Bitta mavzudan 10 ta so\'zni ko\'rib chiqing, bilganlaringizni belgilang.</p></li>'+
   '<li><a href="#test">Test</a><p class="lead">10 ta savolga javob bering. Xatolar oxirida ro\'yxat bo\'lib chiqadi.</p></li>'+
