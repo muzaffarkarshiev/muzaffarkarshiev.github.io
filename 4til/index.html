@@ -227,6 +227,12 @@ textarea{font:inherit;color:inherit;width:100%;border:1px solid var(--line);back
 .chip:disabled,.btn:disabled{opacity:.5;cursor:default}
 footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--muted);font-size:.9rem}
 
+
+.mlinks{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:auto;font-size:.92rem}
+.app .mlinks a{margin-top:0}
+.fab{position:fixed;right:18px;bottom:18px;z-index:20;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--on-accent);font-family:var(--display);font-weight:700;text-decoration:none;box-shadow:0 5px 0 color-mix(in srgb,var(--accent) 60%,#000),0 12px 22px -6px rgba(0,0,0,.4)}
+.fab:active{transform:translateY(4px);box-shadow:0 1px 0 color-mix(in srgb,var(--accent) 60%,#000)}
+footer{padding-bottom:90px}
 @media (max-width:760px){
   .hero{grid-template-columns:1fr}
   .langs{margin-left:0;width:100%}
@@ -248,6 +254,7 @@ footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--muted);f
   </div>
 </header>
 <div class="wrap"><main id="view"></main></div>
+<a class="fab" id="fab" href="#ai" aria-label="AI agentni ochish">AI</a>
 <footer><div class="wrap"><strong>Sayt Muzaffar tomonidan yaratilgan.</strong> Natijalaringiz faqat shu brauzerda saqlanadi. Talaffuz tugmasi qurilmangizdagi ovoz sintezatoridan foydalanadi, shuning uchun ba'zi qurilmalarda arab yoki rus ovozi bo'lmasligi mumkin.</div></footer>
 
 <script>
@@ -624,6 +631,116 @@ var MOVIES=[
 {n:"Inception",y:"2010",k:"Fantastik triller",lv:"B2",ac:"Aralash",d:"Murakkab g'oyalarni tushuntirish tili. Shart gaplar va taxmin iboralari ko'p.",v:"Tush, reja, fan"},
 {n:"Sherlock",y:"2010–2017",k:"Serial",lv:"C1",ac:"Britaniya",d:"Juda tez va boy lug'atli nutq. IELTS Listening 7.0 dan yuqori maqsad qilganlar uchun mashq.",v:"Tergov, mantiq, shahar"}
 ];
+var MOVRAW=`Bluey|2018 yildan|Multserial|A1|Avstraliya|Yetti daqiqalik qismlar, oilaviy kundalik nutq
+WALL-E|2008|Multfilm|A1|Amerika|Dialog juda kam, voqeani tasvirdan tushunasiz
+Extra English|2002–2004|O'quv seriali|A2|Britaniya|Til o'rganuvchilar uchun maxsus olingan sitkom, nutq sekin va aniq
+Frozen|2013|Multfilm|A2|Amerika|Aniq talaffuz va takrorlanuvchi qo'shiqlar
+Moana|2016|Multfilm|A2|Amerika|Sodda dialoglar, dengiz va sayohat lug'ati
+Coco|2017|Multfilm|A2|Amerika|Oila va xotira haqida iliq, tushunarli nutq
+Zootopia|2016|Multfilm|A2|Amerika|Shahar, ish va politsiya mavzusidagi jonli dialoglar
+Inside Out|2015|Multfilm|A2|Amerika|His-tuyg'u nomlarini o'rganish uchun juda qulay
+Inside Out 2|2024|Multfilm|A2|Amerika|O'smirlik hissiyotlari, zamonaviy og'zaki til
+Ratatouille|2007|Multfilm|A2|Amerika|Oshxona va ovqat lug'ati
+The Incredibles|2004|Multfilm|A2|Amerika|Oilaviy suhbatlar va harakat fe'llari
+Monsters, Inc.|2001|Multfilm|A2|Amerika|Ish joyi haqidagi sodda hazil dialoglar
+Shrek|2001|Multfilm|A2|Amerika|Og'zaki hazil va kundalik iboralar
+Kung Fu Panda|2008|Multfilm|A2|Amerika|Qisqa gaplar, maqsad va mashq haqida lug'at
+How to Train Your Dragon|2010|Multfilm|A2|Aralash|Do'stlik va jasorat haqida tushunarli hikoya
+Despicable Me|2010|Multfilm|A2|Amerika|Kulgili, qisqa dialoglar
+Tangled|2010|Multfilm|A2|Amerika|Orzu va sayohat mavzusidagi sodda nutq
+The Lion King|1994|Multfilm|A2|Amerika|Sekin, ifodali nutq va mashhur qo'shiqlar
+Aladdin|1992|Multfilm|A2|Amerika|Tez hazillar bilan birga sodda asosiy dialoglar
+Madagascar|2005|Multfilm|A2|Amerika|Hayvonlar va shahar hayoti lug'ati
+Ice Age|2002|Multfilm|A2|Amerika|Qisqa gaplar va oddiy hazil
+Cars|2006|Multfilm|A2|Amerika|Mashina, yo'l va musobaqa so'zlari
+Toy Story 3|2010|Multfilm|A2|Amerika|Tanish qahramonlar, ayriliq va do'stlik mavzusi
+Encanto|2021|Multfilm|A2|Amerika|Oila a'zolari va xarakter sifatlari
+Luca|2021|Multfilm|A2|Amerika|Yozgi ta'til va do'stlik haqida yengil til
+Klaus|2019|Multfilm|A2|Amerika|Xat yozish va yaxshilik haqida sodda hikoya
+Paddington 2|2017|Oilaviy komediya|A2|Britaniya|Muloyim britancha nutq, odob iboralari
+Matilda|1996|Oilaviy film|A2|Amerika|Maktab va kitob mavzusi, bolalar tili
+Babe|1995|Oilaviy film|A2|Aralash|Ferma hayvonlari va qishloq lug'ati
+E.T. the Extra-Terrestrial|1982|Fantastika|A2|Amerika|Bolalar nutqi, qisqa va takroriy gaplar
+Soul|2020|Multfilm|B1|Amerika|Hayot maqsadi va musiqa haqida chuqurroq suhbatlar
+Wonka|2023|Musiqiy film|B1|Britaniya|Orzu va tadbirkorlik haqida ravon, aniq nutq
+Charlie and the Chocolate Factory|2005|Oilaviy film|B1|Aralash|Tasvirlash uchun sifatlar juda ko'p
+The Chronicles of Narnia: The Lion, the Witch and the Wardrobe|2005|Fantastika|B1|Britaniya|Bolalar uchun toza britancha ingliz tili
+Mary Poppins|1964|Musiqiy film|B1|Britaniya|Klassik britancha talaffuz va qo'shiqlar
+The Sound of Music|1965|Musiqiy film|B1|Aralash|Sekin, aniq nutq va oson qo'shiqlar
+The Terminal|2004|Komediya-drama|B1|Amerika|Bosh qahramonning o'zi ingliz tilini o'rganadi
+Groundhog Day|1993|Komediya|B1|Amerika|Bir xil sahnalar takrorlanadi, iboralar yodda qoladi
+The Truman Show|1998|Drama|B1|Amerika|Kundalik salomlashuv va xushmuomalalik iboralari
+Cast Away|2000|Drama|B1|Amerika|Dialog kam, tirik qolish lug'ati
+Big|1988|Komediya|B1|Amerika|Bolalar va kattalar nutqi farqi
+Mrs. Doubtfire|1993|Komediya|B1|Aralash|Oila va uy ishlari haqida jonli dialoglar
+Back to the Future|1985|Fantastika|B1|Amerika|Vaqt, o'tmish va kelajak haqida gapirish
+Jurassic Park|1993|Sarguzasht|B1|Amerika|Fan va tabiat so'zlari, aniq dialoglar
+Titanic|1997|Drama|B1|Aralash|His-tuyg'u va sayohat lug'ati
+The Holiday|2006|Romantik komediya|B1|Aralash|Amerika va Britaniya talaffuzini solishtirish uchun
+Notting Hill|1999|Romantik komediya|B1|Britaniya|Kundalik britancha suhbat va hazil
+You've Got Mail|1998|Romantik komediya|B1|Amerika|Xat yozish uslubi va kitob do'koni lug'ati
+Wonder|2017|Drama|B1|Amerika|Maktab, do'stlik va mehribonlik haqida
+The Blind Side|2009|Biografik drama|B1|Amerika|Oila, sport va o'qish mavzulari
+The Greatest Showman|2017|Musiqiy film|B1|Amerika|Orzu va muvaffaqiyat haqida qo'shiqlar
+La La Land|2016|Musiqiy film|B1|Amerika|Martaba va orzu haqidagi suhbatlar
+School of Rock|2003|Komediya|B1|Amerika|Maktab va musiqa lug'ati, norasmiy nutq
+Night at the Museum|2006|Komediya|B1|Amerika|Tarix va muzey so'zlari
+The Princess Diaries|2001|Komediya|B1|Amerika|Odob-axloq va rasmiy muomala iboralari
+Mean Girls|2004|Komediya|B1|Amerika|O'smirlar slengi va maktab hayoti
+Spider-Man|2002|Fantastika|B1|Amerika|Sodda syujet, mas'uliyat haqida dialoglar
+The Hunger Games|2012|Fantastika|B1|Amerika|Aniq nutq, raqobat va omon qolish lug'ati
+The Karate Kid|1984|Sport dramasi|B1|Amerika|Ustoz va shogird suhbatlari
+Rocky|1976|Sport dramasi|B1|Amerika|Oddiy odamlar nutqi, mashg'ulot lug'ati
+Life of Pi|2012|Sarguzasht|B1|Aralash|Hikoya qilish uslubi, dengiz va hayvonlar
+The Secret Life of Walter Mitty|2013|Sarguzasht|B1|Amerika|Sayohat va ish joyi lug'ati, dialog kam
+Chef|2014|Komediya|B1|Amerika|Oshpazlik va ijtimoiy tarmoq so'zlari
+Julie & Julia|2009|Biografik komediya|B1|Amerika|Pazandalik va blog yuritish haqida
+Catch Me If You Can|2002|Biografik film|B1|Amerika|Kasblar, bank va sayohat lug'ati
+Modern Family|2009–2020|Serial|B1|Amerika|Oilaviy kundalik nutq, qisqa qismlar
+How I Met Your Mother|2005–2014|Serial|B1|Amerika|Do'stlar orasidagi og'zaki iboralar
+Anne with an E|2017–2019|Serial|B1|Kanada|Boy lug'at, lekin aniq va sekin nutq
+Planet Earth|2006|Hujjatli serial|B1|Britaniya|Sekin, juda aniq hikoyachi ovozi, tabiat lug'ati
+Blue Planet II|2017|Hujjatli serial|B1|Britaniya|Okean va hayvonot dunyosi, IELTS Listening uchun mashq
+Our Planet|2019|Hujjatli serial|B1|Britaniya|Atrof-muhit mavzusi, akademik lug'at
+Iron Man|2008|Fantastika|B2|Amerika|Tez, hazilkash nutq va texnologiya so'zlari
+The Martian|2015|Fantastika|B2|Amerika|Fan, muammo yechish va kundalik yozish tili
+Apollo 13|1995|Tarixiy drama|B2|Amerika|Texnik muloqot va buyruq gaplari
+A Beautiful Mind|2001|Biografik drama|B2|Amerika|Universitet va ilm-fan muhiti
+Good Will Hunting|1997|Drama|B2|Amerika|Chuqur suhbatlar, norasmiy va akademik til aralash
+Dead Poets Society|1989|Drama|B2|Amerika|Adabiyot, ta'lim va nutq san'ati
+The Shawshank Redemption|1994|Drama|B2|Amerika|Hikoyachi ovozi, o'tgan zamonda bayon qilish
+The Green Mile|1999|Drama|B2|Amerika (janubiy)|Sekin, lekin lahjali nutq
+Erin Brockovich|2000|Biografik drama|B2|Amerika|Huquq va ish yuzasidan bahslashish tili
+Hidden Figures|2016|Biografik drama|B2|Amerika|Ish joyi, fan va tenglik mavzulari
+The Imitation Game|2014|Biografik drama|B2|Britaniya|Rasmiy britancha nutq, fan va urush lug'ati
+The Theory of Everything|2014|Biografik drama|B2|Britaniya|Universitet muhiti va ilmiy suhbatlar
+Bohemian Rhapsody|2018|Biografik film|B2|Britaniya|Musiqa sanoati va norasmiy britancha til
+Pride & Prejudice|2005|Tarixiy drama|B2|Britaniya|Nafis, rasmiy muloqot uslubi
+Love Actually|2003|Romantik komediya|B2|Britaniya|Turli yoshdagi britanlar nutqi
+1917|2019|Urush dramasi|B2|Britaniya|Qisqa buyruqlar va turli britancha lahjalar
+Interstellar|2014|Fantastika|B2|Amerika|Fan va oila haqida murakkab dialoglar
+The Dark Knight|2008|Triller|B2|Amerika|Axloqiy bahslar, tez nutq
+Gladiator|2000|Tarixiy drama|B2|Aralash|Tantanali, rasmiy nutq uslubi
+The Lord of the Rings: The Fellowship of the Ring|2001|Fantastika|B2|Britaniya|Adabiy til va tasviriy lug'at
+Barbie|2023|Komediya|B2|Amerika|Zamonaviy hazil va jamiyat haqida so'zlar
+Downton Abbey|2010–2015|Serial|B2|Britaniya|Rasmiy va oddiy xalq nutqi yonma-yon
+Doctor Who|2005 yildan|Serial|B2|Britaniya|Tez britancha nutq, fantastika lug'ati
+The Office (US)|2005–2013|Serial|B2|Amerika|Ofis tili va noqulay vaziyatlar hazili
+The Big Bang Theory|2007–2019|Serial|B2|Amerika|Ilmiy atamalar va kundalik hazil
+Brooklyn Nine-Nine|2013–2021|Serial|B2|Amerika|Tez hazil, politsiya ishi lug'ati
+The Good Place|2016–2020|Serial|B2|Amerika|Axloq va falsafa haqida sodda tushuntirishlar
+Ted Lasso|2020–2023|Serial|B2|Aralash|Amerika va Britaniya iboralari to'qnashuvi
+Stranger Things|2016 yildan|Serial|B2|Amerika|O'smirlar nutqi va sarguzasht lug'ati
+The Social Dilemma|2020|Hujjatli film|B2|Amerika|Texnologiya va jamiyat, IELTS insho mavzulari
+Schindler's List|1993|Tarixiy drama|B2|Aralash|Jiddiy mavzu, rasmiy va ishbilarmon nutq
+The Crown|2016–2023|Serial|C1|Britaniya|Eng rasmiy britancha ingliz tili, siyosat lug'ati
+Sense and Sensibility|1995|Tarixiy drama|C1|Britaniya|Murakkab, adabiy gap tuzilishi
+12 Angry Men|1957|Drama|C1|Amerika|Bir xonadagi bahs, dalil keltirish san'ati
+The Godfather|1972|Drama|C1|Amerika|Past ovozli, lahjali nutq, tinglash uchun qiyin
+Knives Out|2019|Detektiv|C1|Aralash|Tez dialoglar va so'z o'yinlari
+The Grand Budapest Hotel|2014|Komediya|C1|Aralash|Juda tez, nafis va kitobiy nutq
+Oppenheimer|2023|Biografik drama|C1|Aralash|Ilmiy va siyosiy munozaralar, zich dialog`;
+(function(){var seen={};MOVIES.forEach(function(m){seen[m.n]=1;});MOVRAW.split("\n").forEach(function(l){var p=l.split("|");if(p.length<6||seen[p[0]])return;seen[p[0]]=1;MOVIES.push({n:p[0],y:p[1],k:p[2],lv:p[3],ac:p[4],d:p[5]});});var o={A1:0,A2:1,B1:2,B2:3,C1:4};MOVIES.sort(function(a,b){return o[a.lv]-o[b.lv];});})();
 var MOVIEWORDS=[["subtitles","subtitrlar"],["plot","syujet"],["scene","sahna"],["character","qahramon"],["main character","bosh qahramon"],["actor / actress","aktyor / aktrisa"],["director","rejissyor"],["episode","qism"],["season","mavsum"],["sequel","davomi"],["soundtrack","film musiqasi"],["ending","yakun"]];
 
 var BIGRAW=`Odamlar va oila: person=shaxs|people=odamlar|man=erkak|woman=ayol|boy=o'g'il bola|girl=qiz bola|baby=chaqaloq|adult=katta yoshli odam|teenager=o'smir|parents=ota-ona|uncle=amaki / tog'a|aunt=amma / xola|cousin=amakivachcha / xolavachcha|nephew=jiyan (o'g'il)|niece=jiyan (qiz)|grandson=nevara (o'g'il)|granddaughter=nevara (qiz)|relative=qarindosh|neighbour=qo'shni|guest=mehmon|stranger=notanish odam|couple=juftlik|twin=egizak|orphan=yetim|widow=beva ayol|bride=kelin|groom=kuyov|wedding=to'y|marriage=nikoh|divorce=ajralish|birth=tug'ilish|childhood=bolalik|youth=yoshlik|generation=avlod|ancestor=ajdod|surname=familiya|nickname=laqab|colleague=hamkasb|boss=boshliq|enemy=dushman
@@ -679,11 +796,11 @@ var APPS=[
 var W=[],P=[],WCATS=Object.keys(WD),PCATS=Object.keys(PD);
 WCATS.forEach(function(c){WD[c].forEach(function(r){W.push({k:"w"+W.length,cat:c,row:r});});});
 PCATS.forEach(function(c){PD[c].forEach(function(r){P.push({k:"p"+P.length,cat:c,row:r});});});
-var VIEWS=[["bosh","Bosh sahifa"],["darslar","Darsliklar"],["lugat","Lug'at"],["iboralar","Iboralar"],["test","Test"],["oyinlar","O'yinlar"],["ielts","IELTS"],["kinolar","Kinolar"],["ai","AI ustoz"],["ilovalar","Ilovalar"]];
+var VIEWS=[["bosh","Bosh sahifa"],["darslar","Darsliklar"],["lugat","Lug'at"],["iboralar","Iboralar"],["test","Test"],["oyinlar","O'yinlar"],["ielts","IELTS"],["kinolar","Kinolar"],["ai","AI agent"],["ilovalar","Ilovalar"]];
 var S={lang:"en",done:{},best:{}};
 try{var sv=JSON.parse(localStorage.getItem("tort-til")||"null");if(sv&&LANGS[sv.lang]){S=sv;S.done=S.done||{};S.best=S.best||{};}}catch(e){}
 function save(){try{localStorage.setItem("tort-til",JSON.stringify(S));}catch(e){}}
-var UI={dict:"w",bcat:BCATS[0],mlv:"all",cat:"all",q:"",hide:false,pcat:"all",phide:false};
+var UI={mq:"",dict:"w",bcat:BCATS[0],mlv:"all",cat:"all",q:"",hide:false,pcat:"all",phide:false};
 var Q={src:"w",dir:"t2u",cat:"all",qs:null,n:0,score:0,picked:null,wrong:[]};
 var canSpeak=("speechSynthesis" in window)&&("SpeechSynthesisUtterance" in window);
 var $=function(id){return document.getElementById(id);};
@@ -717,7 +834,7 @@ function menu3d(){
     ["oyinlar","O'yinlar","Juftini top, harflardan so'z ter, 60 soniya",0],
     ["ielts","IELTS","8 qadam: imtihon tuzilishi, strategiya va reja",1],
     ["kinolar","Kinolar",MOVIES.length+" ta film va serial darajalar bo'yicha",1],
-    ["ai","AI ustoz","Sun'iy intellektdan o'zbek tilida so'rang",0],
+    ["ai","AI agent","Savolga javob beradi, lug'atdan qidiradi, bo'lim va film tavsiya qiladi",0],
     ["ilovalar","Ilovalar","Mashhur til ilovalari o'zbekcha tavsifi bilan",0]];
   var o='<section class="grid"><h2>'+L().name+' bo\'limlari</h2><p class="lead">Yuqoridan pastga shu tartibda o\'ting.</p><div class="stack3d">';
   items.forEach(function(x,i){
@@ -876,17 +993,26 @@ function vIelts(){
 }
 function vMovies(){
   var lv=["A1","A2","B1","B2","C1"];
-  var out=head("Ingliz tili · tinglash","Kinolar bilan o'rganish","Darajangizga mos "+MOVIES.length+" ta film va serial. Filmlarning o'zi saytga joylanmagan: ularni o'zingiz foydalanadigan rasmiy onlayn kinoteatrda inglizcha ovoz va subtitr bilan tomosha qiling.")+
+  return head("Ingliz tili · tinglash","Kinolar bilan o'rganish","Darajalar bo'yicha "+MOVIES.length+" ta inglizcha film va serial. Filmlarning o'zi saytga joylanmagan, chunki ular mualliflik huquqi bilan himoyalangan. Har bir kartada treylerni YouTube'dan topish va filmni qaysi rasmiy xizmatda ko'rish mumkinligini tekshirish havolasi bor.")+
   '<ol class="steps"><li><strong>Tanish filmdan boshlang</strong><p class="lead">Avval o\'zbekcha yoki ruscha ko\'rgan filmingizni tanlang, syujetni bilsangiz tilga e\'tibor berasiz.</p></li>'+
   '<li><strong>Inglizcha subtitr yoqing</strong><p class="lead">O\'zbekcha subtitr bilan faqat o\'qiysiz. Inglizcha subtitr eshitgan so\'zni ko\'z bilan mustahkamlaydi.</p></li>'+
-  '<li><strong>10 daqiqalik bo\'laklarga bo\'ling</strong><p class="lead">Butun filmni emas, bitta sahnani ikki marta ko\'ring va 5 ta yangi iborani yozib oling.</p></li>'+
-  '<li><strong>Ovoz chiqarib takrorlang</strong><p class="lead">To\'xtatib, qahramon gapini xuddi shu ohangda qaytaring. Talaffuz uchun eng samarali mashq.</p></li></ol>'+
-  '<div class="chips"><button class="chip" data-act="mlv" data-v="all" aria-pressed="'+(UI.mlv==="all")+'">Barcha darajalar</button>'+lv.map(function(x){return '<button class="chip" data-act="mlv" data-v="'+x+'" aria-pressed="'+(UI.mlv===x)+'">'+x+'</button>';}).join("")+'</div><div class="grid g3">';
+  '<li><strong>10 daqiqalik bo\'laklarga bo\'ling</strong><p class="lead">Bitta sahnani ikki marta ko\'ring va 5 ta yangi iborani yozib oling.</p></li>'+
+  '<li><strong>Ovoz chiqarib takrorlang</strong><p class="lead">To\'xtatib, qahramon gapini xuddi shu ohangda qaytaring.</p></li></ol>'+
+  '<div class="tools"><input type="search" id="mq" placeholder="Film nomi yoki janri bo\'yicha qidirish" value="'+UI.mq+'" aria-label="Film qidirish"></div>'+
+  '<div class="chips"><button class="chip" data-act="mlv" data-v="all" aria-pressed="'+(UI.mlv==="all")+'">Barcha darajalar</button>'+lv.map(function(x){return '<button class="chip" data-act="mlv" data-v="'+x+'" aria-pressed="'+(UI.mlv===x)+'">'+x+' · '+MOVIES.filter(function(m){return m.lv===x;}).length+'</button>';}).join("")+'</div><div class="grid g3" id="mgrid"></div>'+
+  '<p class="lead">Qaysi xizmatda borligi mamlakatga qarab farq qiladi. Tekshirish havolasi JustWatch saytining AQSh bo\'limini ochadi.</p>'+
+  '<section class="grid"><h2>Kino lug\'ati</h2>'+tableHTML(["Inglizcha","O'zbekcha"],MOVIEWORDS)+'</section>';
+}
+function fillMovies(){
+  var g=$("mgrid");if(!g)return;var q=UI.mq.trim().toLowerCase(),o="";
   MOVIES.forEach(function(m){
     if(UI.mlv!=="all"&&m.lv!==UI.mlv)return;
-    out+='<article class="card app"><h3>'+m.n+'</h3><div class="tags"><span class="tag lvl">'+m.lv+'</span><span class="tag">'+m.k+'</span><span class="tag">'+m.y+'</span><span class="tag">'+m.ac+' talaffuzi</span></div><p>'+m.d+'</p><p class="use"><strong>Lug\'at mavzusi:</strong> '+m.v+'</p></article>';
+    if(q&&(m.n+" "+m.k).toLowerCase().indexOf(q)<0)return;
+    var e=encodeURIComponent(m.n);
+    o+='<article class="card app"><h3>'+m.n+'</h3><div class="tags"><span class="tag lvl">'+m.lv+'</span><span class="tag">'+m.k+'</span><span class="tag">'+m.y+'</span><span class="tag">'+m.ac+' talaffuzi</span></div><p>'+m.d+'</p>'+(m.v?'<p class="use"><strong>Lug\'at mavzusi:</strong> '+m.v+'</p>':'')+
+    '<div class="mlinks"><a href="https://www.youtube.com/results?search_query='+e+'+official+trailer" target="_blank" rel="noopener">Treylerni topish</a><a href="https://www.justwatch.com/us/search?q='+e+'" target="_blank" rel="noopener">Qayerda ko\'rish mumkin</a></div></article>';
   });
-  return out+'</div><section class="grid"><h2>Kino lug\'ati</h2>'+tableHTML(["Inglizcha","O'zbekcha"],MOVIEWORDS)+'</section>';
+  g.innerHTML=o||'<p class="empty">Bunday film topilmadi.</p>';
 }
 
 var G={game:"mem",pool:"w",m:null,s:null,t:{on:false,left:60,score:0,total:0,cur:null,ended:false},timer:null};
@@ -999,17 +1125,17 @@ function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").repl
 })();
 function aiPrompts(){
   var n=L().name,p=["Menga "+n+" bo'yicha 5 ta savoldan iborat kichik test tuz, javoblarini oxirida ber.",n+"da o'zimni tanishtirish uchun 5 ta gap yozib ber, tarjimasi bilan.","Eng ko'p ishlatiladigan 10 ta fe'lni misol gaplar bilan ber."];
-  if(S.lang==="en"){p.push("Present Perfect va Past Simple farqini sodda tushuntir.");p.push("IELTS Speaking Part 1 uchun 3 ta savol ber va namunali javob yoz.");}
+  if(S.lang==="en"){p.unshift("Natijamga qarab, bugun nima o'rganishimni maslahat ber.");p.push("Darajam B1. Menga mos 3 ta film tavsiya qil.");p.push("IELTS Speaking Part 1 uchun 3 ta savol ber va namunali javob yoz.");}
   return p;
 }
 function vAi(){
-  var out=head(L().name,"AI ustoz","Sun'iy intellektdan o'zbek tilida so'rang: so'zni tushuntirish, yozgan gapingizni tekshirish, mashq yoki kichik test tuzib berish.");
-  if(AI.ready===null)return out+'<div class="quiz"><p>AI ustozga ulanish tekshirilmoqda...</p></div>';
-  if(AI.ready===false)return out+'<div class="quiz"><p><strong>AI ustoz bu manzilda ishlamaydi.</strong></p><p class="lead">Sun\'iy intellekt saytning Claude ichida ochilgan nusxasida ishlaydi. GitHub\'dagi oddiy sahifa AI xizmatiga ulana olmaydi, buning uchun alohida server va maxfiy kalit kerak bo\'ladi.</p><p class="lead">Qolgan barcha bo\'limlar shu yerda to\'liq ishlaydi.</p><div class="btns"><a class="btn" href="#darslar">Darsliklarga o\'tish</a><a class="btn ghost" href="#test">Test ishlash</a></div></div>';
+  var out=head(L().name,"AI agent","Sun'iy intellektdan o'zbek tilida so'rang. U so'zni tushuntiradi, gapingizni tekshiradi, sayt lug'atidan qidiradi, natijangizga qarab keyingi qadamni va darajangizga mos filmni tavsiya qiladi.");
+  if(AI.ready===null)return out+'<div class="quiz"><p>AI agentga ulanish tekshirilmoqda...</p></div>';
+  if(AI.ready===false)return out+'<div class="quiz"><p><strong>AI agent bu manzilda ishlamaydi.</strong></p><p class="lead">Sun\'iy intellekt saytning Claude ichida ochilgan nusxasida ishlaydi. GitHub\'dagi oddiy sahifa AI xizmatiga ulana olmaydi, buning uchun alohida server va maxfiy kalit kerak bo\'ladi.</p><p class="lead">Qolgan barcha bo\'limlar shu yerda to\'liq ishlaydi.</p><div class="btns"><a class="btn" href="#darslar">Darsliklarga o\'tish</a><a class="btn ghost" href="#test">Test ishlash</a></div></div>';
   out+='<div class="quiz chat"><div class="msgs" id="aimsgs">';
   if(!AI.msgs.length)out+='<p class="lead">Savolingizni yozing yoki quyidagi tayyor so\'rovlardan birini tanlang. Gapingizni tekshirtirish uchun uni shunchaki yozib yuboring.</p>';
-  AI.msgs.forEach(function(m){out+='<div class="msg '+(m.role==="user"?"me":"bot")+'"><small>'+(m.role==="user"?"Siz":"AI ustoz")+'</small><div>'+esc(m.content)+'</div></div>';});
-  if(AI.busy)out+='<div class="msg bot"><small>AI ustoz</small><div id="ailive">O\'ylayapti...</div></div>';
+  AI.msgs.forEach(function(m){out+='<div class="msg '+(m.role==="user"?"me":"bot")+'"><small>'+(m.role==="user"?"Siz":"AI agent")+'</small><div>'+esc(m.content)+'</div>'+(m.links&&m.links.length?'<div class="btns" style="margin-top:8px">'+m.links.map(function(l){return '<a class="btn ghost" href="#'+l[0]+'">'+l[1]+'</a>';}).join("")+'</div>':'')+'</div>';});
+  if(AI.busy)out+='<div class="msg bot"><small>AI agent</small><div id="ailive">O\'ylayapti...</div></div>';
   if(AI.err)out+='<div class="fb no" role="status">'+AI.err+'</div>';
   out+='</div><div class="chips">'+aiPrompts().map(function(p,i){return '<button class="chip" data-act="aiq" data-v="'+i+'"'+(AI.busy?" disabled":"")+'>'+p+'</button>';}).join("")+'</div>'+
   '<label class="lead" for="aiin">Savolingiz</label><textarea id="aiin" rows="3" placeholder="Masalan: I goed to school yesterday. Shu gap to\'g\'rimi?"'+(AI.busy?" disabled":"")+'></textarea>'+
@@ -1020,11 +1146,23 @@ function aiSend(text){
   text=(text||"").trim();if(!text||AI.busy||!AI.ready)return;
   AI.msgs.push({role:"user",content:text});AI.busy=true;AI.err="";render(true);
   var hist=AI.msgs.slice(-11);while(hist.length&&hist[0].role!=="user")hist.shift();
-  var sys="Sen o'zbek tilida so'zlashuvchilarga "+L().name+"ni o'rgatadigan sabrli til ustozisan. Javoblarni o'zbek tilida, lotin yozuvida, qisqa va aniq yoz. Misollarni o'rganilayotgan tilda ber va har birini o'zbekchaga tarjima qil. O'quvchi gap yozsa, xatosini ko'rsat, to'g'ri variantini ber va qoidani bir-ikki jumlada tushuntir. Markdown belgilarini ishlatma, oddiy matn yoz.\n\nO'quvchi savoli: ";
+  var sys="Sen o'zbek tilida so'zlashuvchilarga "+L().name+"ni o'rgatadigan sabrli til ustozisan. Javoblarni o'zbek tilida, lotin yozuvida, qisqa va aniq yoz. Misollarni o'rganilayotgan tilda ber va har birini o'zbekchaga tarjima qil. O'quvchi gap yozsa, xatosini ko'rsat, to'g'ri variantini ber va qoidani bir-ikki jumlada tushuntir. Markdown belgilarini ishlatma, oddiy matn yoz. Senda sayt vositalari bor: lug'atdan qidirish, o'quvchi natijasini ko'rish, bo'lim tugmasini ko'rsatish va film tavsiya qilish. O'quvchi nimadan boshlashni yoki keyin nima qilishni so'rasa, avval natijasini ko'r va mos bo'lim tugmasini ko'rsat.\n\nO'quvchi savoli: ";
   var input=hist.map(function(m,i){return {role:m.role,content:i===0?sys+m.content:m.content};});
+
+  var links=[],names={darslar:"Darsliklar",lugat:"Lug'at",iboralar:"Iboralar",test:"Test",oyinlar:"O'yinlar",ielts:"IELTS",kinolar:"Kinolar",ilovalar:"Ilovalar"};
+  var tools=[
+    {name:"lugatdan_qidir",description:"Saytning lug'atidan so'z qidiradi. O'rganilayotgan tildagi yoki o'zbekcha so'z bo'yicha mos yozuvlarni qaytaradi.",inputSchema:{type:"object",properties:{soz:{type:"string",description:"Qidiriladigan so'z yoki uning bir qismi"}},required:["soz"]},
+     execute:function(i){var q=String(i.soz||"").toLowerCase().trim(),r=[];if(!q)return {natija:[]};(S.lang==="en"?B.concat(W):W).forEach(function(w){if(r.length<10&&(w.row[0].toLowerCase().indexOf(q)>=0||tg(w.row).toLowerCase().indexOf(q)>=0))r.push({soz:tg(w.row),tarjima:w.row[0],mavzu:w.cat});});return {natija:r};}},
+    {name:"bolim_tavsiya",description:"O'quvchiga saytning bir bo'limini ochadigan tugmani javob ostida ko'rsatadi. O'quvchini biror bo'limga yo'naltirmoqchi bo'lganingizda chaqiring.",inputSchema:{type:"object",properties:{bolim:{type:"string",enum:Object.keys(names)}},required:["bolim"]},
+     execute:function(i){if(!names[i.bolim])throw new Error("Bunday bo'lim yo'q");if(!links.some(function(l){return l[0]===i.bolim;}))links.push([i.bolim,names[i.bolim]+" bo'limini ochish"]);return {holat:"tugma ko'rsatildi"};}},
+    {name:"kino_tavsiya",description:"Ingliz tili darajasiga mos filmlar ro'yxatini sayt bazasidan oladi.",inputSchema:{type:"object",properties:{daraja:{type:"string",enum:["A1","A2","B1","B2","C1"]}},required:["daraja"]},
+     execute:function(i){return {filmlar:shuffle(MOVIES.filter(function(m){return m.lv===i.daraja;})).slice(0,6).map(function(m){return {nomi:m.n,yil:m.y,janr:m.k,izoh:m.d};})};}},
+    {name:"oquvchi_natijasi",description:"O'quvchining shu tildagi natijalarini qaytaradi: o'qilgan darslar, bilgan so'zlar, yodlangan iboralar, testdagi eng yaxshi ball.",inputSchema:{type:"object",properties:{}},
+     execute:function(){var NL=LESSONS[S.lang].length;return {til:L().name,oqilgan_darslar:countDone(S.lang,"l",NL)+" / "+NL,bilgan_sozlar:countDone(S.lang,"w",W.length)+(S.lang==="en"?countDone("en","b",B.length):0),yodlangan_iboralar:countDone(S.lang,"p",P.length)+" / "+P.length,testdagi_eng_yaxshi:S.best[S.lang]==null?"hali ishlanmagan":S.best[S.lang]+" / 10",ielts_qadamlari:countDone("en","i",IELTS.length)+" / "+IELTS.length};}}
+  ];
   var done=function(){AI.busy=false;if(view()==="ai"){render(true);var b=$("aimsgs");if(b)b.scrollTop=b.scrollHeight;}};
   try{
-    AI.ready(input,{cache:false,onText:function(x){var el=$("ailive");if(el)el.textContent=x.text;}}).then(function(r){AI.msgs.push({role:"assistant",content:r.text||""});done();},function(e){
+    AI.ready(input,{cache:false,tools:tools,onText:function(x){var el=$("ailive");if(el)el.textContent=x.text;}}).then(function(r){AI.msgs.push({role:"assistant",content:r.text||"",links:links});done();},function(e){
       AI.msgs.pop();
       if(e&&e.code==="not_granted"){AI.ready=false;}
       else{AI.err=e&&e.code==="rate_limited"?"So'rovlar chegarasiga yetildi. Bir necha daqiqadan keyin qayta urinib ko'ring.":"Javob olinmadi. Savolni qayta yuborib ko'ring.";}
@@ -1049,6 +1187,8 @@ function render(keepScroll){
   var html=v==="darslar"?vLessons():v==="lugat"?vVocab():v==="test"?vQuiz():v==="iboralar"?vPhrases():v==="ilovalar"?vApps():v==="ielts"?vIelts():v==="kinolar"?vMovies():v==="oyinlar"?vGames():v==="ai"?vAi():vHome();
   $("view").innerHTML=html;
   if(v==="lugat")fillGrid();
+  if(v==="kinolar")fillMovies();
+  var fab=$("fab");if(fab&&fab.style)fab.style.display=v==="ai"?"none":"";
   if(!keepScroll)window.scrollTo(0,0);
 }
 
@@ -1086,7 +1226,7 @@ document.addEventListener("change",function(e){
   else if(t.id==="qcat"){var c=Q.src==="w"?WCATS:Q.src==="b"?BCATS:PCATS;Q.cat=t.value==="all"?"all":c[+t.value];Q.qs=null;render(true);}
   else if(t.getAttribute("data-act")==="lesson"){setDone(t.getAttribute("data-k"),t.checked,t.getAttribute("data-l"));}
 });
-document.addEventListener("input",function(e){if(e.target.id==="q"){UI.q=e.target.value;fillGrid();}});
+document.addEventListener("input",function(e){if(e.target.id==="q"){UI.q=e.target.value;fillGrid();}else if(e.target.id==="mq"){UI.mq=e.target.value;fillMovies();}});
 window.addEventListener("hashchange",function(){render(false);});
 render(true);
 </script>
