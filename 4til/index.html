@@ -215,6 +215,16 @@ td.ar{white-space:nowrap}
 .card,.word,.phr,.quiz,details.lesson{box-shadow:0 4px 0 var(--line)}
 @media (prefers-reduced-motion:reduce){.d3,.btn{transition:none}}
 @media (max-width:520px){.d3{transform:rotateX(8deg);padding:14px}.d3 .tag{display:none}}
+
+.word.sm{min-height:104px;padding:12px 14px}
+.word.sm .t{font-size:1.05rem}
+.chat{max-width:760px}
+.msgs{display:flex;flex-direction:column;gap:12px;max-height:460px;overflow-y:auto}
+.msg{padding:12px 14px;border-radius:12px;background:var(--surface-2);max-width:92%;overflow-wrap:anywhere}
+.msg.me{align-self:flex-end;background:var(--soft)}
+.msg small{display:block;font-weight:700;color:var(--muted);font-size:.78rem;margin-bottom:2px}
+textarea{font:inherit;color:inherit;width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;resize:vertical}
+.chip:disabled,.btn:disabled{opacity:.5;cursor:default}
 footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--muted);font-size:.9rem}
 
 @media (max-width:760px){
@@ -616,6 +626,39 @@ var MOVIES=[
 ];
 var MOVIEWORDS=[["subtitles","subtitrlar"],["plot","syujet"],["scene","sahna"],["character","qahramon"],["main character","bosh qahramon"],["actor / actress","aktyor / aktrisa"],["director","rejissyor"],["episode","qism"],["season","mavsum"],["sequel","davomi"],["soundtrack","film musiqasi"],["ending","yakun"]];
 
+var BIGRAW=`Odamlar va oila: person=shaxs|people=odamlar|man=erkak|woman=ayol|boy=o'g'il bola|girl=qiz bola|baby=chaqaloq|adult=katta yoshli odam|teenager=o'smir|parents=ota-ona|uncle=amaki / tog'a|aunt=amma / xola|cousin=amakivachcha / xolavachcha|nephew=jiyan (o'g'il)|niece=jiyan (qiz)|grandson=nevara (o'g'il)|granddaughter=nevara (qiz)|relative=qarindosh|neighbour=qo'shni|guest=mehmon|stranger=notanish odam|couple=juftlik|twin=egizak|orphan=yetim|widow=beva ayol|bride=kelin|groom=kuyov|wedding=to'y|marriage=nikoh|divorce=ajralish|birth=tug'ilish|childhood=bolalik|youth=yoshlik|generation=avlod|ancestor=ajdod|surname=familiya|nickname=laqab|colleague=hamkasb|boss=boshliq|enemy=dushman
+Tana a'zolari: body=tana|head=bosh|face=yuz|hair=soch|eye=ko'z|ear=quloq|nose=burun|mouth=og'iz|lip=lab|tooth=tish|tongue=til (a'zo)|neck=bo'yin|shoulder=yelka|arm=qo'l (yelkadan)|hand=qo'l (kaft)|finger=barmoq|thumb=bosh barmoq|nail=tirnoq|chest=ko'krak|back=orqa / bel|stomach=oshqozon|leg=oyoq (son)|knee=tizza|foot=oyoq panjasi|toe=oyoq barmog'i|skin=teri|bone=suyak|blood=qon|heart=yurak|brain=miya|lung=o'pka|liver=jigar|muscle=mushak|throat=tomoq|forehead=peshona|cheek=yonoq|chin=iyak|eyebrow=qosh|beard=soqol|elbow=tirsak
+Salomatlik: health=salomatlik|illness=kasallik|disease=xastalik|pain=og'riq|headache=bosh og'rig'i|fever=isitma|cough=yo'tal|cold=shamollash|flu=gripp|injury=jarohat|wound=yara|medicine=dori|pill=tabletka|doctor=shifokor|nurse=hamshira|patient=bemor|hospital ward=kasalxona palatasi|pharmacy=dorixona|surgery=jarrohlik|treatment=davolash|recovery=sog'ayish|ambulance=tez yordam|emergency=favqulodda holat|appointment=qabul vaqti|prescription=retsept|vaccine=vaksina|allergy=allergiya|diet=parhez|exercise=jismoniy mashq|stress=asabiylik / zo'riqish|sleep=uyqu|healthy=sog'lom|sick=kasal|tired=charchagan|weak=kuchsiz|strong=kuchli|to hurt=og'rimoq|to heal=tuzalmoq|to breathe=nafas olmoq|symptom=alomat
+Kiyim-kechak: clothes=kiyim|shirt=ko'ylak (erkaklar)|dress=ko'ylak (ayollar)|trousers=shim|jeans=jinsi shim|skirt=yubka|jacket=kurtka|coat=palto|sweater=sviter|suit=kostyum|tie=galstuk|shoes=poyabzal|boots=etik|socks=paypoq|hat=shlyapa|cap=kepka|scarf=sharf|gloves=qo'lqop|belt=kamar|pocket=cho'ntak|button=tugma|zip=zamok (kiyimda)|sleeve=yeng|collar=yoqa|uniform=forma|pyjamas=pijama|underwear=ichki kiyim|swimsuit=suzish kiyimi|glasses=ko'zoynak|watch=qo'l soati|ring=uzuk|necklace=marjon|earring=sirg'a|bag=sumka|wallet=hamyon|umbrella=soyabon|size=o'lcham|fashion=moda|to wear=kiymoq|to try on=kiyib ko'rmoq
+Oziq-ovqat: food=ovqat|meal=taom vaqti / ovqatlanish|breakfast=nonushta|lunch=tushlik|dinner=kechki ovqat|snack=yengil tamaddi|soup=sho'rva|salad=salat|sandwich=sendvich|cheese=pishloq|butter=sariyog'|oil=yog'|flour=un|pasta=makaron|chicken=tovuq go'shti|beef=mol go'shti|lamb=qo'y go'shti|sausage=kolbasa|honey=asal|jam=murabbo|cake=tort|biscuit=pechenye|chocolate=shokolad|ice cream=muzqaymoq|juice=sharbat|pepper=murch|sauce=sous|vinegar=sirka|spice=ziravor|dessert=shirinlik|dish=taom|recipe=retsept (taom)|ingredient=masalliq|taste=ta'm|sweet=shirin|sour=nordon|bitter=achchiq (taxir)|salty=sho'r|spicy=achchiq (qalampirli)|fresh=yangi (uzilgan)|raw=xom|hungry=och|thirsty=chanqagan
+Meva va sabzavot: vegetable=sabzavot|potato=kartoshka|tomato=pomidor|cucumber=bodring|carrot=sabzi|onion=piyoz|garlic=sarimsoq|cabbage=karam|pumpkin=qovoq|corn=makkajo'xori|bean=loviya|pea=no'xat|eggplant=baqlajon|radish=turp|lettuce=salat bargi|mushroom=qo'ziqorin|orange=apelsin|lemon=limon|banana=banan|grape=uzum|pear=nok|peach=shaftoli|apricot=o'rik|cherry=olcha / gilos|strawberry=qulupnay|watermelon=tarvuz|melon=qovun|pomegranate=anor|fig=anjir|plum=olxo'ri|quince=behi|date=xurmo|nut=yong'oq|almond=bodom|raisin=mayiz|berry=rezavor meva|seed=urug'|peel=po'stloq (meva)|ripe=pishgan|harvest=hosil
+Oshxona va idish: kitchen=oshxona|plate=likopcha|bowl=kosa|cup=piyola / chashka|glass=stakan|spoon=qoshiq|fork=sanchqi|knife=pichoq|pan=tova|pot=qozon|kettle=choynak (qaynatgich)|teapot=choynak (damlash)|stove=plita|oven=duxovka|fridge=muzlatgich|freezer=muzxona|sink=rakovina|tap=jo'mrak|dishwasher=idish yuvish mashinasi|microwave=mikroto'lqinli pech|tray=patnis|napkin=salfetka|bottle=shisha idish|jar=banka|lid=qopqoq|to cook=pishirmoq|to boil=qaynatmoq|to fry=qovurmoq|to bake=yopmoq (pechda)|to cut=kesmoq|to mix=aralashtirmoq|to pour=quymoq|to peel=archmoq|to taste=tatib ko'rmoq|to serve=dasturxonga tortmoq|to wash up=idish yuvmoq
+Uy va mebel: home=uy (oilaviy)|flat=kvartira|room=xona|bedroom=yotoqxona|living room=mehmonxona (xona)|bathroom=hammom|toilet=hojatxona|corridor=yo'lak|floor=pol / qavat|ceiling=shift|wall=devor|roof=tom|stairs=zina|lift=lift|balcony=balkon|garden=bog'|yard=hovli|gate=darvoza|fence=panjara / devor|key=kalit|lock=qulf|table=stol|chair=stul|sofa=divan|armchair=kreslo|bed=karavot|pillow=yostiq|blanket=ko'rpa|sheet=choyshab|wardrobe=shkaf (kiyim)|shelf=tokcha|drawer=tortma|mirror=oyna (ko'zgu)|carpet=gilam|curtain=parda|lamp=chiroq|furniture=mebel|towel=sochiq|soap=sovun|rent=ijara haqi|landlord=uy egasi
+Shahar va joylar: town=shaharcha|village=qishloq|capital=poytaxt|country=mamlakat|region=viloyat|district=tuman|centre=markaz|suburb=shahar chekkasi|square=maydon|park=bog' (istirohat)|bridge=ko'prik|road=yo'l|avenue=shoh ko'cha|corner=burchak|crossroads=chorraha|traffic lights=svetofor|pavement=yo'lka|building=bino|shop=do'kon|supermarket=supermarket|bank=bank|post office=pochta|police station=politsiya bo'limi|library=kutubxona|museum=muzey|theatre=teatr|cinema=kinoteatr|restaurant=restoran|cafe=kafe|hotel=mehmonxona|mosque=masjid|church=cherkov|stadium=stadion|factory=zavod|office=ofis|airport=aeroport|station=bekat / vokzal|bus stop=avtobus bekati|petrol station=yoqilg'i quyish shoxobchasi|car park=avtoturargoh
+Transport va sayohat: travel=sayohat|trip=safar|journey=yo'l (uzoq safar)|tourist=sayyoh|passport=pasport|visa=viza|ticket=chipta|luggage=yuk|suitcase=jomadon|map=xarita|guide=yo'lboshlovchi|flight=reys|plane=samolyot|train=poyezd|bus=avtobus|tram=tramvay|underground=metro|taxi=taksi|bicycle=velosiped|motorbike=mototsikl|lorry=yuk mashinasi|ship=kema|boat=qayiq|driver=haydovchi|passenger=yo'lovchi|pilot=uchuvchi|seat=o'rindiq|platform=perron|customs=bojxona|border=chegara|abroad=chet elda|destination=manzil|departure=jo'nash|arrival=yetib kelish|delay=kechikish|reservation=band qilish|to book=band qilmoq|to arrive=yetib kelmoq|to leave=jo'nab ketmoq|to drive=mashina haydamoq
+Ta'lim: education=ta'lim|university=universitet|college=kollej|class=sinf|lesson=dars|subject=fan (o'quv)|teacher=o'qituvchi|student=talaba|pupil=o'quvchi|classmate=sinfdosh|homework=uy vazifasi|exam=imtihon|test=sinov|mark=baho|degree=ilmiy daraja|diploma=diplom|certificate=sertifikat|scholarship=stipendiya / grant|lecture=ma'ruza|course=kurs|term=semestr|timetable=dars jadvali|break=tanaffus|notebook=daftar|pen=ruchka|pencil=qalam|ruler=chizg'ich|eraser=o'chirg'ich|blackboard=doska|dictionary=lug'at|page=sahifa|chapter=bob|essay=insho|knowledge=bilim|skill=ko'nikma|mistake=xato|to study=o'qimoq (ta'lim olmoq)|to teach=o'qitmoq|to pass=o'tmoq (imtihondan)|to fail=yiqilmoq (imtihondan)
+Kasblar: job=ish (lavozim)|profession=kasb|engineer=muhandis|lawyer=huquqshunos|judge=sudya|accountant=hisobchi|manager=menejer|director=direktor|secretary=kotiba|economist=iqtisodchi|programmer=dasturchi|designer=dizayner|architect=me'mor|builder=quruvchi|electrician=elektrik|plumber=santexnik|mechanic=mexanik|farmer=fermer|cook=oshpaz|waiter=ofitsiant|baker=novvoy|butcher=qassob|tailor=tikuvchi|hairdresser=sartarosh|dentist=tish shifokori|surgeon=jarroh|vet=veterinar|scientist=olim|writer=yozuvchi|journalist=jurnalist|translator=tarjimon|artist=rassom|musician=musiqachi|singer=xonanda|actor=aktyor|soldier=askar|policeman=politsiyachi|firefighter=o't o'chiruvchi|businessman=tadbirkor|shop assistant=sotuvchi
+Ish va biznes: company=kompaniya|business=biznes|employee=xodim|employer=ish beruvchi|staff=xodimlar|salary=oylik maosh|wage=ish haqi|income=daromad|profit=foyda (moliyaviy)|loss=zarar|contract=shartnoma|meeting=yig'ilish|interview=suhbat (ishga)|experience=tajriba|career=martaba|promotion=lavozim ko'tarilishi|deadline=oxirgi muddat|project=loyiha|task=vazifa|team=jamoa|customer=mijoz|client=buyurtmachi|market=bozor|product=mahsulot|service=xizmat|quality=sifat|goal=maqsad|plan=reja|report=hisobot|department=bo'lim|owner=egasi|partner=hamkor|competition=raqobat|advertisement=reklama|success=muvaffaqiyat|failure=muvaffaqiyatsizlik|to hire=ishga olmoq|to fire=ishdan bo'shatmoq|to retire=nafaqaga chiqmoq|to apply=ariza bermoq
+Pul va xarid: price=narx|cost=xarajat|cash=naqd pul|coin=tanga|note=qog'oz pul|credit card=kredit karta|account=hisob raqam|loan=qarz (bankdan)|debt=qarz|tax=soliq|discount=chegirma|sale=arzonlashtirilgan savdo|bargain=arzon xarid|receipt=chek|bill=hisob (to'lov)|change=qaytim|tip=choychaqa|budget=budjet|savings=jamg'arma|interest=foiz|currency=valyuta|exchange rate=ayirboshlash kursi|rich=boy|poor=kambag'al|free=bepul|to pay=to'lamoq|to spend=sarflamoq|to save=tejamoq / jamg'armoq|to earn=pul topmoq|to borrow=qarz olmoq|to lend=qarz bermoq|to owe=qarzdor bo'lmoq|to sell=sotmoq|to afford=qurbi yetmoq|to cost=turmoq (narx)|to order=buyurtma qilmoq|to deliver=yetkazib bermoq|to return=qaytarmoq|to invest=sarmoya kiritmoq|worth=arziydigan
+Texnologiya: computer=kompyuter|laptop=noutbuk|screen=ekran|keyboard=klaviatura|mouse=sichqoncha|printer=printer|device=qurilma|charger=quvvatlagich|battery=batareya|cable=sim|internet=internet|website=veb-sayt|link=havola|password=parol|username=foydalanuvchi nomi|email=elektron pochta|message=xabar|file=fayl|folder=papka|software=dasturiy ta'minot|app=ilova|update=yangilanish|network=tarmoq|data=ma'lumotlar|database=ma'lumotlar bazasi|search=qidiruv|download=yuklab olish|upload=yuklash (serverga)|to click=bosmoq|to type=yozmoq (klaviaturada)|to save a file=faylni saqlamoq|to delete=o'chirmoq (ma'lumot)|to install=o'rnatmoq|to connect=ulamoq|to share=ulashmoq|artificial intelligence=sun'iy intellekt|robot=robot|social media=ijtimoiy tarmoqlar|online=onlayn|digital=raqamli
+Tabiat va ob-havo: nature=tabiat|weather=ob-havo|sky=osmon|cloud=bulut|wind=shamol|storm=bo'ron|thunder=momaqaldiroq|lightning=chaqmoq|fog=tuman (havo)|ice=muz|frost=ayoz|heat=jazirama|temperature=harorat|season=fasl|spring=bahor|summer=yoz|autumn=kuz|winter=qish|river=daryo|lake=ko'l|ocean=okean|island=orol|beach=plyaj|desert=cho'l|forest=o'rmon|field=dala|hill=tepalik|valley=vodiy|stone=tosh|sand=qum|soil=tuproq|grass=o't|flower=gul|leaf=barg|branch=shox|root=ildiz|moon=oy (osmonda)|star=yulduz|earth=yer|air=havo|fire=olov|sunny=quyoshli|cloudy=bulutli|wet=ho'l|dry=quruq
+Hayvonlar: animal=hayvon|pet=uy hayvoni|dog=it|cat=mushuk|horse=ot|cow=sigir|sheep=qo'y|goat=echki|donkey=eshak|camel=tuya|rabbit=quyon|mouse (animal)=sichqon|wolf=bo'ri|fox=tulki|bear=ayiq|lion=sher|tiger=yo'lbars|elephant=fil|monkey=maymun|deer=bug'u|snake=ilon|frog=qurbaqa|turtle=toshbaqa|bird=qush|hen=tovuq|rooster=xo'roz|duck=o'rdak|goose=g'oz|eagle=burgut|pigeon=kaptar|sparrow=chumchuq|owl=boyqush|bee=asalari|fly=pashsha|mosquito=chivin|ant=chumoli|spider=o'rgimchak|butterfly=kapalak|whale=kit|shark=akula|tail=dum|wing=qanot|feather=pat|nest=in (qush)
+Vaqt va taqvim: time=vaqt|second=soniya|minute=daqiqa|morning=ertalab|noon=tush payti|afternoon=tushdan keyin|evening=kechqurun|midnight=yarim tun|weekend=dam olish kunlari|Monday=dushanba|Tuesday=seshanba|Wednesday=chorshanba|Thursday=payshanba|Friday=juma|Saturday=shanba|Sunday=yakshanba|January=yanvar|February=fevral|March=mart|April=aprel|May=may|June=iyun|July=iyul|August=avgust|September=sentabr|October=oktabr|November=noyabr|December=dekabr|century=asr|decade=o'n yillik|date (calendar)=sana|birthday=tug'ilgan kun|holiday=bayram / ta'til|past=o'tmish|present=hozirgi zamon|future=kelajak|early=erta|late=kech|soon=tez orada|always=har doim|often=tez-tez|sometimes=ba'zan|never=hech qachon|already=allaqachon
+His-tuyg'u va xarakter: feeling=his|happy=baxtli|sad=xafa|angry=jahli chiqqan|afraid=qo'rqqan|surprised=hayron|worried=xavotirda|nervous=asabiy|calm=xotirjam|proud=faxrlangan|ashamed=uyalgan|jealous=rashkchi|lonely=yolg'iz|bored=zerikkan|excited=hayajonlangan|confident=o'ziga ishongan|shy=uyatchan|kind=mehribon|polite=xushmuomala|rude=qo'pol|honest=halol|brave=jasur|lazy=dangasa|hard-working=mehnatkash|clever=aqlli|stupid=ahmoq|funny=kulgili|serious=jiddiy|generous=saxiy|greedy=ochko'z|patient=sabrli|stubborn=qaysar|friendly=do'stona|selfish=xudbin|modest=kamtar|love=sevgi|hate=nafrat|hope=umid|fear=qo'rquv|joy=quvonch|anger=g'azab|trust=ishonch|respect=hurmat|mood=kayfiyat
+Sifatlar: long=uzun|short=qisqa|tall=baland bo'yli|high=baland|low=past|wide=keng|narrow=tor|thick=qalin|thin=ingichka / ozg'in|heavy=og'ir|light=yengil|deep=chuqur|full=to'la|empty=bo'sh|clean=toza|dirty=iflos|soft=yumshoq|hard=qattiq|sharp=o'tkir|smooth=silliq|rough=g'adir-budur|bright=yorqin|dark=qorong'i|loud=baland ovozli|quiet=sokin|young=yosh|modern=zamonaviy|ancient=qadimiy|important=muhim|necessary=zarur|possible=mumkin|impossible=imkonsiz|different=boshqacha|similar=o'xshash|same=bir xil|simple=sodda|complicated=murakkab|useful=foydali|dangerous=xavfli|safe=xavfsiz|famous=mashhur|strange=g'alati|ready=tayyor|busy=band|true=rost|false=yolg'on|right=to'g'ri|wrong=noto'g'ri
+Kundalik fe'llar: to be=bo'lmoq|to have=ega bo'lmoq|to do=qilmoq|to make=yasamoq|to get=olmoq / erishmoq|to take=olmoq|to give=bermoq|to put=qo'ymoq|to bring=olib kelmoq|to keep=saqlamoq|to find=topmoq|to lose=yo'qotmoq|to use=foydalanmoq|to need=muhtoj bo'lmoq|to want=xohlamoq|to like=yoqtirmoq|to try=urinib ko'rmoq|to start=boshlamoq|to finish=tugatmoq|to stop=to'xtamoq|to wait=kutmoq|to help=yordam bermoq|to open=ochmoq|to close=yopmoq|to live=yashamoq|to wake up=uyg'onmoq|to get up=o'rnidan turmoq|to wash=yuvmoq|to dress=kiyinmoq|to rest=dam olmoq|to play=o'ynamoq|to watch=tomosha qilmoq|to listen=tinglamoq|to meet=uchrashmoq|to visit=tashrif buyurmoq|to call=qo'ng'iroq qilmoq|to send=yubormoq|to receive=qabul qilmoq|to choose=tanlamoq|to change=o'zgartirmoq|to clean=tozalamoq|to repair=ta'mirlamoq|to build=qurmoq|to break=sindirmoq
+Harakat fe'llari: to walk=piyoda yurmoq|to run=yugurmoq|to jump=sakramoq|to swim=suzmoq|to fly=uchmoq|to ride=minmoq|to climb=tirmashmoq|to fall=yiqilmoq|to sit=o'tirmoq|to stand=turmoq|to lie=yotmoq|to turn=burilmoq|to move=harakatlanmoq|to carry=ko'tarib yurmoq|to push=itarmoq|to pull=tortmoq|to throw=otmoq|to catch=tutmoq|to hold=ushlab turmoq|to drop=tushirib yubormoq|to lift=ko'tarmoq|to enter=kirmoq|to exit=chiqmoq|to follow=ergashmoq|to cross=kesib o'tmoq|to pass by=yonidan o'tmoq|to return home=uyga qaytmoq|to hurry=shoshilmoq|to escape=qochmoq|to hide=yashirinmoq|to reach=yetmoq|to touch=tegmoq|to hit=urmoq|to kick=tepmoq|to shake=silkitmoq|to dance=raqsga tushmoq|to travel=sayohat qilmoq|to stay=qolmoq|to arrive home=uyga yetib kelmoq|to disappear=g'oyib bo'lmoq
+Fikr va muloqot fe'llari: to think=o'ylamoq|to believe=ishonmoq|to understand=tushunmoq|to remember=eslamoq|to forget=unutmoq|to decide=qaror qilmoq|to agree=rozi bo'lmoq|to disagree=qo'shilmaslik|to say=aytmoq|to tell=aytib bermoq|to ask=so'ramoq|to answer=javob bermoq|to explain=tushuntirmoq|to describe=tasvirlamoq|to discuss=muhokama qilmoq|to argue=bahslashmoq|to promise=va'da bermoq|to suggest=taklif qilmoq|to advise=maslahat bermoq|to warn=ogohlantirmoq|to invite=taklif qilmoq (mehmonga)|to thank=minnatdorchilik bildirmoq|to apologise=uzr so'ramoq|to complain=shikoyat qilmoq|to shout=baqirmoq|to whisper=shivirlamoq|to laugh=kulmoq|to cry=yig'lamoq|to smile=jilmaymoq|to hope=umid qilmoq|to wish=tilamoq|to expect=kutmoq (taxmin)|to guess=taxmin qilmoq|to imagine=tasavvur qilmoq|to dream=orzu qilmoq|to mean=anglatmoq|to prefer=afzal ko'rmoq|to doubt=shubhalanmoq|to notice=payqamoq|to realise=anglab yetmoq|to translate=tarjima qilmoq|to repeat=takrorlamoq|to pronounce=talaffuz qilmoq|to spell=harflab aytmoq
+Sport va hordiq: sport=sport|game=o'yin|match=o'yin (musobaqa)|player=o'yinchi|coach=murabbiy|referee=hakam|winner=g'olib|champion=chempion|medal=medal|score=hisob (o'yinda)|football=futbol|basketball=basketbol|volleyball=voleybol|tennis=tennis|boxing=boks|wrestling=kurash|swimming=suzish|running=yugurish|chess=shaxmat|gym=sport zali|ball=to'p|race=poyga|training=mashg'ulot|hobby=qiziqish|fishing=baliq ovi|hunting=ov|camping=lagerda dam olish|picnic=piknik|walk=sayr|party=bazm|gift=sovg'a|toy=o'yinchoq|free time=bo'sh vaqt|to win=yutmoq|to lose a game=yutqazmoq|to train=mashq qilmoq|to relax=hordiq chiqarmoq|to enjoy=zavqlanmoq|to celebrate=nishonlamoq|to collect=to'plamoq
+San'at va media: art=san'at|music=musiqa|song=qo'shiq|film=film|painting=rasm (bo'yoqda)|picture=rasm|photo=fotosurat|drawing=chizma rasm|poem=she'r|novel=roman|story=hikoya|fairy tale=ertak|author=muallif|hero=qahramon|stage=sahna|audience=tomoshabinlar|concert=konsert|exhibition=ko'rgazma|instrument=cholg'u asbobi|guitar=gitara|drum=baraban|voice=ovoz|news=yangiliklar|newspaper=gazeta|magazine=jurnal|article=maqola|headline=sarlavha|channel=kanal|programme=dastur (ko'rsatuv)|advert=reklama roligi|culture=madaniyat|tradition=an'ana|custom=urf-odat|history=tarix|language=til (muloqot)|literature=adabiyot|to draw=chizmoq|to paint=bo'yamoq|to sing=kuylamoq|to perform=ijro etmoq|to publish=nashr qilmoq|to record=yozib olmoq
+Jamiyat va qonun: society=jamiyat|government=hukumat|state=davlat|president=prezident|minister=vazir|parliament=parlament|law=qonun|rule=qoida|right=huquq|duty=burch|freedom=erkinlik|justice=adolat|court=sud|crime=jinoyat|criminal=jinoyatchi|thief=o'g'ri|prison=qamoqxona|fine=jarima|police=politsiya|army=armiya|war=urush|peace=tinchlik|election=saylov|vote=ovoz (saylovda)|citizen=fuqaro|nation=millat|population=aholi|community=jamoa (mahalla)|religion=din|poverty=qashshoqlik|wealth=boylik|unemployment=ishsizlik|charity=xayriya|volunteer=ko'ngilli|equality=tenglik|violence=zo'ravonlik|safety=xavfsizlik|to protect=himoya qilmoq|to steal=o'g'irlamoq|to punish=jazolamoq|to obey=bo'ysunmoq|to allow=ruxsat bermoq|to forbid=taqiqlamoq
+Fan va atrof-muhit: science=fan (ilm)|research=tadqiqot|experiment=tajriba (ilmiy)|discovery=kashfiyot|invention=ixtiro|theory=nazariya|fact=fakt|method=usul|result=natija|cause=sabab|effect=ta'sir|energy=energiya|electricity=elektr toki|fuel=yoqilg'i|gas=gaz|metal=metall|iron=temir|gold=oltin|silver=kumush|wood=yog'och|plastic=plastik|paper=qog'oz|glass (material)=shisha|planet=sayyora|space=koinot|universe=olam|gravity=tortishish kuchi|climate=iqlim|pollution=ifloslanish|waste=chiqindi|recycling=qayta ishlash|global warming=global isish|drought=qurg'oqchilik|flood=suv toshqini|earthquake=zilzila|disaster=ofat|resource=resurs|species=tur (jonzot)|environment=atrof-muhit|to discover=kashf qilmoq|to invent=ixtiro qilmoq|to measure=o'lchamoq|to pollute=ifloslantirmoq|to recycle=qayta ishlamoq
+Ravish va bog'lovchilar: very=juda|quite=ancha|almost=deyarli|enough=yetarli|too=haddan tashqari|only=faqat|also=shuningdek|even=hatto|still=hali ham|yet=hali (inkorda)|just=hozirgina|again=yana|together=birga|alone=yolg'iz o'zi|maybe=balki|probably=ehtimol|certainly=shubhasiz|usually=odatda|rarely=kamdan-kam|quickly=tezda|slowly=sekin-asta|carefully=ehtiyotkorlik bilan|easily=osonlik bilan|suddenly=to'satdan|finally=nihoyat|especially=ayniqsa|actually=aslida|and=va|but=lekin|or=yoki|because=chunki|so=shuning uchun|if=agar|when=qachonki|while=...paytida|although=garchi|however=biroq|therefore=shu sababli|unless=agar ...masa|until=...gacha|since=...dan beri|as soon as=...shi bilanoq|instead=o'rniga|otherwise=aks holda
+Predlog va miqdor: in=ichida|on=ustida|under=ostida|above=tepasida|below=pastida|between=orasida|among=o'rtasida (ko'pchilik)|behind=orqasida|in front of=oldida|next to=yonida|near=yaqinida|far=uzoq|opposite=qarshisida|inside=ichkarida|outside=tashqarida|through=orqali|across=ko'ndalangiga / narigi tomonga|along=bo'ylab|towards=tomonga|from=...dan|to=...ga|with=bilan|without=...siz|about=haqida|for=uchun|during=davomida|before=oldin|after=keyin|against=qarshi|all=hamma|every=har bir|each=har qaysi|both=ikkalasi|some=bir oz / ba'zi|any=har qanday|many=ko'p (sanaladigan)|much=ko'p (sanalmaydigan)|few=oz (sanaladigan)|little=oz (sanalmaydigan)|several=bir nechta|half=yarim|quarter=chorak|double=ikki baravar|whole=butun|part=qism|pair=juft|dozen=o'n ikkita|million=million
+Akademik so'zlar (IELTS): significant=sezilarli|to affect=ta'sir qilmoq|benefit=foyda|drawback=kamchilik|issue=masala|to require=talab qilmoq|to provide=ta'minlamoq|to reduce=kamaytirmoq|essential=o'ta zarur|approach=yondashuv|evidence=dalil|factor=omil|consequence=oqibat|opportunity=imkoniyat|to maintain=saqlab turmoq|to fluctuate=tebranib turmoq|to increase=oshmoq|to decline=pasaymoq|trend=tendensiya|rate=daraja / sur'at|proportion=ulush|percentage=foiz ulushi|majority=ko'pchilik|minority=ozchilik|average=o'rtacha|to estimate=taxminan hisoblamoq|to compare=taqqoslamoq|to contrast=qarama-qarshi qo'ymoq|to analyse=tahlil qilmoq|to conclude=xulosa qilmoq|to indicate=ko'rsatmoq|to illustrate=misol bilan ko'rsatmoq|to argue that=...deb ta'kidlamoq|to claim=da'vo qilmoq|to support=qo'llab-quvvatlamoq|to oppose=qarshi chiqmoq|to solve=hal qilmoq|to improve=yaxshilamoq|to develop=rivojlantirmoq|to achieve=erishmoq|to contribute=hissa qo'shmoq|to encourage=rag'batlantirmoq|to prevent=oldini olmoq|to cause=sabab bo'lmoq|to lead to=...ga olib kelmoq|to depend on=...ga bog'liq bo'lmoq|to tend to=...ga moyil bo'lmoq|advantage=afzallik|disadvantage=salbiy tomon|solution=yechim|challenge=qiyinchilik|impact=kuchli ta'sir|aspect=jihat|purpose=maqsad (niyat)|priority=ustuvor vazifa|attitude=munosabat|behaviour=xulq-atvor|individual=shaxs (yakka)|rural=qishloqqa oid|urban=shaharga oid|global=jahon miqyosidagi|recent=yaqinda bo'lgan|current=hozirgi|previous=avvalgi|common=keng tarqalgan|various=turli xil|complex=murakkab tuzilgan|effective=samarali|likely=ehtimoli yuqori|overall=umuman olganda`;
+var B=[],BCATS=[];
+(function(){var seen={};BIGRAW.split("\n").forEach(function(line){var k=line.indexOf(": ");if(k<0)return;var cat=line.slice(0,k);BCATS.push(cat);line.slice(k+2).split("|").forEach(function(p){var e=p.indexOf("=");if(e<0)return;var en=p.slice(0,e).trim(),uz=p.slice(e+1).trim();if(!en||!uz||seen[en])return;seen[en]=1;B.push({k:"b"+B.length,cat:cat,row:[uz,en]});});});})();
+
 var APPS=[
 {n:"Duolingo",u:"https://www.duolingo.com",l:["en","ru","ar","es"],d:"Dunyodagi eng ommabop til ilovalaridan biri. Darslar o'yin shaklida: har kuni 5–10 daqiqalik mashq, ball va ketma-ket kunlar hisobi. Asosiy darslar bepul.",use:"Qanday qo'shish kerak: har kuni bitta Duolingo darsi, keyin shu saytdagi testda yangi so'zlarni tekshiring."},
 {n:"Memrise",u:"https://www.memrise.com",l:["en","ru","ar","es"],d:"So'z va iboralarni til egalarining qisqa videolari orqali o'rgatadi. Jonli talaffuzga quloqni o'rgatish uchun qulay.",use:"Iboralar bo'limida yodlagan gaplaringizni Memrise'da til egasidan eshiting."},
@@ -636,11 +679,11 @@ var APPS=[
 var W=[],P=[],WCATS=Object.keys(WD),PCATS=Object.keys(PD);
 WCATS.forEach(function(c){WD[c].forEach(function(r){W.push({k:"w"+W.length,cat:c,row:r});});});
 PCATS.forEach(function(c){PD[c].forEach(function(r){P.push({k:"p"+P.length,cat:c,row:r});});});
-var VIEWS=[["bosh","Bosh sahifa"],["darslar","Darsliklar"],["lugat","Lug'at"],["iboralar","Iboralar"],["test","Test"],["oyinlar","O'yinlar"],["ielts","IELTS"],["kinolar","Kinolar"],["ilovalar","Ilovalar"]];
+var VIEWS=[["bosh","Bosh sahifa"],["darslar","Darsliklar"],["lugat","Lug'at"],["iboralar","Iboralar"],["test","Test"],["oyinlar","O'yinlar"],["ielts","IELTS"],["kinolar","Kinolar"],["ai","AI ustoz"],["ilovalar","Ilovalar"]];
 var S={lang:"en",done:{},best:{}};
 try{var sv=JSON.parse(localStorage.getItem("tort-til")||"null");if(sv&&LANGS[sv.lang]){S=sv;S.done=S.done||{};S.best=S.best||{};}}catch(e){}
 function save(){try{localStorage.setItem("tort-til",JSON.stringify(S));}catch(e){}}
-var UI={mlv:"all",cat:"all",q:"",hide:false,pcat:"all",phide:false};
+var UI={dict:"w",bcat:BCATS[0],mlv:"all",cat:"all",q:"",hide:false,pcat:"all",phide:false};
 var Q={src:"w",dir:"t2u",cat:"all",qs:null,n:0,score:0,picked:null,wrong:[]};
 var canSpeak=("speechSynthesis" in window)&&("SpeechSynthesisUtterance" in window);
 var $=function(id){return document.getElementById(id);};
@@ -653,7 +696,7 @@ function setDone(k,v,lang){var key=(lang||S.lang)+":"+k;if(v){S.done[key]=1;}els
 function countDone(lang,prefix,total){var n=0;for(var i=0;i<total;i++){if(S.done[lang+":"+prefix+i])n++;}return n;}
 function arc(){return S.lang==="ar"?' ar" dir="rtl" lang="ar':'';}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-function find(k){return k.charAt(0)==="w"?W[+k.slice(1)]:P[+k.slice(1)];}
+function find(k){var c=k.charAt(0),n=+k.slice(1);return c==="w"?W[n]:c==="b"?B[n]:P[n];}
 function speak(k){
   if(!canSpeak)return;
   try{var u=new SpeechSynthesisUtterance(tg(find(k).row));u.lang=L().code;u.rate=0.85;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}
@@ -668,12 +711,13 @@ function menu3d(){
   var NL=LESSONS[S.lang].length,en=S.lang==="en";
   var items=[
     ["darslar","Darsliklar",en?"A1 dan B2 gacha "+NL+" ta dars, tarjimali misollar bilan":NL+" ta dars: alifbo, talaffuz va asosiy grammatika",0],
-    ["lugat","Lug'at",W.length+" ta so'z, 9 mavzu, qidiruv va talaffuz",0],
+    ["lugat","Lug'at",(en?B.length+W.length:W.length)+" ta so'z, mavzular, qidiruv va talaffuz",0],
     ["iboralar","Iboralar",P.length+" ta so'zlashuv gapi tarjimasi bilan",0],
     ["test","Test","10 savol, har birida 3 variant",0],
     ["oyinlar","O'yinlar","Juftini top, harflardan so'z ter, 60 soniya",0],
     ["ielts","IELTS","8 qadam: imtihon tuzilishi, strategiya va reja",1],
     ["kinolar","Kinolar",MOVIES.length+" ta film va serial darajalar bo'yicha",1],
+    ["ai","AI ustoz","Sun'iy intellektdan o'zbek tilida so'rang",0],
     ["ilovalar","Ilovalar","Mashhur til ilovalari o'zbekcha tavsifi bilan",0]];
   var o='<section class="grid"><h2>'+L().name+' bo\'limlari</h2><p class="lead">Yuqoridan pastga shu tartibda o\'ting.</p><div class="stack3d">';
   items.forEach(function(x,i){
@@ -706,19 +750,23 @@ function vHome(){
 
 function chips(list,cur,act){var o='<button class="chip" data-act="'+act+'" data-v="all" aria-pressed="'+(cur==="all")+'">Hammasi</button>';list.forEach(function(c,i){o+='<button class="chip" data-act="'+act+'" data-v="'+i+'" aria-pressed="'+(cur===c)+'">'+c+'</button>';});return o;}
 
+function bigOn(){return S.lang==="en"&&UI.dict==="b";}
 function vVocab(){
-  return head(L().name,"Lug'at",W.length+" ta eng kerakli so'z to'qqiz mavzuga bo'lingan. Tarjimani yashirib, kartani bosib o'zingizni tekshirishingiz mumkin.")+
-  '<div class="tools"><input type="search" id="q" placeholder="So\'z qidirish (o\'zbekcha yoki '+L().short.toLowerCase()+')" value="'+UI.q+'" aria-label="So\'z qidirish"><label class="switch"><input type="checkbox" id="hide" data-act="hide"'+(UI.hide?" checked":"")+'>Tarjimani yashirish</label></div>'+
-  '<div class="chips">'+chips(WCATS,UI.cat,"cat")+'</div><div id="grid" class="grid g4'+(UI.hide?" hidden-tr":"")+'"></div>';
+  var big=bigOn(),out=head(L().name,"Lug'at",big?B.length+" ta inglizcha so'z "+BCATS.length+" mavzuga bo'lingan. Mavzuni tanlang yoki qidiruvdan foydalaning.":W.length+" ta eng kerakli so'z to'qqiz mavzuga bo'lingan. Tarjimani yashirib, kartani bosib o'zingizni tekshirishingiz mumkin.");
+  if(S.lang==="en")out+='<div class="chips">'+seg("dict",UI.dict,[["w","Asosiy "+W.length+" so'z"],["b","Katta lug'at: "+B.length+" so'z"]])+'</div>';
+  return out+'<div class="tools"><input type="search" id="q" placeholder="So\'z qidirish (o\'zbekcha yoki '+L().short.toLowerCase()+')" value="'+UI.q+'" aria-label="So\'z qidirish"><label class="switch"><input type="checkbox" id="hide" data-act="hide"'+(UI.hide?" checked":"")+'>Tarjimani yashirish</label></div>'+
+  '<div class="chips">'+(big?BCATS.map(function(c,i){return '<button class="chip" data-act="bcat" data-v="'+i+'" aria-pressed="'+(UI.bcat===c)+'">'+c+'</button>';}).join(""):chips(WCATS,UI.cat,"cat"))+'</div><div id="grid" class="grid g4'+(UI.hide?" hidden-tr":"")+'"></div>';
 }
 function fillGrid(){
-  var g=$("grid");if(!g)return;var q=UI.q.trim().toLowerCase(),o="";
-  W.forEach(function(w){
-    if(UI.cat!=="all"&&w.cat!==UI.cat)return;
+  var g=$("grid");if(!g)return;var q=UI.q.trim().toLowerCase(),o="",big=bigOn(),list=big?B:W,cat=big?(q?"all":UI.bcat):UI.cat,n=0,more=0;
+  list.forEach(function(w){
+    if(cat!=="all"&&w.cat!==cat)return;
     if(q&&w.row[0].toLowerCase().indexOf(q)<0&&tg(w.row).toLowerCase().indexOf(q)<0)return;
+    if(n>=120){more++;return;}n++;
     var kn=isDone(w.k);
-    o+='<div class="word'+(kn?" known":"")+'" data-act="reveal"><div class="t'+arc()+'">'+tg(w.row)+'</div>'+(trl(w.row)?'<div class="tr">'+trl(w.row)+'</div>':'')+'<div class="u">'+w.row[0]+'</div><div class="f">'+sayBtn(w.k)+'<button class="mini'+(kn?" on":"")+'" data-act="known" data-k="'+w.k+'" aria-pressed="'+kn+'">'+(kn?"Bilaman":"Belgilash")+'</button></div></div>';
+    o+='<div class="word'+(big?" sm":"")+(kn?" known":"")+'" data-act="reveal"><div class="t'+arc()+'">'+tg(w.row)+'</div>'+(trl(w.row)?'<div class="tr">'+trl(w.row)+'</div>':'')+'<div class="u">'+w.row[0]+'</div><div class="f">'+sayBtn(w.k)+'<button class="mini'+(kn?" on":"")+'" data-act="known" data-k="'+w.k+'" aria-pressed="'+kn+'">'+(kn?"Bilaman":"Belgilash")+'</button></div></div>';
   });
+  if(more)o+='<p class="empty">Yana '+more+' ta so\'z mos keldi. Qidiruvni aniqroq yozing.</p>';
   g.innerHTML=o||'<p class="empty">Bunday so\'z topilmadi. Boshqa mavzuni tanlang yoki qidiruvni tozalang.</p>';
 }
 
@@ -737,7 +785,7 @@ function vPhrases(){
 }
 
 function newQuiz(){
-  var all=Q.src==="w"?W:P,pool=all;
+  var all=Q.src==="w"?W:Q.src==="b"?B:P,pool=all;
   if(Q.cat!=="all"){pool=all.filter(function(x){return x.cat===Q.cat;});}
   if(!pool.length){pool=all;Q.cat="all";}
   var ai=Q.dir==="t2u"?0:L().i;
@@ -752,10 +800,10 @@ function newQuiz(){
 function seg(act,cur,items){return items.map(function(x){return '<button class="chip" data-act="'+act+'" data-v="'+x[0]+'" aria-pressed="'+(cur===x[0])+'">'+x[1]+'</button>';}).join("");}
 function vQuiz(){
   if(!Q.qs)newQuiz();
-  var cats=Q.src==="w"?WCATS:PCATS;
+  var cats=Q.src==="w"?WCATS:Q.src==="b"?BCATS:PCATS;
   var sel='<select id="qcat" aria-label="Mavzu"><option value="all">Barcha mavzular</option>'+cats.map(function(c,i){return '<option value="'+i+'"'+(Q.cat===c?" selected":"")+'>'+c+'</option>';}).join("")+'</select>';
   var out=head(L().name,"Lug'at testi","Har bir savolda uchta variant bor, bittasi to'g'ri. To'g'ri topilgan so'zlar lug'atda avtomatik belgilanadi.")+
-  '<div class="tools"><div class="chips">'+seg("qsrc",Q.src,[["w","So'zlar"],["p","Iboralar"]])+'</div><div class="chips">'+seg("qdir",Q.dir,[["t2u",L().short+" → o'zbekcha"],["u2t","O'zbekcha → "+L().short.toLowerCase()]])+'</div>'+sel+'</div>';
+  '<div class="tools"><div class="chips">'+seg("qsrc",Q.src,S.lang==="en"?[["w","Asosiy so'zlar"],["b","Katta lug'at"],["p","Iboralar"]]:[["w","So'zlar"],["p","Iboralar"]])+'</div><div class="chips">'+seg("qdir",Q.dir,[["t2u",L().short+" → o'zbekcha"],["u2t","O'zbekcha → "+L().short.toLowerCase()]])+'</div>'+sel+'</div>';
   if(Q.n>=Q.qs.length){
     var tot=Q.qs.length,msg=Q.score===tot?"A'lo! Hammasi to'g'ri.":Q.score>=tot*0.7?"Yaxshi natija. Xatolarni yana bir ko'rib chiqing.":"Mashq qilishda davom eting, keyingi safar yaxshiroq bo'ladi.";
     out+='<div class="quiz res"><div class="meta"><span>Test yakunlandi</span></div><div><b>'+Q.score+' / '+tot+'</b></div><p>'+msg+'</p>';
@@ -843,6 +891,7 @@ function vMovies(){
 
 var G={game:"mem",pool:"w",m:null,s:null,t:{on:false,left:60,score:0,total:0,cur:null,ended:false},timer:null};
 function gpool(){
+  if(G.pool==="b"&&S.lang==="en")return B.map(function(w){return {u:w.row[0],t:w.row[1],ar:false};});
   if(G.pool==="i")return IW.map(function(x){return {u:x[0],t:x[1],ar:false};});
   return W.map(function(w){return {u:w.row[0],t:tg(w.row),ar:S.lang==="ar"};});
 }
@@ -873,7 +922,7 @@ function spdStart(){
 }
 function vGames(){
   var out=head(G.pool==="i"?"Ingliz tili · IELTS":L().name,"O'yinlar","So'zlarni o'yin orqali mustahkamlang. Uch xil o'yin bor, so'zlar lug'at bo'limidan yoki IELTS akademik lug'atidan olinadi.")+
-  '<div class="tools"><div class="chips">'+seg("game",G.game,[["mem","Juftini top"],["scr","Harflardan so'z ter"],["spd","60 soniya"]])+'</div><div class="chips">'+seg("gpool",G.pool,[["w",L().short+" lug'at"],["i","IELTS so'zlari (inglizcha)"]])+'</div></div>';
+  '<div class="tools"><div class="chips">'+seg("game",G.game,[["mem","Juftini top"],["scr","Harflardan so'z ter"],["spd","60 soniya"]])+'</div><div class="chips">'+seg("gpool",G.pool,(S.lang==="en"?[["b","Katta lug'at"]]:[]).concat([["w",L().short+" lug'at"]]).concat([["i","IELTS so'zlari (inglizcha)"]]))+'</div></div>';
   if(G.game==="mem"){
     if(!G.m)memNew();
     var m=G.m,won=Object.keys(m.done).length===6;
@@ -938,13 +987,66 @@ function gameClick(a,v){
   return false;
 }
 
+/* ---------- AI USTOZ ---------- */
+var AI={ready:null,msgs:[],busy:false,err:""};
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");}
+(function(){
+  try{
+    if(window.claude&&typeof window.claude.use==="function"){
+      window.claude.use("sample").then(function(fn){AI.ready=fn||false;if(view()==="ai")render(true);},function(){AI.ready=false;if(view()==="ai")render(true);});
+    }else{AI.ready=false;}
+  }catch(e){AI.ready=false;}
+})();
+function aiPrompts(){
+  var n=L().name,p=["Menga "+n+" bo'yicha 5 ta savoldan iborat kichik test tuz, javoblarini oxirida ber.",n+"da o'zimni tanishtirish uchun 5 ta gap yozib ber, tarjimasi bilan.","Eng ko'p ishlatiladigan 10 ta fe'lni misol gaplar bilan ber."];
+  if(S.lang==="en"){p.push("Present Perfect va Past Simple farqini sodda tushuntir.");p.push("IELTS Speaking Part 1 uchun 3 ta savol ber va namunali javob yoz.");}
+  return p;
+}
+function vAi(){
+  var out=head(L().name,"AI ustoz","Sun'iy intellektdan o'zbek tilida so'rang: so'zni tushuntirish, yozgan gapingizni tekshirish, mashq yoki kichik test tuzib berish.");
+  if(AI.ready===null)return out+'<div class="quiz"><p>AI ustozga ulanish tekshirilmoqda...</p></div>';
+  if(AI.ready===false)return out+'<div class="quiz"><p><strong>AI ustoz bu manzilda ishlamaydi.</strong></p><p class="lead">Sun\'iy intellekt saytning Claude ichida ochilgan nusxasida ishlaydi. GitHub\'dagi oddiy sahifa AI xizmatiga ulana olmaydi, buning uchun alohida server va maxfiy kalit kerak bo\'ladi.</p><p class="lead">Qolgan barcha bo\'limlar shu yerda to\'liq ishlaydi.</p><div class="btns"><a class="btn" href="#darslar">Darsliklarga o\'tish</a><a class="btn ghost" href="#test">Test ishlash</a></div></div>';
+  out+='<div class="quiz chat"><div class="msgs" id="aimsgs">';
+  if(!AI.msgs.length)out+='<p class="lead">Savolingizni yozing yoki quyidagi tayyor so\'rovlardan birini tanlang. Gapingizni tekshirtirish uchun uni shunchaki yozib yuboring.</p>';
+  AI.msgs.forEach(function(m){out+='<div class="msg '+(m.role==="user"?"me":"bot")+'"><small>'+(m.role==="user"?"Siz":"AI ustoz")+'</small><div>'+esc(m.content)+'</div></div>';});
+  if(AI.busy)out+='<div class="msg bot"><small>AI ustoz</small><div id="ailive">O\'ylayapti...</div></div>';
+  if(AI.err)out+='<div class="fb no" role="status">'+AI.err+'</div>';
+  out+='</div><div class="chips">'+aiPrompts().map(function(p,i){return '<button class="chip" data-act="aiq" data-v="'+i+'"'+(AI.busy?" disabled":"")+'>'+p+'</button>';}).join("")+'</div>'+
+  '<label class="lead" for="aiin">Savolingiz</label><textarea id="aiin" rows="3" placeholder="Masalan: I goed to school yesterday. Shu gap to\'g\'rimi?"'+(AI.busy?" disabled":"")+'></textarea>'+
+  '<div class="btns"><button class="btn" data-act="aisend"'+(AI.busy?" disabled":"")+'>Yuborish</button>'+(AI.msgs.length?'<button class="btn ghost" data-act="aiclear"'+(AI.busy?" disabled":"")+'>Suhbatni tozalash</button>':'')+'</div></div>';
+  return out;
+}
+function aiSend(text){
+  text=(text||"").trim();if(!text||AI.busy||!AI.ready)return;
+  AI.msgs.push({role:"user",content:text});AI.busy=true;AI.err="";render(true);
+  var hist=AI.msgs.slice(-11);while(hist.length&&hist[0].role!=="user")hist.shift();
+  var sys="Sen o'zbek tilida so'zlashuvchilarga "+L().name+"ni o'rgatadigan sabrli til ustozisan. Javoblarni o'zbek tilida, lotin yozuvida, qisqa va aniq yoz. Misollarni o'rganilayotgan tilda ber va har birini o'zbekchaga tarjima qil. O'quvchi gap yozsa, xatosini ko'rsat, to'g'ri variantini ber va qoidani bir-ikki jumlada tushuntir. Markdown belgilarini ishlatma, oddiy matn yoz.\n\nO'quvchi savoli: ";
+  var input=hist.map(function(m,i){return {role:m.role,content:i===0?sys+m.content:m.content};});
+  var done=function(){AI.busy=false;if(view()==="ai"){render(true);var b=$("aimsgs");if(b)b.scrollTop=b.scrollHeight;}};
+  try{
+    AI.ready(input,{cache:false,onText:function(x){var el=$("ailive");if(el)el.textContent=x.text;}}).then(function(r){AI.msgs.push({role:"assistant",content:r.text||""});done();},function(e){
+      AI.msgs.pop();
+      if(e&&e.code==="not_granted"){AI.ready=false;}
+      else{AI.err=e&&e.code==="rate_limited"?"So'rovlar chegarasiga yetildi. Bir necha daqiqadan keyin qayta urinib ko'ring.":"Javob olinmadi. Savolni qayta yuborib ko'ring.";}
+      done();
+    });
+  }catch(e){AI.msgs.pop();AI.err="Javob olinmadi. Savolni qayta yuborib ko'ring.";done();}
+}
+function aiClick(a,v){
+  if(a==="aisend"){var t=$("aiin");aiSend(t?t.value:"");return true;}
+  if(a==="aiq"){aiSend(aiPrompts()[+v]);return true;}
+  if(a==="aiclear"){AI.msgs=[];AI.err="";render(true);return true;}
+  return false;
+}
+
 /* ---------- RENDER ---------- */
 function render(keepScroll){
   var v=view();
+  if(S.lang!=="en"){if(Q.src==="b"){Q.src="w";Q.cat="all";Q.qs=null;}if(G.pool==="b"){G.pool="w";G.m=null;G.s=null;}}
   document.body.setAttribute("data-lang",(v==="ielts"||v==="kinolar"||(v==="oyinlar"&&G.pool==="i"))?"en":S.lang);if(v!=="oyinlar"){spdStop();G.t.on=false;}
   $("langs").innerHTML=["en","ru","ar","es"].map(function(c){return '<button data-act="lang" data-v="'+c+'" aria-pressed="'+(S.lang===c)+'">'+LANGS[c].short+'</button>';}).join("");
   $("nav").innerHTML=VIEWS.map(function(x){return '<a href="#'+x[0]+'"'+(x[0]===v?' aria-current="page"':'')+'>'+x[1]+'</a>';}).join("");
-  var html=v==="darslar"?vLessons():v==="lugat"?vVocab():v==="test"?vQuiz():v==="iboralar"?vPhrases():v==="ilovalar"?vApps():v==="ielts"?vIelts():v==="kinolar"?vMovies():v==="oyinlar"?vGames():vHome();
+  var html=v==="darslar"?vLessons():v==="lugat"?vVocab():v==="test"?vQuiz():v==="iboralar"?vPhrases():v==="ilovalar"?vApps():v==="ielts"?vIelts():v==="kinolar"?vMovies():v==="oyinlar"?vGames():v==="ai"?vAi():vHome();
   $("view").innerHTML=html;
   if(v==="lugat")fillGrid();
   if(!keepScroll)window.scrollTo(0,0);
@@ -953,7 +1055,9 @@ function render(keepScroll){
 document.addEventListener("click",function(e){
   var el=e.target.closest("[data-act]");if(!el)return;
   var a=el.getAttribute("data-act"),v=el.getAttribute("data-v"),k=el.getAttribute("data-k");
-  if(gameClick(a,v))return;
+  if(gameClick(a,v)||aiClick(a,v))return;
+  if(a==="dict"){UI.dict=v;UI.q="";render(true);return;}
+  if(a==="bcat"){UI.bcat=BCATS[+v];UI.q="";var qi=$("q");if(qi)qi.value="";render(true);return;}
   if(a==="lang"){S.lang=v;save();Q.qs=null;G.m=null;G.s=null;render(true);}
   else if(a==="say"){e.stopPropagation();speak(k);}
   else if(a==="cat"){UI.cat=v==="all"?"all":WCATS[+v];render(true);}
@@ -979,7 +1083,7 @@ document.addEventListener("change",function(e){
   var t=e.target;
   if(t.id==="hide"){UI.hide=t.checked;$("grid").classList.toggle("hidden-tr",UI.hide);}
   else if(t.id==="phide"){UI.phide=t.checked;render(true);}
-  else if(t.id==="qcat"){var c=Q.src==="w"?WCATS:PCATS;Q.cat=t.value==="all"?"all":c[+t.value];Q.qs=null;render(true);}
+  else if(t.id==="qcat"){var c=Q.src==="w"?WCATS:Q.src==="b"?BCATS:PCATS;Q.cat=t.value==="all"?"all":c[+t.value];Q.qs=null;render(true);}
   else if(t.getAttribute("data-act")==="lesson"){setDone(t.getAttribute("data-k"),t.checked,t.getAttribute("data-l"));}
 });
 document.addEventListener("input",function(e){if(e.target.id==="q"){UI.q=e.target.value;fillGrid();}});
