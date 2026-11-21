@@ -782,7 +782,7 @@ function speechSegments(buf){
   return segs.filter(s=>s[1]-s[0]>.12);
 }
 function splitText(txt){
-  const clauses=txt.replace(/\s+/g,' ').split(/(?<=[.!?…:;,—])\s+/).map(s=>s.trim()).filter(Boolean);
+  const clauses=txt.replace(/\s+/g,' ').replace(/([.!?…:;,—])\s+/g,'$1\n').split('\n').map(s=>s.trim()).filter(Boolean);
   return clauses.map(c=>{const w=c.split(' '),out=[];let cur=[];
     for(const x of w){cur.push(x);if(cur.length>=3&&cur.join(' ').length>14){out.push(cur.join(' '));cur=[]}}
     if(cur.length){if(out.length&&cur.join(' ').length<6)out[out.length-1]+=' '+cur.join(' ');else out.push(cur.join(' '))}
