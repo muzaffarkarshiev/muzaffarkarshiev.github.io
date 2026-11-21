@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
+<script>try{var m=navigator.deviceMemory||4,c=navigator.hardwareConcurrency||4;if(m<=4||c<=4||/Android [4-9]\b/.test(navigator.userAgent))document.documentElement.classList.add("lite")}catch(e){}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MK Studio AI — Muzaffar Karshiev</title>
@@ -27,14 +28,15 @@ body{background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-seri
 button{font:inherit;color:inherit}
 /* light animated background (no WebGL → no freezing) */
 .blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.blobs i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;will-change:transform;animation:drift 18s ease-in-out infinite alternate}
+.blobs{background:radial-gradient(60vmax 50vmax at 0% 0%,rgba(91,60,255,.35),transparent 60%),radial-gradient(50vmax 45vmax at 100% 100%,rgba(0,140,255,.28),transparent 60%),radial-gradient(35vmax 30vmax at 70% 45%,rgba(193,43,176,.16),transparent 60%)}
+.blobs i{display:none}
 .blobs i:nth-child(1){width:55vmax;height:55vmax;background:#5b3cff;top:-20vmax;left:-15vmax}
 .blobs i:nth-child(2){width:45vmax;height:45vmax;background:#008cff;bottom:-18vmax;right:-15vmax;animation-duration:22s}
 .blobs i:nth-child(3){width:30vmax;height:30vmax;background:#c12bb0;top:40%;left:45%;animation-duration:26s;opacity:.3}
 @keyframes drift{to{transform:translate(6vmax,5vmax) scale(1.1)}}
 .wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 16px}
 /* top bar */
-.top{position:sticky;top:0;z-index:30;background:rgba(10,8,24,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.top{position:sticky;top:0;z-index:30;background:rgba(10,8,24,.96);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
 .logo{display:flex;align-items:center;gap:10px;font-family:Unbounded;font-weight:800;font-size:16px}
 .logo img{width:34px;height:34px;border-radius:10px;animation:wob 5s ease-in-out infinite}
@@ -130,7 +132,7 @@ footer b{color:var(--txt)}
 .toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#1f1b3d;border:1px solid var(--line);padding:12px 16px;border-radius:14px;font-size:14px;font-weight:600;opacity:0;transition:.3s;z-index:60;pointer-events:none;max-width:90vw;text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%)}
 /* bottom bar (mobile) */
-.bbar{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;display:grid;grid-template-columns:repeat(5,1fr);height:64px;border-radius:22px;background:rgba(20,17,43,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.13);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.bbar{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;display:grid;grid-template-columns:repeat(6,1fr);height:64px;border-radius:22px;background:rgba(20,17,43,.97);border:1px solid rgba(255,255,255,.13);box-shadow:0 16px 40px rgba(0,0,0,.5)}
 .bbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:700;color:var(--mut);cursor:pointer;position:relative}
 .bbar button em{font-style:normal;font-size:20px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
 .bbar button.on{color:#fff}
@@ -139,6 +141,9 @@ footer b{color:var(--txt)}
 @media (min-width:900px){.bbar{display:none}body{padding-bottom:20px}}
 @media (max-width:560px){.row2,.ideas{grid-template-columns:1fr 1fr}.hero{gap:16px}.ava{width:86px;height:86px}.card{padding:16px;border-radius:22px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html.lite .go::after,html.lite .ava::before,html.lite .card h2 em,html.lite .ava b,html.lite .logo img,html.lite .hero h1 span{animation:none!important}
+html.lite .view,html.lite .scene,html.lite .vitem{animation-duration:.2s!important}
+.card{contain:layout paint}
 
 .scene{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:12px;border-radius:18px;background:#0d0b20;border:1px solid var(--line);margin-bottom:10px;animation:in .5s both}
 .scene .media{position:relative;width:120px;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:linear-gradient(110deg,#1b1738 30%,#2a2452 50%,#1b1738 70%);background-size:200% 100%;animation:shim 1.4s linear infinite}
@@ -185,10 +190,10 @@ footer b{color:var(--txt)}
 
   <div class="tabs" id="tabs">
     <button class="tab" data-v="story"><em>📖</em><span data-t="tStory"></span></button>
+    <button class="tab" data-v="i2v"><em>🖼️</em><span data-t="tI2v"></span></button>
     <button class="tab" data-v="voice"><em>🎙️</em><span data-t="tVoice"></span></button>
     <button class="tab" data-v="char"><em>🧑‍🎨</em><span data-t="tChar"></span></button>
     <button class="tab" data-v="t2v"><em>🎬</em><span data-t="tT2v"></span></button>
-    <button class="tab" data-v="i2v"><em>🖼️</em><span data-t="tI2v"></span></button>
     <button class="tab" data-v="lip"><em>🗣️</em><span data-t="tLip"></span></button>
     <button class="tab" data-v="dub"><em>🎞️</em><span data-t="tDub"></span></button>
   </div>
@@ -375,6 +380,7 @@ footer b{color:var(--txt)}
 
 <nav class="bbar" id="bbar">
   <button data-v="story"><em>📖</em><span data-t="bbStory"></span></button>
+  <button data-v="i2v"><em>🖼️</em><span data-t="bbI2v"></span></button>
   <button data-v="char"><em>🧑‍🎨</em><span data-t="bbChar"></span></button>
     <button data-v="t2v"><em>🎬</em><span data-t="bbT2v"></span></button>
     <button data-v="lip"><em>🗣️</em><span data-t="bbLip"></span></button>
@@ -677,6 +683,18 @@ function wavBlob(buf){const ch=buf.numberOfChannels,sr=buf.sampleRate,len=buf.le
   for(let i=0;i<len;i++){const s2=Math.max(-1,Math.min(1,d[i]));v.setInt16(44+i*2,s2<0?s2*0x8000:s2*0x7fff,true)}return new Blob([ab],{type:'audio/wav'})}
 let _ac=null;const actx=()=>_ac||(_ac=new (window.AudioContext||window.webkitAudioContext)());
 async function toWavSample(blob,maxSec){const b=await actx().decodeAudioData(await blob.arrayBuffer());const n=Math.min(b.length,Math.floor(maxSec*b.sampleRate));const o=actx().createBuffer(1,n,b.sampleRate);const d=o.getChannelData(0);for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c);for(let i=0;i<n;i++)d[i]+=x[i]/b.numberOfChannels}return wavBlob(o)}
+
+const UZ1=['nol','bir','ikki','uch',"to'rt",'besh','olti','yetti','sakkiz',"to'qqiz"],UZ10=['',"o'n",'yigirma',"o'ttiz",'qirq','ellik','oltmish','yetmish','sakson',"to'qson"];
+function uzNum(n){n=Math.floor(n);if(n<10)return UZ1[n];if(n<100)return (UZ10[Math.floor(n/10)]+(n%10?' '+UZ1[n%10]:''));
+  const big=[[1e9,'milliard'],[1e6,'million'],[1e3,'ming'],[100,'yuz']];for(const [v,w] of big){if(n>=v){const h=Math.floor(n/v),r=n%v;const head=(v===100||v===1e3)&&h===1?w:uzNum(h)+' '+w;return head+(r?' '+uzNum(r):'')}}return String(n)}
+function uzOrd(w){return /[aeiou']$/i.test(w)&&!/'$/.test(w)?w+'nchi':w+'inchi'}
+function normUz(t){
+  t=t.replace(/[ʻʼ‘’`´]/g,"'").replace(/(\d)[ ,](?=\d{3}\b)/g,'$1');
+  t=t.replace(/(\d+)\s*%/g,(m,d)=>uzNum(+d)+' foiz');
+  t=t.replace(/(\d+)-/g,(m,d)=>uzOrd(uzNum(+d))+' ');
+  t=t.replace(/(\d+)[.,](\d+)/g,(m,a,b)=>uzNum(+a)+' butun '+uzNum(+b));
+  t=t.replace(/\d+/g,d=>uzNum(+d));
+  return t.replace(/\s+/g,' ').trim()}
 const TTSLANG={uz:'tr',ru:'ru',en:'en',tr:'tr'};
 const VLANGS=[{n:"🇺🇿 O'zbek",k:'uz'},{n:'🇷🇺 Русский',k:'ru'},{n:'🇬🇧 English',k:'en'},{n:'🇹🇷 Türkçe',k:'tr'}];
 let getVLang=chips($('vLang'),VLANGS,Math.max(0,VLANGS.findIndex(x=>x.k===L)));
@@ -689,6 +707,7 @@ function splitTTS(text){text=text.replace(/[ʻʼ‘’`´]/g,"'").replace(/\s+/g
 async function tts(text,langKey,voiceBlob,ex,onPart){
   const {Client,handle_file}=await gradio();const o={};const k=tok();if(k)o.hf_token=k;
   const c=await Client.connect('ResembleAI/Chatterbox-Multilingual-TTS',o);
+  if((langKey||'uz')==='uz')text=normUz(text);
   const parts=splitTTS(text),bufs=[];
   for(let i=0;i<parts.length;i++){onPart&&onPart(i,parts.length);
     const r=await c.predict('/generate_tts_audio',{text_input:parts[i],language_id:TTSLANG[langKey]||'tr',audio_prompt_path_input:handle_file(voiceBlob),exaggeration_input:ex,temperature_input:.8,seed_num_input:0,cfgw_input:.5});
@@ -712,11 +731,15 @@ $('vSave').onclick=async()=>{
   if(!sample){toast(t('vNeedSample'));return} if(!$('vConsent').checked){toast(t('vNeedConsent'));return}
   buzz();try{const wav=await toWavSample(sample,20);const v={id:'v'+Date.now(),name:$('vName').value.trim()||'Ovoz '+new Date().toLocaleDateString(),blob:wav,created:Date.now()};await DB.put('voices',v);selVoice=v.id;try{localStorage.setItem('mk_voice',v.id)}catch(e){}
     sample=null;$('vName').value='';$('vRecInfo').textContent=t('vSampleTip');toast(t('vSaved'));renderVoices()}catch(e){toast(t('st_err')+e.message)}};
-async function voicesList(){try{return (await DB.all('voices')).sort((a,b)=>b.created-a.created)}catch(e){return[]}}
+
+const PUBLIC_VOICES=[{id:'pub-muzaffar',name:'Muzaffar Karshiev',url:'voices/muzaffar.wav'}];
+let pubCache={};
+async function publicVoices(){const out=[];for(const p of PUBLIC_VOICES){try{if(!pubCache[p.id]){const r=await fetch(p.url,{cache:'force-cache'});if(!r.ok)continue;pubCache[p.id]=await r.blob()}out.push({id:p.id,name:'⭐ '+p.name,blob:pubCache[p.id],created:9e15,pub:true})}catch(e){}}return out}
+async function voicesList(){let mine=[];try{mine=(await DB.all('voices')).sort((a,b)=>b.created-a.created)}catch(e){}return [...(await publicVoices()),...mine]}
 async function renderVoices(){const vs=await voicesList();const box=$('vList');box.innerHTML='';
-  if(!selVoice){try{selVoice=localStorage.getItem('mk_voice')}catch(e){}} if(vs.length&&!vs.find(v=>v.id===selVoice))selVoice=vs[0].id;
+  if(!selVoice){try{selVoice=localStorage.getItem('mk_voice')}catch(e){}}if(!selVoice&&vs.length)selVoice=vs[0].id; if(vs.length&&!vs.find(v=>v.id===selVoice))selVoice=vs[0].id;
   if(!vs.length){box.innerHTML='<span class="tip">'+t('vNone')+'</span>'}
-  vs.forEach(v=>{const b=document.createElement('button');b.className='chip vchip'+(v.id===selVoice?' on':'');b.innerHTML='🎙️ '+v.name.replace(/</g,'')+' <i title="✖">✕</i>';
+  vs.forEach(v=>{const b=document.createElement('button');b.className='chip vchip'+(v.id===selVoice?' on':'');b.innerHTML='🎙️ '+v.name.replace(/</g,'')+(v.pub?'':' <i title="✖">✕</i>');
     b.onclick=e=>{if(e.target.tagName==='I'){if(confirm('✕ '+v.name+'?'))DB.del('voices',v.id).then(renderVoices);return}buzz();selVoice=v.id;try{localStorage.setItem('mk_voice',v.id)}catch(e){}renderVoices()};box.appendChild(b)});
   renderStoryVoice()}
 async function getVoiceBlob(){const vs=await voicesList();const v=vs.find(x=>x.id===selVoice)||vs[0];return v?v.blob:null}
