@@ -130,7 +130,7 @@ footer b{color:var(--txt)}
 .toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#1f1b3d;border:1px solid var(--line);padding:12px 16px;border-radius:14px;font-size:14px;font-weight:600;opacity:0;transition:.3s;z-index:60;pointer-events:none;max-width:90vw;text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%)}
 /* bottom bar (mobile) */
-.bbar{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;display:grid;grid-template-columns:repeat(6,1fr);height:64px;border-radius:22px;background:rgba(20,17,43,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.13);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.bbar{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;display:grid;grid-template-columns:repeat(5,1fr);height:64px;border-radius:22px;background:rgba(20,17,43,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.13);box-shadow:0 16px 40px rgba(0,0,0,.5)}
 .bbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:700;color:var(--mut);cursor:pointer;position:relative}
 .bbar button em{font-style:normal;font-size:20px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
 .bbar button.on{color:#fff}
@@ -151,6 +151,18 @@ footer b{color:var(--txt)}
 .scene .sa button:disabled{opacity:.5}
 .scene.busy .media::after{content:"";position:absolute;inset:0;background:rgba(10,8,24,.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='18' fill='none' stroke='%2300d4ff' stroke-width='4' stroke-dasharray='80 40'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 25 25' to='360 25 25' dur='1s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/svg%3E") center/40px no-repeat}
 @media (max-width:420px){.scene{grid-template-columns:96px 1fr}.scene .media{width:96px}}
+
+.vitem{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:10px 12px;border-radius:14px;background:#0d0b20;border:1px solid var(--line);margin-bottom:8px;animation:in .4s both}
+.vitem audio{flex:1 1 100%;order:3;min-width:0;height:38px}
+.vitem>div{flex:1;min-width:0}
+.vitem button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:7px 9px;font-size:13px;cursor:pointer}
+.vitem small{color:var(--mut);display:block;font-size:12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#vRec.rec{background:#ff3b5c;border-color:#ff3b5c;animation:pulse2 1s infinite}
+@keyframes pulse2{50%{box-shadow:0 0 0 10px rgba(255,59,92,0)}0%{box-shadow:0 0 0 0 rgba(255,59,92,.6)}}
+.vchip{display:inline-flex;align-items:center;gap:6px}
+.vchip i{font-style:normal;opacity:.6;margin-left:4px;cursor:pointer}
+.refs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.refs img{width:64px!important;height:64px;object-fit:cover;border-radius:10px}
 </style>
 </head>
 <body>
@@ -173,6 +185,7 @@ footer b{color:var(--txt)}
 
   <div class="tabs" id="tabs">
     <button class="tab" data-v="story"><em>📖</em><span data-t="tStory"></span></button>
+    <button class="tab" data-v="voice"><em>🎙️</em><span data-t="tVoice"></span></button>
     <button class="tab" data-v="char"><em>🧑‍🎨</em><span data-t="tChar"></span></button>
     <button class="tab" data-v="t2v"><em>🎬</em><span data-t="tT2v"></span></button>
     <button class="tab" data-v="i2v"><em>🖼️</em><span data-t="tI2v"></span></button>
@@ -191,7 +204,9 @@ footer b{color:var(--txt)}
     <div class="chips" id="sType"></div>
     <div class="step" data-t="s2style"></div>
     <div class="chips" id="sStyle"></div>
-    <div class="step" data-t="sCount"></div>
+    <div class="step" data-t="sRefs"></div>
+    <label class="drop" id="sDropR" style="min-height:96px"><input type="file" id="sRefs" accept="image/*" multiple><span class="big">🧑‍🤝‍🧑</span><span data-t="sRefsHint"></span></label>
+    <div class="step" data-t="sLen"></div>
     <div class="chips" id="sCount"></div>
     <button class="go" id="sGo">📖 <span data-t="bStory"></span></button>
     <div class="prog" id="sProg"><div class="loader"><div class="orb"></div><div><b class="pt"></b><small class="ps"></small></div></div><div class="bar"><i></i></div></div>
@@ -200,7 +215,8 @@ footer b{color:var(--txt)}
       <h3 id="sTitle" style="font-size:20px;margin:6px 0 12px"></h3>
       <div id="sScenes"></div>
       <div class="step" data-t="sVoice"></div>
-      <label class="drop" id="sDropA" style="min-height:90px"><input type="file" id="sAud" accept="audio/*,video/*"><span class="big">🎙️</span><span data-t="sVoiceHint"></span></label>
+      <div class="chips" id="sVoiceMode" style="margin-bottom:10px"></div>
+      <label class="drop" id="sDropA" style="min-height:90px;display:none"><input type="file" id="sAud" accept="audio/*,video/*"><span class="big">🎙️</span><span data-t="sVoiceHint"></span></label>
       <div class="acts"><button class="ghost" id="sCopy">📋 <span data-t="bCopyText"></span></button><button class="ghost" id="sAnimAll">🎬 <span data-t="bAnimAll"></span></button></div>
       <button class="go" id="sMake">🎞️ <span data-t="bMakeFinal"></span></button>
       <div class="bar"><i id="sBar"></i></div>
@@ -208,6 +224,39 @@ footer b{color:var(--txt)}
       <div style="max-width:360px;margin:12px auto 0"><canvas id="sCanvas" width="720" height="1280" style="width:100%;border-radius:18px;background:#000;display:none"></canvas></div>
       <div class="acts"><a class="ghost" id="sDl" style="pointer-events:none;opacity:.5">⬇️ <span data-t="bDl"></span></a></div>
     </div>
+  </div></section>
+
+
+  <!-- VOICE STUDIO -->
+  <section class="view" id="v-voice"><div class="card">
+    <h2><em>🎙️</em><span data-t="tVoice"></span></h2>
+    <p class="desc" data-t="dVoice"></p>
+    <div class="step" data-t="vS1"></div>
+    <input type="text" id="vName" data-ph="vNamePh">
+    <div class="row2" style="margin-top:10px">
+      <button class="ghost" id="vRec">🔴 <span data-t="vRecord"></span></button>
+      <label class="ghost" style="position:relative;cursor:pointer">📁 <span data-t="vUpload"></span><input type="file" id="vFile" accept="audio/*,video/*" style="position:absolute;inset:0;opacity:0"></label>
+    </div>
+    <div class="tip" id="vRecInfo" data-t="vSampleTip"></div>
+    <label class="chk"><input type="checkbox" id="vConsent"><span data-t="vConsent"></span></label>
+    <button class="go" id="vSave" style="margin-top:8px">💾 <span data-t="vSaveBtn"></span></button>
+    <div class="step" data-t="vMy"></div>
+    <div id="vList" class="chips"></div>
+
+    <div class="step" data-t="vS2"></div>
+    <textarea id="vText" data-ph="vTextPh"></textarea>
+    <div class="chips" id="vLang" style="margin-top:10px"></div>
+    <div class="lbl"><span data-t="vEmo"></span>: <b id="vEmoV">0.5</b></div>
+    <input type="range" id="vEmo" min="0.25" max="1.5" step="0.05" value="0.5">
+    <button class="go" id="vGo">🔊 <span data-t="vMake"></span></button>
+    <div class="prog" id="vProg"><div class="loader"><div class="orb"></div><div><b class="pt"></b><small class="ps"></small></div></div><div class="bar"><i></i></div></div>
+    <div class="err" id="vErr"></div>
+    <div class="result" id="vRes">
+      <audio id="vAudio" controls style="width:100%"></audio>
+      <div class="acts"><button class="ghost" id="vDl">⬇️ <span data-t="bDl"></span></button><button class="ghost" id="vToLip">🗣️ <span data-t="vToLip"></span></button></div>
+    </div>
+    <div class="step" data-t="vLib"></div>
+    <div id="vLibList"></div>
   </div></section>
 
   <!-- 1. CHARACTER -->
@@ -328,16 +377,15 @@ footer b{color:var(--txt)}
   <button data-v="story"><em>📖</em><span data-t="bbStory"></span></button>
   <button data-v="char"><em>🧑‍🎨</em><span data-t="bbChar"></span></button>
     <button data-v="t2v"><em>🎬</em><span data-t="bbT2v"></span></button>
-  <button data-v="i2v"><em>🖼️</em><span data-t="bbI2v"></span></button>
-  <button data-v="lip"><em>🗣️</em><span data-t="bbLip"></span></button>
-  <button data-v="dub"><em>🎞️</em><span data-t="bbDub"></span></button>
+    <button data-v="lip"><em>🗣️</em><span data-t="bbLip"></span></button>
+  <button data-v="voice"><em>🎙️</em><span data-t="bbVoice"></span></button>
   </nav>
 <div class="toast" id="toast"></div>
 
 <script>
 /* ============ TEXTS (4 languages) ============ */
 const T={
-uz:{tStory:"Hikoya video",bbStory:"Hikoya",dStory:"Mavzuni yozing — AI hikoya yoki ma'lumotli ssenariy yozadi, har bir sahna uchun HD rasm chizadi va hammasini yozuvli, ovozli tayyor videoga yig'adi. Hammasi bepul.",sTopic:"1. Mavzu",phStory:"Masalan: Ibn Sino bolaligida qanday kitob o'qigani haqida bolalar uchun hikoya",sType:"2. Turi",sCount:"3. Sahnalar soni",bStory:"Ssenariy va rasmlarni yaratish",pWrite:"AI ssenariy yozmoqda…",pWriteS:"10–40 soniya",pImgs:"Sahna rasmlari chizilmoqda: ",sVoice:"4. Ovoz (ixtiyoriy)",sVoiceHint:"Butun hikoya uchun ovoz yuklang (masalan ElevenLabs). Yuklamasangiz, video ovozsiz, faqat yozuvlar bilan yasaladi.",bCopyText:"Matnni nusxalash",bAnimAll:"Hammasini jonlantirish",bMakeFinal:"Yakuniy videoni yig'ish",bRe:"🔄 Rasm",bAn:"🎬 Jonlantirish",scene:"Sahna",typeTale:"🧚 Ertak",typeHist:"🏛️ Tarix",typeSci:"🔬 Ilm-fan",typeFact:"💡 Qiziq faktlar",typeMoral:"❤️ Ibratli hikoya",free:"Bepul",h1:"O'zbekcha yozing — AI video yasaydi",sub:"Personaj yarating, matndan HD video oling, rasmni jonlantiring yoki rasmni gapirtiring. Ro'yxatdan o'tish shart emas.",devby:"Ishlab chiquvchi:",
+uz:{tVoice:"Mening ovozim",bbVoice:"Ovozim",dVoice:"Ovozingizdan 10–20 soniya yozib oling yoki yuklang, unga ismingizni bering. Keyin har qanday matnni AI aynan sizning ovozingizda o'qib beradi. Ovozlar va audiolar faqat sizning telefoningizda saqlanadi.",vS1:"1. Ovoz profili",vNamePh:"Ovoz nomi, masalan: Muzaffar",vRecord:"Yozib olish",vStop:"To'xtatish",vUpload:"Fayl yuklash",vSampleTip:"Shovqinsiz joyda 10–20 soniya tabiiy gapiring. Eng yaxshisi: oddiy hikoya o'qib bering.",vConsent:"Bu mening ovozim yoki egasidan ruxsat olganman",vSaveBtn:"Ovozni saqlash",vMy:"Saqlangan ovozlarim",vS2:"2. Matnni ovozga aylantirish",vTextPh:"O'qilishi kerak bo'lgan matnni yozing…",vEmo:"Emotsiya",vMake:"Mening ovozimda o'qish",vToLip:"Rasmni gapirtirish",vLib:"🎧 Audiolarim",vNeedVoice:"Avval ovoz profilini saqlang yoki tanlang 🎙️",vNeedSample:"Avval ovoz yozing yoki fayl yuklang",vNeedConsent:"Ruxsat belgisini qo'ying",vSaved:"Ovoz saqlandi ✅",vPart:"Ovoz yaratilmoqda: ",vNone:"Hali yo'q",sRefs:"4. Personaj rasmlari (ixtiyoriy)",sRefsHint:"O'z personajlaringiz rasmini yuklang — AI barcha sahnalarda aynan shu personajlarni chizadi",sLen:"3. Video davomiyligi",vmMine:"🎙️ Mening ovozim",vmFile:"📁 Fayl yuklash",vmNone:"🔇 Ovozsiz",sTts:"Sahnalar ovozlashtirilmoqda: ",tStory:"Hikoya video",bbStory:"Hikoya",dStory:"Mavzuni yozing — AI hikoya yoki ma'lumotli ssenariy yozadi, har bir sahna uchun HD rasm chizadi va hammasini yozuvli, ovozli tayyor videoga yig'adi. Hammasi bepul.",sTopic:"1. Mavzu",phStory:"Masalan: Ibn Sino bolaligida qanday kitob o'qigani haqida bolalar uchun hikoya",sType:"2. Turi",sCount:"3. Sahnalar soni",bStory:"Ssenariy va rasmlarni yaratish",pWrite:"AI ssenariy yozmoqda…",pWriteS:"10–40 soniya",pImgs:"Sahna rasmlari chizilmoqda: ",sVoice:"4. Ovoz (ixtiyoriy)",sVoiceHint:"Butun hikoya uchun ovoz yuklang (masalan ElevenLabs). Yuklamasangiz, video ovozsiz, faqat yozuvlar bilan yasaladi.",bCopyText:"Matnni nusxalash",bAnimAll:"Hammasini jonlantirish",bMakeFinal:"Yakuniy videoni yig'ish",bRe:"🔄 Rasm",bAn:"🎬 Jonlantirish",scene:"Sahna",typeTale:"🧚 Ertak",typeHist:"🏛️ Tarix",typeSci:"🔬 Ilm-fan",typeFact:"💡 Qiziq faktlar",typeMoral:"❤️ Ibratli hikoya",free:"Bepul",h1:"O'zbekcha yozing — AI video yasaydi",sub:"Personaj yarating, matndan HD video oling, rasmni jonlantiring yoki rasmni gapirtiring. Ro'yxatdan o'tish shart emas.",devby:"Ishlab chiquvchi:",
 tChar:"Personaj yaratish",tT2v:"Matndan video",tI2v:"Rasmni jonlantirish",tLip:"Gapiruvchi rasm",tDub:"Video dublyaj",
 bbChar:"Personaj",bbT2v:"Video",bbI2v:"Rasm",bbLip:"Gapirish",bbDub:"Dublyaj",bbTop:"Tepaga",
 dChar:"Har qanday personajni so'z bilan tasvirlang: odam, hayvon, robot, ertak qahramoni. AI uni HD rasmda chizadi, keyin bir bosishda jonlantirasiz.",
@@ -361,7 +409,7 @@ settings:"⚙️ Qo'shimcha sozlamalar",oremove:"Asl odam ovozini olib tashlash 
 st_need:"Video, ovoz va matnni yuklang.",st_dec:"Ovoz tahlil qilinmoqda…",st_rec:"Video yozilmoqda… sahifani yopmang",st_done:"Tayyor! Yuklab olishingiz mumkin.",st_err:"Xatolik: ",
 limitQ:"🔓 Ko'proq bepul limit (ixtiyoriy)",limitA:"AI modellar Hugging Face'ning bepul serverlarida ishlaydi va kunlik limit bor. Limit tugasa, huggingface.co'da bepul ro'yxatdan o'tib, Settings → Access Tokens bo'limidan «Read» token oling va shu yerga qo'ying. Token faqat sizning telefoningizda saqlanadi.",save:"Saqlash",saved:"Saqlandi ✅",
 ideasH:"💡 G'oyalar — bosing va sinab ko'ring",copied:"Tayyor!"},
-ru:{tStory:"Видео-история",bbStory:"История",dStory:"Напишите тему — AI напишет историю или познавательный сценарий, нарисует HD-картинку для каждой сцены и соберёт готовое видео с титрами и голосом. Всё бесплатно.",sTopic:"1. Тема",phStory:"Например: детская история о том, как Ибн Сина в детстве читал книги",sType:"2. Тип",sCount:"3. Количество сцен",bStory:"Создать сценарий и картинки",pWrite:"AI пишет сценарий…",pWriteS:"10–40 секунд",pImgs:"Рисуем сцены: ",sVoice:"4. Голос (необязательно)",sVoiceHint:"Загрузите озвучку всей истории (например ElevenLabs). Без неё видео будет с титрами без голоса.",bCopyText:"Скопировать текст",bAnimAll:"Оживить все",bMakeFinal:"Собрать итоговое видео",bRe:"🔄 Картинка",bAn:"🎬 Оживить",scene:"Сцена",typeTale:"🧚 Сказка",typeHist:"🏛️ История",typeSci:"🔬 Наука",typeFact:"💡 Факты",typeMoral:"❤️ Поучительная",free:"Бесплатно",h1:"Пишите на любом языке — AI сделает видео",sub:"Создавайте персонажей, HD-видео из текста, оживляйте фото и заставляйте их говорить. Без регистрации.",devby:"Разработчик:",
+ru:{tVoice:"Мой голос",bbVoice:"Голос",dVoice:"Запишите или загрузите 10–20 секунд своего голоса и дайте ему имя. Потом AI прочитает любой текст именно вашим голосом. Голоса и аудио хранятся только на вашем телефоне.",vS1:"1. Профиль голоса",vNamePh:"Название, например: Музаффар",vRecord:"Записать",vStop:"Стоп",vUpload:"Загрузить файл",vSampleTip:"Говорите естественно 10–20 секунд в тихом месте. Лучше всего — прочитайте короткий рассказ.",vConsent:"Это мой голос или у меня есть разрешение владельца",vSaveBtn:"Сохранить голос",vMy:"Мои голоса",vS2:"2. Текст в речь",vTextPh:"Напишите текст для озвучки…",vEmo:"Эмоция",vMake:"Прочитать моим голосом",vToLip:"Оживить фото",vLib:"🎧 Мои аудио",vNeedVoice:"Сначала сохраните или выберите голос 🎙️",vNeedSample:"Сначала запишите или загрузите голос",vNeedConsent:"Поставьте отметку о разрешении",vSaved:"Голос сохранён ✅",vPart:"Создаём озвучку: ",vNone:"Пока пусто",sRefs:"4. Фото персонажей (необязательно)",sRefsHint:"Загрузите фото своих персонажей — AI нарисует именно их во всех сценах",sLen:"3. Длительность видео",vmMine:"🎙️ Мой голос",vmFile:"📁 Загрузить файл",vmNone:"🔇 Без голоса",sTts:"Озвучиваем сцены: ",tStory:"Видео-история",bbStory:"История",dStory:"Напишите тему — AI напишет историю или познавательный сценарий, нарисует HD-картинку для каждой сцены и соберёт готовое видео с титрами и голосом. Всё бесплатно.",sTopic:"1. Тема",phStory:"Например: детская история о том, как Ибн Сина в детстве читал книги",sType:"2. Тип",sCount:"3. Количество сцен",bStory:"Создать сценарий и картинки",pWrite:"AI пишет сценарий…",pWriteS:"10–40 секунд",pImgs:"Рисуем сцены: ",sVoice:"4. Голос (необязательно)",sVoiceHint:"Загрузите озвучку всей истории (например ElevenLabs). Без неё видео будет с титрами без голоса.",bCopyText:"Скопировать текст",bAnimAll:"Оживить все",bMakeFinal:"Собрать итоговое видео",bRe:"🔄 Картинка",bAn:"🎬 Оживить",scene:"Сцена",typeTale:"🧚 Сказка",typeHist:"🏛️ История",typeSci:"🔬 Наука",typeFact:"💡 Факты",typeMoral:"❤️ Поучительная",free:"Бесплатно",h1:"Пишите на любом языке — AI сделает видео",sub:"Создавайте персонажей, HD-видео из текста, оживляйте фото и заставляйте их говорить. Без регистрации.",devby:"Разработчик:",
 tChar:"Создать персонажа",tT2v:"Видео из текста",tI2v:"Оживить фото",tLip:"Говорящее фото",tDub:"Дубляж видео",
 bbChar:"Персонаж",bbT2v:"Видео",bbI2v:"Фото",bbLip:"Голос",bbDub:"Дубляж",bbTop:"Наверх",
 dChar:"Опишите любого персонажа: человека, животное, робота, сказочного героя. AI нарисует его в HD, а потом оживите его одним нажатием.",
@@ -385,7 +433,7 @@ settings:"⚙️ Дополнительно",oremove:"Убрать голос д
 st_need:"Загрузите видео, голос и текст.",st_dec:"Анализ голоса…",st_rec:"Идёт запись… не закрывайте страницу",st_done:"Готово! Можно скачать.",st_err:"Ошибка: ",
 limitQ:"🔓 Больше бесплатного лимита (необязательно)",limitA:"Модели работают на бесплатных серверах Hugging Face с дневным лимитом. Если лимит закончился, бесплатно зарегистрируйтесь на huggingface.co, получите токен «Read» в Settings → Access Tokens и вставьте сюда. Токен хранится только на вашем устройстве.",save:"Сохранить",saved:"Сохранено ✅",
 ideasH:"💡 Идеи — нажмите и попробуйте",copied:"Готово!"},
-en:{tStory:"Story video",bbStory:"Story",dStory:"Write a topic — AI writes a story or educational script, draws an HD picture for every scene and assembles a finished video with captions and voice. All free.",sTopic:"1. Topic",phStory:"E.g.: a children's story about young Avicenna reading books",sType:"2. Type",sCount:"3. Number of scenes",bStory:"Create script and pictures",pWrite:"AI is writing the script…",pWriteS:"10–40 seconds",pImgs:"Drawing scenes: ",sVoice:"4. Voice (optional)",sVoiceHint:"Upload a voiceover for the whole story (e.g. ElevenLabs). Without it the video has captions only.",bCopyText:"Copy text",bAnimAll:"Animate all",bMakeFinal:"Assemble final video",bRe:"🔄 Picture",bAn:"🎬 Animate",scene:"Scene",typeTale:"🧚 Fairy tale",typeHist:"🏛️ History",typeSci:"🔬 Science",typeFact:"💡 Fun facts",typeMoral:"❤️ Moral story",free:"Free",h1:"Write in any language — AI makes the video",sub:"Create characters, get HD video from text, animate photos or make them talk. No sign-up.",devby:"Developed by",
+en:{tVoice:"My voice",bbVoice:"Voice",dVoice:"Record or upload 10–20 seconds of your voice and name it. Then AI reads any text in exactly your voice. Voices and audio are stored only on your phone.",vS1:"1. Voice profile",vNamePh:"Voice name, e.g. Muzaffar",vRecord:"Record",vStop:"Stop",vUpload:"Upload file",vSampleTip:"Speak naturally for 10–20 seconds in a quiet place. Reading a short story works best.",vConsent:"This is my voice or I have the owner's permission",vSaveBtn:"Save voice",vMy:"My saved voices",vS2:"2. Text to speech",vTextPh:"Write the text to be read…",vEmo:"Emotion",vMake:"Read in my voice",vToLip:"Make a photo talk",vLib:"🎧 My audio",vNeedVoice:"Save or choose a voice first 🎙️",vNeedSample:"Record or upload a voice first",vNeedConsent:"Tick the permission box",vSaved:"Voice saved ✅",vPart:"Generating speech: ",vNone:"Nothing yet",sRefs:"4. Character photos (optional)",sRefsHint:"Upload your characters — AI draws exactly them in every scene",sLen:"3. Video length",vmMine:"🎙️ My voice",vmFile:"📁 Upload file",vmNone:"🔇 No voice",sTts:"Voicing scenes: ",tStory:"Story video",bbStory:"Story",dStory:"Write a topic — AI writes a story or educational script, draws an HD picture for every scene and assembles a finished video with captions and voice. All free.",sTopic:"1. Topic",phStory:"E.g.: a children's story about young Avicenna reading books",sType:"2. Type",sCount:"3. Number of scenes",bStory:"Create script and pictures",pWrite:"AI is writing the script…",pWriteS:"10–40 seconds",pImgs:"Drawing scenes: ",sVoice:"4. Voice (optional)",sVoiceHint:"Upload a voiceover for the whole story (e.g. ElevenLabs). Without it the video has captions only.",bCopyText:"Copy text",bAnimAll:"Animate all",bMakeFinal:"Assemble final video",bRe:"🔄 Picture",bAn:"🎬 Animate",scene:"Scene",typeTale:"🧚 Fairy tale",typeHist:"🏛️ History",typeSci:"🔬 Science",typeFact:"💡 Fun facts",typeMoral:"❤️ Moral story",free:"Free",h1:"Write in any language — AI makes the video",sub:"Create characters, get HD video from text, animate photos or make them talk. No sign-up.",devby:"Developed by",
 tChar:"Create a character",tT2v:"Text to video",tI2v:"Animate a photo",tLip:"Talking photo",tDub:"Video dubbing",
 bbChar:"Character",bbT2v:"Video",bbI2v:"Photo",bbLip:"Talk",bbDub:"Dub",bbTop:"Top",
 dChar:"Describe any character: a person, animal, robot or fairy-tale hero. AI draws it in HD, then you animate it with one tap.",
@@ -409,7 +457,7 @@ settings:"⚙️ More settings",oremove:"Remove original narrator (keep music)",
 st_need:"Upload the video, the voice and the text.",st_dec:"Analysing voice…",st_rec:"Recording… keep this page open",st_done:"Done! You can download it.",st_err:"Error: ",
 limitQ:"🔓 More free limit (optional)",limitA:"Models run on Hugging Face's free servers with a daily limit. If it runs out, sign up free at huggingface.co, create a «Read» token in Settings → Access Tokens and paste it here. The token stays on your device only.",save:"Save",saved:"Saved ✅",
 ideasH:"💡 Ideas — tap to try",copied:"Done!"},
-tr:{tStory:"Hikâye videosu",bbStory:"Hikâye",dStory:"Konuyu yazın — AI hikâye veya bilgilendirici senaryo yazar, her sahne için HD resim çizer ve altyazılı, sesli hazır videoya dönüştürür. Hepsi ücretsiz.",sTopic:"1. Konu",phStory:"Örn: İbn-i Sina'nın çocukken kitap okumasını anlatan çocuk hikâyesi",sType:"2. Tür",sCount:"3. Sahne sayısı",bStory:"Senaryo ve resimleri oluştur",pWrite:"AI senaryo yazıyor…",pWriteS:"10–40 saniye",pImgs:"Sahneler çiziliyor: ",sVoice:"4. Ses (isteğe bağlı)",sVoiceHint:"Tüm hikâye için seslendirme yükleyin (ör. ElevenLabs). Yüklemezseniz video sadece altyazılı olur.",bCopyText:"Metni kopyala",bAnimAll:"Hepsini canlandır",bMakeFinal:"Son videoyu birleştir",bRe:"🔄 Resim",bAn:"🎬 Canlandır",scene:"Sahne",typeTale:"🧚 Masal",typeHist:"🏛️ Tarih",typeSci:"🔬 Bilim",typeFact:"💡 İlginç bilgiler",typeMoral:"❤️ İbretli hikâye",free:"Ücretsiz",h1:"Herhangi bir dilde yazın — AI video yapsın",sub:"Karakter oluşturun, metinden HD video alın, fotoğrafları canlandırın veya konuşturun. Kayıt gerekmez.",devby:"Geliştirici:",
+tr:{tVoice:"Benim sesim",bbVoice:"Sesim",dVoice:"Sesinizden 10–20 saniye kaydedin veya yükleyin ve adını verin. Sonra AI her metni tam sizin sesinizle okur. Sesler ve kayıtlar sadece telefonunuzda saklanır.",vS1:"1. Ses profili",vNamePh:"Ses adı, örn: Muzaffar",vRecord:"Kaydet",vStop:"Durdur",vUpload:"Dosya yükle",vSampleTip:"Sessiz bir yerde 10–20 saniye doğal konuşun. Kısa bir hikâye okumak en iyisidir.",vConsent:"Bu benim sesim veya sahibinden iznim var",vSaveBtn:"Sesi kaydet",vMy:"Kayıtlı seslerim",vS2:"2. Metni sese çevir",vTextPh:"Okunacak metni yazın…",vEmo:"Duygu",vMake:"Benim sesimle oku",vToLip:"Fotoğrafı konuştur",vLib:"🎧 Seslerim",vNeedVoice:"Önce bir ses kaydedin veya seçin 🎙️",vNeedSample:"Önce ses kaydedin veya yükleyin",vNeedConsent:"İzin kutusunu işaretleyin",vSaved:"Ses kaydedildi ✅",vPart:"Ses oluşturuluyor: ",vNone:"Henüz yok",sRefs:"4. Karakter fotoğrafları (isteğe bağlı)",sRefsHint:"Kendi karakterlerinizi yükleyin — AI her sahnede tam onları çizer",sLen:"3. Video süresi",vmMine:"🎙️ Benim sesim",vmFile:"📁 Dosya yükle",vmNone:"🔇 Sessiz",sTts:"Sahneler seslendiriliyor: ",tStory:"Hikâye videosu",bbStory:"Hikâye",dStory:"Konuyu yazın — AI hikâye veya bilgilendirici senaryo yazar, her sahne için HD resim çizer ve altyazılı, sesli hazır videoya dönüştürür. Hepsi ücretsiz.",sTopic:"1. Konu",phStory:"Örn: İbn-i Sina'nın çocukken kitap okumasını anlatan çocuk hikâyesi",sType:"2. Tür",sCount:"3. Sahne sayısı",bStory:"Senaryo ve resimleri oluştur",pWrite:"AI senaryo yazıyor…",pWriteS:"10–40 saniye",pImgs:"Sahneler çiziliyor: ",sVoice:"4. Ses (isteğe bağlı)",sVoiceHint:"Tüm hikâye için seslendirme yükleyin (ör. ElevenLabs). Yüklemezseniz video sadece altyazılı olur.",bCopyText:"Metni kopyala",bAnimAll:"Hepsini canlandır",bMakeFinal:"Son videoyu birleştir",bRe:"🔄 Resim",bAn:"🎬 Canlandır",scene:"Sahne",typeTale:"🧚 Masal",typeHist:"🏛️ Tarih",typeSci:"🔬 Bilim",typeFact:"💡 İlginç bilgiler",typeMoral:"❤️ İbretli hikâye",free:"Ücretsiz",h1:"Herhangi bir dilde yazın — AI video yapsın",sub:"Karakter oluşturun, metinden HD video alın, fotoğrafları canlandırın veya konuşturun. Kayıt gerekmez.",devby:"Geliştirici:",
 tChar:"Karakter oluştur",tT2v:"Metinden video",tI2v:"Fotoğrafı canlandır",tLip:"Konuşan fotoğraf",tDub:"Video dublaj",
 bbChar:"Karakter",bbT2v:"Video",bbI2v:"Foto",bbLip:"Konuş",bbDub:"Dublaj",bbTop:"Yukarı",
 dChar:"Herhangi bir karakteri tarif edin: insan, hayvan, robot, masal kahramanı. AI onu HD çizer, sonra tek dokunuşla canlandırırsınız.",
@@ -536,7 +584,7 @@ async function genImage(prompt,fmt,seed,refBlob){
   try{
     const {Client,handle_file}=await gradio(); const o={}; const k=tok(); if(k)o.hf_token=k;
     const c=await Client.connect('black-forest-labs/FLUX.2-klein-9B',o);
-    const payload={prompt,input_images:refBlob?[{image:handle_file(refBlob),caption:null}]:null,mode_choice:'Distilled (4 steps)',seed:seed||42,randomize_seed:!seed,width:w,height:h,num_inference_steps:4,guidance_scale:4,prompt_upsampling:false};
+    const payload={prompt,input_images:refBlob?(Array.isArray(refBlob)?refBlob:[refBlob]).slice(0,4).map(b=>({image:handle_file(b),caption:null})):null,mode_choice:'Distilled (4 steps)',seed:seed||42,randomize_seed:!seed,width:w,height:h,num_inference_steps:4,guidance_scale:4,prompt_upsampling:false};
     let r; try{r=await c.predict('/generate',payload)}catch(e){if(!refBlob)throw e;payload.input_images=null;r=await c.predict('/generate',payload)}
     const u=urlOf(r.data[0]); if(!u)throw new Error('no image'); return u;
   }catch(e){
@@ -618,13 +666,90 @@ $('lGo').onclick=async()=>{
 };
 
 
+
+/* ===== VOICE STUDIO: clone your voice (Chatterbox Multilingual, free) ===== */
+const DB=(()=>{let p=null;const open=()=>p||(p=new Promise((res,rej)=>{const r=indexedDB.open('mk-studio',1);r.onupgradeneeded=()=>{const d=r.result;d.createObjectStore('voices',{keyPath:'id'});d.createObjectStore('audios',{keyPath:'id'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}));
+  const tx=async(st,mode,fn)=>{const d=await open();return new Promise((res,rej)=>{const t=d.transaction(st,mode);const s=t.objectStore(st);const out=fn(s);t.oncomplete=()=>res(out&&out.result!==undefined?out.result:out);t.onerror=()=>rej(t.error)})};
+  return{put:(st,v)=>tx(st,'readwrite',s=>s.put(v)),del:(st,id)=>tx(st,'readwrite',s=>s.delete(id)),all:st=>tx(st,'readonly',s=>s.getAll())}})();
+function wavBlob(buf){const ch=buf.numberOfChannels,sr=buf.sampleRate,len=buf.length,d=new Float32Array(len);for(let c=0;c<ch;c++){const x=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]+=x[i]/ch}
+  const ab=new ArrayBuffer(44+len*2),v=new DataView(ab),w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};
+  w(0,'RIFF');v.setUint32(4,36+len*2,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,len*2,true);
+  for(let i=0;i<len;i++){const s2=Math.max(-1,Math.min(1,d[i]));v.setInt16(44+i*2,s2<0?s2*0x8000:s2*0x7fff,true)}return new Blob([ab],{type:'audio/wav'})}
+let _ac=null;const actx=()=>_ac||(_ac=new (window.AudioContext||window.webkitAudioContext)());
+async function toWavSample(blob,maxSec){const b=await actx().decodeAudioData(await blob.arrayBuffer());const n=Math.min(b.length,Math.floor(maxSec*b.sampleRate));const o=actx().createBuffer(1,n,b.sampleRate);const d=o.getChannelData(0);for(let c=0;c<b.numberOfChannels;c++){const x=b.getChannelData(c);for(let i=0;i<n;i++)d[i]+=x[i]/b.numberOfChannels}return wavBlob(o)}
+const TTSLANG={uz:'tr',ru:'ru',en:'en',tr:'tr'};
+const VLANGS=[{n:"🇺🇿 O'zbek",k:'uz'},{n:'🇷🇺 Русский',k:'ru'},{n:'🇬🇧 English',k:'en'},{n:'🇹🇷 Türkçe',k:'tr'}];
+let getVLang=chips($('vLang'),VLANGS,Math.max(0,VLANGS.findIndex(x=>x.k===L)));
+document.querySelectorAll('#langs button').forEach(b=>b.addEventListener('click',()=>{getVLang=chips($('vLang'),VLANGS,Math.max(0,VLANGS.findIndex(x=>x.k===L)))}));
+$('vEmo').oninput=e=>$('vEmoV').textContent=e.target.value;
+function splitTTS(text){text=text.replace(/[ʻʼ‘’`´]/g,"'").replace(/\s+/g,' ').trim();const parts=text.replace(/([.!?…])\s+/g,'$1\n').split('\n');const out=[];let cur='';
+  for(let p of parts){while(p.length>280){let k=p.lastIndexOf(',',280);if(k<80)k=p.lastIndexOf(' ',280);out.push(p.slice(0,k+1).trim());p=p.slice(k+1).trim()}
+    if((cur+' '+p).trim().length>280){if(cur)out.push(cur);cur=p}else cur=(cur+' '+p).trim()}
+  if(cur)out.push(cur);return out.filter(Boolean)}
+async function tts(text,langKey,voiceBlob,ex,onPart){
+  const {Client,handle_file}=await gradio();const o={};const k=tok();if(k)o.hf_token=k;
+  const c=await Client.connect('ResembleAI/Chatterbox-Multilingual-TTS',o);
+  const parts=splitTTS(text),bufs=[];
+  for(let i=0;i<parts.length;i++){onPart&&onPart(i,parts.length);
+    const r=await c.predict('/generate_tts_audio',{text_input:parts[i],language_id:TTSLANG[langKey]||'tr',audio_prompt_path_input:handle_file(voiceBlob),exaggeration_input:ex,temperature_input:.8,seed_num_input:0,cfgw_input:.5});
+    const u=urlOf(r.data[0]);if(!u)throw new Error('empty audio');
+    bufs.push(await actx().decodeAudioData(await (await fetch(u)).arrayBuffer()))}
+  const sr=bufs[0].sampleRate,gap=Math.round(sr*.18),len=bufs.reduce((a,b)=>a+b.length+gap,0);
+  const out=actx().createBuffer(1,len,sr),d=out.getChannelData(0);let off=0;bufs.forEach(b=>{d.set(b.getChannelData(0),off);off+=b.length+gap});
+  return out}
+// voices
+let sample=null,selVoice=null,mediaRec=null;
+$('vRec').onclick=async()=>{buzz();
+  if(mediaRec&&mediaRec.state==='recording'){mediaRec.stop();return}
+  try{const st=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}});const ch=[];mediaRec=new MediaRecorder(st);
+    mediaRec.ondataavailable=e=>e.data.size&&ch.push(e.data);
+    mediaRec.onstop=async()=>{st.getTracks().forEach(x=>x.stop());$('vRec').classList.remove('rec');$('vRec').innerHTML='🔴 '+t('vRecord');clearInterval(mediaRec._iv);sample=new Blob(ch,{type:mediaRec.mimeType});$('vRecInfo').innerHTML='✅ <audio controls src="'+URL.createObjectURL(sample)+'" style="height:32px;vertical-align:middle;max-width:100%"></audio>'};
+    mediaRec.start();const s0=Date.now();$('vRec').classList.add('rec');
+    mediaRec._iv=setInterval(()=>{const sec=Math.round((Date.now()-s0)/1000);$('vRec').innerHTML='⏹️ '+t('vStop')+' · '+sec+'s';if(sec>=25)mediaRec.stop()},300);
+  }catch(e){toast('🎤 ✖ '+e.message)}};
+$('vFile').onchange=()=>{const f=$('vFile').files[0];if(!f)return;sample=f;$('vRecInfo').innerHTML='✅ '+f.name.slice(0,40)};
+$('vSave').onclick=async()=>{
+  if(!sample){toast(t('vNeedSample'));return} if(!$('vConsent').checked){toast(t('vNeedConsent'));return}
+  buzz();try{const wav=await toWavSample(sample,20);const v={id:'v'+Date.now(),name:$('vName').value.trim()||'Ovoz '+new Date().toLocaleDateString(),blob:wav,created:Date.now()};await DB.put('voices',v);selVoice=v.id;try{localStorage.setItem('mk_voice',v.id)}catch(e){}
+    sample=null;$('vName').value='';$('vRecInfo').textContent=t('vSampleTip');toast(t('vSaved'));renderVoices()}catch(e){toast(t('st_err')+e.message)}};
+async function voicesList(){try{return (await DB.all('voices')).sort((a,b)=>b.created-a.created)}catch(e){return[]}}
+async function renderVoices(){const vs=await voicesList();const box=$('vList');box.innerHTML='';
+  if(!selVoice){try{selVoice=localStorage.getItem('mk_voice')}catch(e){}} if(vs.length&&!vs.find(v=>v.id===selVoice))selVoice=vs[0].id;
+  if(!vs.length){box.innerHTML='<span class="tip">'+t('vNone')+'</span>'}
+  vs.forEach(v=>{const b=document.createElement('button');b.className='chip vchip'+(v.id===selVoice?' on':'');b.innerHTML='🎙️ '+v.name.replace(/</g,'')+' <i title="✖">✕</i>';
+    b.onclick=e=>{if(e.target.tagName==='I'){if(confirm('✕ '+v.name+'?'))DB.del('voices',v.id).then(renderVoices);return}buzz();selVoice=v.id;try{localStorage.setItem('mk_voice',v.id)}catch(e){}renderVoices()};box.appendChild(b)});
+  renderStoryVoice()}
+async function getVoiceBlob(){const vs=await voicesList();const v=vs.find(x=>x.id===selVoice)||vs[0];return v?v.blob:null}
+let lastAudio=null;
+$('vGo').onclick=async()=>{
+  const txt=$('vText').value.trim();if(!txt){toast(t('needText'));return}
+  const vb=await getVoiceBlob();if(!vb){toast(t('vNeedVoice'));$('vName').focus();return}
+  buzz();busyBtn('vGo',true);$('vErr').textContent='';$('vRes').classList.remove('on');prog('vProg',true,t('pCon'),'',3);const stop=fakeProgress('vProg',25*Math.max(1,splitTTS(txt).length));
+  try{const lk=getVLang().k;const buf=await tts(txt,lk,vb,Number($('vEmo').value),(i,n)=>prog('vProg',true,t('vPart')+(i+1)+'/'+n,t('pGenS')));
+    const blob=wavBlob(buf);lastAudio=blob;$('vAudio').src=URL.createObjectURL(blob);$('vRes').classList.add('on');$('vAudio').play().catch(()=>{});
+    const vs=await voicesList();const vn=(vs.find(x=>x.id===selVoice)||{}).name||'';
+    await DB.put('audios',{id:'a'+Date.now(),text:txt,voice:vn,blob,created:Date.now(),dur:buf.duration});renderLib();toast(t('pDone'))
+  }catch(e){fail('vErr',e,'ResembleAI/Chatterbox-Multilingual-TTS')}
+  finally{stop();prog('vProg',false);busyBtn('vGo',false)}};
+function dlBlob(b,name){const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click()}
+$('vDl').onclick=()=>lastAudio&&dlBlob(lastAudio,'mk-ovoz-'+Date.now()+'.wav');
+function sendToLip(blob){const f=new File([blob],'ovoz.wav',{type:'audio/wav'});const dt=new DataTransfer();dt.items.add(f);$('lAud').files=dt.files;$('lAud').dispatchEvent(new Event('change'));show('lip');$('tabs').scrollIntoView({behavior:'smooth'})}
+$('vToLip').onclick=()=>lastAudio&&sendToLip(lastAudio);
+async function renderLib(){let as=[];try{as=(await DB.all('audios')).sort((a,b)=>b.created-a.created)}catch(e){}const box=$('vLibList');box.innerHTML=as.length?'':'<span class="tip">'+t('vNone')+'</span>';
+  as.slice(0,30).forEach(a=>{const d=document.createElement('div');d.className='vitem';const u=URL.createObjectURL(a.blob);
+    d.innerHTML=`<div><b style="font-size:13px">🎙️ ${(a.voice||'').replace(/</g,'')}</b><small>${a.text.replace(/</g,'').slice(0,60)}</small></div><audio controls preload="none" src="${u}"></audio><button data-a="d">⬇️</button><button data-a="l">🗣️</button><button data-a="x">✕</button>`;
+    d.querySelector('[data-a=d]').onclick=()=>dlBlob(a.blob,'mk-ovoz-'+a.created+'.wav');
+    d.querySelector('[data-a=l]').onclick=()=>sendToLip(a.blob);
+    d.querySelector('[data-a=x]').onclick=()=>{if(confirm('✕ ?'))DB.del('audios',a.id).then(renderLib)};box.appendChild(d)})}
+renderVoices();renderLib();
+
 /* ===== 0. STORY STUDIO ===== */
 const LANGN={uz:"Uzbek (Latin script, natural modern Uzbek)",ru:"Russian",en:"English",tr:"Turkish"};
 const TYPES=[{k:"tale",tk:"typeTale",d:"a warm fairy tale for children with a clear moral"},{k:"hist",tk:"typeHist",d:"an accurate, engaging history story based on real facts"},{k:"sci",tk:"typeSci",d:"a simple, accurate educational science explanation for kids and families"},{k:"fact",tk:"typeFact",d:"a list-style video of surprising but true facts"},{k:"moral",tk:"typeMoral",d:"a short inspiring story that teaches kindness, honesty or hard work"}];
-const COUNTS=[{n:"4",v:4},{n:"6",v:6},{n:"8",v:8}];
+const COUNTS=[{n:"⏱️ 30 s",v:5},{n:"⏱️ 1 min",v:9},{n:"⏱️ 1.5 min",v:13}];
 let getSType,getSStyle=chips($('sStyle'),STYLES,0),getSCount=chips($('sCount'),COUNTS,1);
 function typeChips(){getSType=chips($('sType'),TYPES.map(x=>({...x,n:t(x.tk)})),0)} typeChips();
-document.querySelectorAll('#langs button').forEach(b=>b.addEventListener('click',()=>{typeChips();renderScenes()}));
+document.querySelectorAll('#langs button').forEach(b=>b.addEventListener('click',()=>{typeChips();renderScenes();renderStoryVoice&&renderStoryVoice();renderVoices&&renderVoices();renderLib&&renderLib()}));
 let story=null;
 
 async function llm(system,user){
@@ -648,13 +773,13 @@ $('sGo').onclick=async()=>{
   const sys=`You are a professional children's and educational video scriptwriter. You write short vertical-video scripts (Reels/TikTok/YouTube Shorts) that are accurate, kind, safe for children and useful for people. Never invent fake historical facts; if unsure, keep it general. Output ONLY valid JSON, no markdown.`;
   const usr=`Topic: ${topic}
 Type: ${type.d}
-Write exactly ${n} scenes. Narration language: ${LANGN[L]}. Each narration is 1–2 short sentences (12–26 words), vivid and easy to listen to; scene 1 is a strong hook, the last scene gives a clear conclusion or lesson.
+Write exactly ${n} scenes. Narration language: ${LANGN[L]}. Each narration is 1–2 sentences (about 15–20 words, so the whole video lasts about ${Math.round(n*6.5)} seconds when read aloud), vivid and easy to listen to; scene 1 is a strong hook, the last scene gives a clear conclusion or lesson.
 For visuals, define ONE consistent main character (if the story has one) and describe each scene as an English image prompt (subject, action, setting, lighting, camera angle). No text, letters or logos in images.
 JSON format:
 {"title":"short catchy title in ${LANGN[L]}","character":"English visual description of the main recurring character (age, face, hair, clothes, colors) or empty string","scenes":[{"narration":"...","image":"English image prompt ..."}]}`;
   try{
     story=parseJSON(await llm(sys,usr)); if(!story.scenes||!story.scenes.length)throw new Error('empty');
-    story.style=st; story.seed=Math.floor(Math.random()*1e6); story.fmt=FMTS[0];
+    story.style=st; story.seed=Math.floor(Math.random()*1e6); story.fmt=FMTS[0]; story.userRefs=[...$('sRefs').files]; if(story.userRefs.length){story.refBlob=story.userRefs; if(!story.character)story.character='the exact same characters as in the reference photos';}
     story.scenes.forEach(x=>{x.img=null;x.clip=null});
     $('sTitle').textContent='🎬 '+(story.title||topic); renderScenes(); $('sBoard').classList.add('on');
     prog('sProg',false); busyBtn('sGo',false);
@@ -681,7 +806,7 @@ async function drawOne(i,force){
   const sc=story.scenes[i]; if(sc.img&&!force)return;
   sc.busy=true; renderScenes();
   try{
-    let ref=null; if(i>0&&story.refBlob)ref=story.refBlob;
+    let ref=null; if((i>0||story.userRefs&&story.userRefs.length)&&story.refBlob)ref=story.refBlob;
     sc.img=await genImage(scenePrompt(sc),story.fmt,force?Math.floor(Math.random()*1e6):story.seed+i,ref); sc.clip=null;
     if(i===0&&!story.refBlob){try{story.refBlob=await blobOf(sc.img)}catch(e){}}
   }catch(e){toast(t('errBusy'))}
@@ -703,6 +828,10 @@ async function animateOne(i){
 $('sAnimAll').onclick=async()=>{if(!story)return;buzz();for(let i=0;i<story.scenes.length;i++){$('sStatus').textContent='🎬 '+(i+1)+'/'+story.scenes.length;if(!story.scenes[i].clip)await animateOne(i)}$('sStatus').textContent=''};
 $('sCopy').onclick=async()=>{if(!story)return;const txt=story.scenes.map(x=>x.narration).join('\n\n');try{await navigator.clipboard.writeText(txt)}catch(e){}toast(t('copied'))};
 drop('sAud','sDropA','aud');
+let getSVM=null;function renderStoryVoice(){const cur=getSVM?getSVM().k:null;const list=[{k:'mine',n:t('vmMine')},{k:'file',n:t('vmFile')},{k:'none',n:t('vmNone')}];
+  getSVM=chips($('sVoiceMode'),list,Math.max(0,list.findIndex(x=>x.k===cur)),x=>{$('sDropA').style.display=x.k==='file'?'flex':'none'});$('sDropA').style.display=getSVM().k==='file'?'flex':'none'}
+renderStoryVoice();
+$('sRefs').addEventListener('change',()=>{const b=$('sDropR');const fs=[...$('sRefs').files];if(!fs.length)return;b.classList.add('has');b.querySelectorAll('.big,span,.refs').forEach(x=>x.remove());const r=document.createElement('div');r.className='refs';fs.slice(0,4).forEach(f=>{const im=new Image();im.src=URL.createObjectURL(f);r.appendChild(im)});b.appendChild(r)});
 
 /* assemble final video in the browser: Ken Burns + crossfade + animated captions + voice */
 $('sMake').onclick=async()=>{
@@ -712,9 +841,16 @@ $('sMake').onclick=async()=>{
     await document.fonts.load('40px "Rubik Dirt"').catch(()=>{});
     const W=720,H=1280,cv=$('sCanvas'),ctx=cv.getContext('2d');cv.style.display='block';
     const AC=new (window.AudioContext||window.webkitAudioContext)(),dest=AC.createMediaStreamDestination();
-    let voice=null; const af=$('sAud').files[0]; if(af){try{voice=await AC.decodeAudioData(await af.arrayBuffer())}catch(e){}}
+    let voice=null, sceneBufs=null; const mode=getSVM?getSVM().k:'none';
+    if(mode==='file'){const af=$('sAud').files[0]; if(af){try{voice=await AC.decodeAudioData(await af.arrayBuffer())}catch(e){}}}
+    if(mode==='mine'){const vb=await getVoiceBlob(); if(!vb){toast(t('vNeedVoice'));show('voice');throw new Error(t('vNeedVoice'))}
+      sceneBufs=[];for(let i=0;i<story.scenes.length;i++){$('sStatus').textContent=t('sTts')+(i+1)+'/'+story.scenes.length;$('sBar').style.width=(i/story.scenes.length*100)+'%';
+        const b=await tts(story.scenes[i].narration,L,vb,.55);sceneBufs.push(b)}
+      try{const all=story.scenes.map(x=>x.narration).join(' ');const tot=sceneBufs.reduce((a,b)=>a+b.length,0),o=actx().createBuffer(1,tot,sceneBufs[0].sampleRate);let off=0;sceneBufs.forEach(b=>{o.getChannelData(0).set(b.getChannelData(0),off);off+=b.length});
+        await DB.put('audios',{id:'a'+Date.now(),text:(story.title?story.title+': ':'')+all,voice:'📖',blob:wavBlob(o),created:Date.now()});renderLib()}catch(e){}}
     const lens=story.scenes.map(x=>Math.max(8,x.narration.length));
-    let durs; if(voice){const tot=voice.duration+.6, sum=lens.reduce((a,b)=>a+b,0); durs=lens.map(l=>Math.max(2.2,tot*l/sum))}
+    let durs; if(sceneBufs)durs=sceneBufs.map(b=>b.duration+.45);
+    else if(voice){const tot=voice.duration+.6, sum=lens.reduce((a,b)=>a+b,0); durs=lens.map(l=>Math.max(2.2,tot*l/sum))}
     else durs=story.scenes.map(x=>Math.max(3.2,x.narration.split(/\s+/).length/2.5+1));
     const starts=[];let acc=0;durs.forEach(d=>{starts.push(acc);acc+=d});const total=acc;
     // load media
@@ -735,6 +871,7 @@ $('sMake').onclick=async()=>{
     if(AC.state==='suspended')await AC.resume();
     rec.start(250); const t0=AC.currentTime+.1;
     if(voice){const s=AC.createBufferSource();s.buffer=voice;s.connect(dest);s.connect(AC.destination);s.start(t0)}
+    if(sceneBufs)sceneBufs.forEach((b,i)=>{const nb=AC.createBuffer(1,b.length,b.sampleRate);nb.copyToChannel(b.getChannelData(0),0);const s=AC.createBufferSource();s.buffer=nb;s.connect(dest);s.connect(AC.destination);s.start(t0+starts[i]+.15)});
     $('sStatus').textContent=t('st_rec');
     await new Promise(res=>{(function fr(){
       const tt=AC.currentTime-t0; if(tt<0){requestAnimationFrame(fr);return}
