@@ -139,6 +139,18 @@ footer b{color:var(--txt)}
 @media (min-width:900px){.bbar{display:none}body{padding-bottom:20px}}
 @media (max-width:560px){.row2,.ideas{grid-template-columns:1fr 1fr}.hero{gap:16px}.ava{width:86px;height:86px}.card{padding:16px;border-radius:22px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.scene{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:12px;border-radius:18px;background:#0d0b20;border:1px solid var(--line);margin-bottom:10px;animation:in .5s both}
+.scene .media{position:relative;width:120px;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:linear-gradient(110deg,#1b1738 30%,#2a2452 50%,#1b1738 70%);background-size:200% 100%;animation:shim 1.4s linear infinite}
+@keyframes shim{to{background-position:-200% 0}}
+.scene .media img,.scene .media video{width:100%;height:100%;object-fit:cover;display:block}
+.scene .media b{position:absolute;left:6px;top:6px;font-size:11px;background:rgba(0,0,0,.6);padding:3px 7px;border-radius:8px}
+.scene textarea{min-height:70px;font-size:14.5px;padding:10px;border-radius:12px}
+.scene .sa{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.scene .sa button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:7px 10px;font-size:12.5px;font-weight:700;cursor:pointer}
+.scene .sa button:disabled{opacity:.5}
+.scene.busy .media::after{content:"";position:absolute;inset:0;background:rgba(10,8,24,.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='18' fill='none' stroke='%2300d4ff' stroke-width='4' stroke-dasharray='80 40'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 25 25' to='360 25 25' dur='1s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/svg%3E") center/40px no-repeat}
+@media (max-width:420px){.scene{grid-template-columns:96px 1fr}.scene .media{width:96px}}
 </style>
 </head>
 <body>
@@ -160,12 +172,43 @@ footer b{color:var(--txt)}
   </div>
 
   <div class="tabs" id="tabs">
+    <button class="tab" data-v="story"><em>📖</em><span data-t="tStory"></span></button>
     <button class="tab" data-v="char"><em>🧑‍🎨</em><span data-t="tChar"></span></button>
     <button class="tab" data-v="t2v"><em>🎬</em><span data-t="tT2v"></span></button>
     <button class="tab" data-v="i2v"><em>🖼️</em><span data-t="tI2v"></span></button>
     <button class="tab" data-v="lip"><em>🗣️</em><span data-t="tLip"></span></button>
     <button class="tab" data-v="dub"><em>🎞️</em><span data-t="tDub"></span></button>
   </div>
+
+
+  <!-- 0. STORY STUDIO -->
+  <section class="view" id="v-story"><div class="card">
+    <h2><em>📖</em><span data-t="tStory"></span></h2>
+    <p class="desc" data-t="dStory"></p>
+    <div class="step" data-t="sTopic"></div>
+    <textarea id="sTopic" data-ph="phStory" style="min-height:84px"></textarea>
+    <div class="step" data-t="sType"></div>
+    <div class="chips" id="sType"></div>
+    <div class="step" data-t="s2style"></div>
+    <div class="chips" id="sStyle"></div>
+    <div class="step" data-t="sCount"></div>
+    <div class="chips" id="sCount"></div>
+    <button class="go" id="sGo">📖 <span data-t="bStory"></span></button>
+    <div class="prog" id="sProg"><div class="loader"><div class="orb"></div><div><b class="pt"></b><small class="ps"></small></div></div><div class="bar"><i></i></div></div>
+    <div class="err" id="sErr"></div>
+    <div id="sBoard" class="result">
+      <h3 id="sTitle" style="font-size:20px;margin:6px 0 12px"></h3>
+      <div id="sScenes"></div>
+      <div class="step" data-t="sVoice"></div>
+      <label class="drop" id="sDropA" style="min-height:90px"><input type="file" id="sAud" accept="audio/*,video/*"><span class="big">🎙️</span><span data-t="sVoiceHint"></span></label>
+      <div class="acts"><button class="ghost" id="sCopy">📋 <span data-t="bCopyText"></span></button><button class="ghost" id="sAnimAll">🎬 <span data-t="bAnimAll"></span></button></div>
+      <button class="go" id="sMake">🎞️ <span data-t="bMakeFinal"></span></button>
+      <div class="bar"><i id="sBar"></i></div>
+      <div class="tip" id="sStatus"></div>
+      <div style="max-width:360px;margin:12px auto 0"><canvas id="sCanvas" width="720" height="1280" style="width:100%;border-radius:18px;background:#000;display:none"></canvas></div>
+      <div class="acts"><a class="ghost" id="sDl" style="pointer-events:none;opacity:.5">⬇️ <span data-t="bDl"></span></a></div>
+    </div>
+  </div></section>
 
   <!-- 1. CHARACTER -->
   <section class="view" id="v-char"><div class="card">
@@ -282,19 +325,19 @@ footer b{color:var(--txt)}
 <footer>© 2026 <b>MK Studio AI</b> · <span data-t="devby"></span> <b>Muzaffar Karshiev</b></footer>
 
 <nav class="bbar" id="bbar">
+  <button data-v="story"><em>📖</em><span data-t="bbStory"></span></button>
   <button data-v="char"><em>🧑‍🎨</em><span data-t="bbChar"></span></button>
-  <button data-v="t2v"><em>🎬</em><span data-t="bbT2v"></span></button>
+    <button data-v="t2v"><em>🎬</em><span data-t="bbT2v"></span></button>
   <button data-v="i2v"><em>🖼️</em><span data-t="bbI2v"></span></button>
   <button data-v="lip"><em>🗣️</em><span data-t="bbLip"></span></button>
   <button data-v="dub"><em>🎞️</em><span data-t="bbDub"></span></button>
-  <button data-v="top"><em>⬆️</em><span data-t="bbTop"></span></button>
-</nav>
+  </nav>
 <div class="toast" id="toast"></div>
 
 <script>
 /* ============ TEXTS (4 languages) ============ */
 const T={
-uz:{free:"Bepul",h1:"O'zbekcha yozing — AI video yasaydi",sub:"Personaj yarating, matndan HD video oling, rasmni jonlantiring yoki rasmni gapirtiring. Ro'yxatdan o'tish shart emas.",devby:"Ishlab chiquvchi:",
+uz:{tStory:"Hikoya video",bbStory:"Hikoya",dStory:"Mavzuni yozing — AI hikoya yoki ma'lumotli ssenariy yozadi, har bir sahna uchun HD rasm chizadi va hammasini yozuvli, ovozli tayyor videoga yig'adi. Hammasi bepul.",sTopic:"1. Mavzu",phStory:"Masalan: Ibn Sino bolaligida qanday kitob o'qigani haqida bolalar uchun hikoya",sType:"2. Turi",sCount:"3. Sahnalar soni",bStory:"Ssenariy va rasmlarni yaratish",pWrite:"AI ssenariy yozmoqda…",pWriteS:"10–40 soniya",pImgs:"Sahna rasmlari chizilmoqda: ",sVoice:"4. Ovoz (ixtiyoriy)",sVoiceHint:"Butun hikoya uchun ovoz yuklang (masalan ElevenLabs). Yuklamasangiz, video ovozsiz, faqat yozuvlar bilan yasaladi.",bCopyText:"Matnni nusxalash",bAnimAll:"Hammasini jonlantirish",bMakeFinal:"Yakuniy videoni yig'ish",bRe:"🔄 Rasm",bAn:"🎬 Jonlantirish",scene:"Sahna",typeTale:"🧚 Ertak",typeHist:"🏛️ Tarix",typeSci:"🔬 Ilm-fan",typeFact:"💡 Qiziq faktlar",typeMoral:"❤️ Ibratli hikoya",free:"Bepul",h1:"O'zbekcha yozing — AI video yasaydi",sub:"Personaj yarating, matndan HD video oling, rasmni jonlantiring yoki rasmni gapirtiring. Ro'yxatdan o'tish shart emas.",devby:"Ishlab chiquvchi:",
 tChar:"Personaj yaratish",tT2v:"Matndan video",tI2v:"Rasmni jonlantirish",tLip:"Gapiruvchi rasm",tDub:"Video dublyaj",
 bbChar:"Personaj",bbT2v:"Video",bbI2v:"Rasm",bbLip:"Gapirish",bbDub:"Dublyaj",bbTop:"Tepaga",
 dChar:"Har qanday personajni so'z bilan tasvirlang: odam, hayvon, robot, ertak qahramoni. AI uni HD rasmda chizadi, keyin bir bosishda jonlantirasiz.",
@@ -318,7 +361,7 @@ settings:"⚙️ Qo'shimcha sozlamalar",oremove:"Asl odam ovozini olib tashlash 
 st_need:"Video, ovoz va matnni yuklang.",st_dec:"Ovoz tahlil qilinmoqda…",st_rec:"Video yozilmoqda… sahifani yopmang",st_done:"Tayyor! Yuklab olishingiz mumkin.",st_err:"Xatolik: ",
 limitQ:"🔓 Ko'proq bepul limit (ixtiyoriy)",limitA:"AI modellar Hugging Face'ning bepul serverlarida ishlaydi va kunlik limit bor. Limit tugasa, huggingface.co'da bepul ro'yxatdan o'tib, Settings → Access Tokens bo'limidan «Read» token oling va shu yerga qo'ying. Token faqat sizning telefoningizda saqlanadi.",save:"Saqlash",saved:"Saqlandi ✅",
 ideasH:"💡 G'oyalar — bosing va sinab ko'ring",copied:"Tayyor!"},
-ru:{free:"Бесплатно",h1:"Пишите на любом языке — AI сделает видео",sub:"Создавайте персонажей, HD-видео из текста, оживляйте фото и заставляйте их говорить. Без регистрации.",devby:"Разработчик:",
+ru:{tStory:"Видео-история",bbStory:"История",dStory:"Напишите тему — AI напишет историю или познавательный сценарий, нарисует HD-картинку для каждой сцены и соберёт готовое видео с титрами и голосом. Всё бесплатно.",sTopic:"1. Тема",phStory:"Например: детская история о том, как Ибн Сина в детстве читал книги",sType:"2. Тип",sCount:"3. Количество сцен",bStory:"Создать сценарий и картинки",pWrite:"AI пишет сценарий…",pWriteS:"10–40 секунд",pImgs:"Рисуем сцены: ",sVoice:"4. Голос (необязательно)",sVoiceHint:"Загрузите озвучку всей истории (например ElevenLabs). Без неё видео будет с титрами без голоса.",bCopyText:"Скопировать текст",bAnimAll:"Оживить все",bMakeFinal:"Собрать итоговое видео",bRe:"🔄 Картинка",bAn:"🎬 Оживить",scene:"Сцена",typeTale:"🧚 Сказка",typeHist:"🏛️ История",typeSci:"🔬 Наука",typeFact:"💡 Факты",typeMoral:"❤️ Поучительная",free:"Бесплатно",h1:"Пишите на любом языке — AI сделает видео",sub:"Создавайте персонажей, HD-видео из текста, оживляйте фото и заставляйте их говорить. Без регистрации.",devby:"Разработчик:",
 tChar:"Создать персонажа",tT2v:"Видео из текста",tI2v:"Оживить фото",tLip:"Говорящее фото",tDub:"Дубляж видео",
 bbChar:"Персонаж",bbT2v:"Видео",bbI2v:"Фото",bbLip:"Голос",bbDub:"Дубляж",bbTop:"Наверх",
 dChar:"Опишите любого персонажа: человека, животное, робота, сказочного героя. AI нарисует его в HD, а потом оживите его одним нажатием.",
@@ -342,7 +385,7 @@ settings:"⚙️ Дополнительно",oremove:"Убрать голос д
 st_need:"Загрузите видео, голос и текст.",st_dec:"Анализ голоса…",st_rec:"Идёт запись… не закрывайте страницу",st_done:"Готово! Можно скачать.",st_err:"Ошибка: ",
 limitQ:"🔓 Больше бесплатного лимита (необязательно)",limitA:"Модели работают на бесплатных серверах Hugging Face с дневным лимитом. Если лимит закончился, бесплатно зарегистрируйтесь на huggingface.co, получите токен «Read» в Settings → Access Tokens и вставьте сюда. Токен хранится только на вашем устройстве.",save:"Сохранить",saved:"Сохранено ✅",
 ideasH:"💡 Идеи — нажмите и попробуйте",copied:"Готово!"},
-en:{free:"Free",h1:"Write in any language — AI makes the video",sub:"Create characters, get HD video from text, animate photos or make them talk. No sign-up.",devby:"Developed by",
+en:{tStory:"Story video",bbStory:"Story",dStory:"Write a topic — AI writes a story or educational script, draws an HD picture for every scene and assembles a finished video with captions and voice. All free.",sTopic:"1. Topic",phStory:"E.g.: a children's story about young Avicenna reading books",sType:"2. Type",sCount:"3. Number of scenes",bStory:"Create script and pictures",pWrite:"AI is writing the script…",pWriteS:"10–40 seconds",pImgs:"Drawing scenes: ",sVoice:"4. Voice (optional)",sVoiceHint:"Upload a voiceover for the whole story (e.g. ElevenLabs). Without it the video has captions only.",bCopyText:"Copy text",bAnimAll:"Animate all",bMakeFinal:"Assemble final video",bRe:"🔄 Picture",bAn:"🎬 Animate",scene:"Scene",typeTale:"🧚 Fairy tale",typeHist:"🏛️ History",typeSci:"🔬 Science",typeFact:"💡 Fun facts",typeMoral:"❤️ Moral story",free:"Free",h1:"Write in any language — AI makes the video",sub:"Create characters, get HD video from text, animate photos or make them talk. No sign-up.",devby:"Developed by",
 tChar:"Create a character",tT2v:"Text to video",tI2v:"Animate a photo",tLip:"Talking photo",tDub:"Video dubbing",
 bbChar:"Character",bbT2v:"Video",bbI2v:"Photo",bbLip:"Talk",bbDub:"Dub",bbTop:"Top",
 dChar:"Describe any character: a person, animal, robot or fairy-tale hero. AI draws it in HD, then you animate it with one tap.",
@@ -366,7 +409,7 @@ settings:"⚙️ More settings",oremove:"Remove original narrator (keep music)",
 st_need:"Upload the video, the voice and the text.",st_dec:"Analysing voice…",st_rec:"Recording… keep this page open",st_done:"Done! You can download it.",st_err:"Error: ",
 limitQ:"🔓 More free limit (optional)",limitA:"Models run on Hugging Face's free servers with a daily limit. If it runs out, sign up free at huggingface.co, create a «Read» token in Settings → Access Tokens and paste it here. The token stays on your device only.",save:"Save",saved:"Saved ✅",
 ideasH:"💡 Ideas — tap to try",copied:"Done!"},
-tr:{free:"Ücretsiz",h1:"Herhangi bir dilde yazın — AI video yapsın",sub:"Karakter oluşturun, metinden HD video alın, fotoğrafları canlandırın veya konuşturun. Kayıt gerekmez.",devby:"Geliştirici:",
+tr:{tStory:"Hikâye videosu",bbStory:"Hikâye",dStory:"Konuyu yazın — AI hikâye veya bilgilendirici senaryo yazar, her sahne için HD resim çizer ve altyazılı, sesli hazır videoya dönüştürür. Hepsi ücretsiz.",sTopic:"1. Konu",phStory:"Örn: İbn-i Sina'nın çocukken kitap okumasını anlatan çocuk hikâyesi",sType:"2. Tür",sCount:"3. Sahne sayısı",bStory:"Senaryo ve resimleri oluştur",pWrite:"AI senaryo yazıyor…",pWriteS:"10–40 saniye",pImgs:"Sahneler çiziliyor: ",sVoice:"4. Ses (isteğe bağlı)",sVoiceHint:"Tüm hikâye için seslendirme yükleyin (ör. ElevenLabs). Yüklemezseniz video sadece altyazılı olur.",bCopyText:"Metni kopyala",bAnimAll:"Hepsini canlandır",bMakeFinal:"Son videoyu birleştir",bRe:"🔄 Resim",bAn:"🎬 Canlandır",scene:"Sahne",typeTale:"🧚 Masal",typeHist:"🏛️ Tarih",typeSci:"🔬 Bilim",typeFact:"💡 İlginç bilgiler",typeMoral:"❤️ İbretli hikâye",free:"Ücretsiz",h1:"Herhangi bir dilde yazın — AI video yapsın",sub:"Karakter oluşturun, metinden HD video alın, fotoğrafları canlandırın veya konuşturun. Kayıt gerekmez.",devby:"Geliştirici:",
 tChar:"Karakter oluştur",tT2v:"Metinden video",tI2v:"Fotoğrafı canlandır",tLip:"Konuşan fotoğraf",tDub:"Video dublaj",
 bbChar:"Karakter",bbT2v:"Video",bbI2v:"Foto",bbLip:"Konuş",bbDub:"Dublaj",bbTop:"Yukarı",
 dChar:"Herhangi bir karakteri tarif edin: insan, hayvan, robot, masal kahramanı. AI onu HD çizer, sonra tek dokunuşla canlandırırsınız.",
@@ -402,6 +445,8 @@ const STYLES=[
 const FMTS=[{k:"v",n:"📱 9:16",w:1024,h:1536},{k:"s",n:"⬛ 1:1",w:1024,h:1024},{k:"h",n:"🖥️ 16:9",w:1536,h:1024}];
 const MOVES=[{n:"🙂 Kulish",p:"the character smiles warmly and blinks naturally"},{n:"👋 Qo'l silkitish",p:"the character waves hello with a friendly smile"},{n:"🗣️ Gapirish",p:"the character talks expressively to the camera with natural lip movement"},{n:"🎥 Kamera",p:"slow cinematic camera push-in, subtle natural motion"},{n:"💃 Raqs",p:"the character dances happily with smooth body movement"}];
 const IDEAS=[
+ {e:"📚",v:"story",s:"pixar",t:"Ibn Sino bolaligida kitobga qanday mehr qo'ygani haqida bolalar uchun hikoya"},
+ {e:"🌍",v:"story",s:"cartoon",t:"Yer nega aylanadi? Bolalar uchun oddiy tushuntirish"},
  {e:"🧙",v:"char",s:"fantasy",t:"Uzun oq soqolli, yulduzli ko'k shlyapali sehrgar bobo, qo'lida yorug'lik taratayotgan tayoq"},
  {e:"🤖",v:"char",s:"pixar",t:"Do'ppi kiygan, katta ko'zli, quvnoq kichkina robot"},
  {e:"🐱",v:"t2v",s:"pixar",t:"Kichkina mushukcha Registon maydonida kapalak quvib yuguradi, quyosh botmoqda"},
@@ -483,7 +528,27 @@ async function showVideo(vidId,resId,data){const u=urlOf(data[0]);if(!u)throw ne
 document.querySelectorAll('.dl').forEach(b=>b.onclick=async()=>{const v=$(b.dataset.src);if(!v.src)return;buzz();try{const r=await fetch(v.src);const bl=await r.blob();const a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='mk-studio-'+Date.now()+'.mp4';a.click()}catch(e){window.open(v.src,'_blank')}});
 const busyBtn=(id,on)=>{$(id).disabled=on};
 
-/* 1. CHARACTER (FLUX via Pollinations — free, HD) */
+
+/* ===== image engine: FLUX.2 [klein] on HF (up to 1024px, no watermark) → fallback Pollinations ===== */
+function dimsFor(fmt){return fmt.k==='h'?[1024,576]:fmt.k==='s'?[1024,1024]:[768,1024]}
+async function genImage(prompt,fmt,seed,refBlob){
+  const [w,h]=dimsFor(fmt);
+  try{
+    const {Client,handle_file}=await gradio(); const o={}; const k=tok(); if(k)o.hf_token=k;
+    const c=await Client.connect('black-forest-labs/FLUX.2-klein-9B',o);
+    const payload={prompt,input_images:refBlob?[{image:handle_file(refBlob),caption:null}]:null,mode_choice:'Distilled (4 steps)',seed:seed||42,randomize_seed:!seed,width:w,height:h,num_inference_steps:4,guidance_scale:4,prompt_upsampling:false};
+    let r; try{r=await c.predict('/generate',payload)}catch(e){if(!refBlob)throw e;payload.input_images=null;r=await c.predict('/generate',payload)}
+    const u=urlOf(r.data[0]); if(!u)throw new Error('no image'); return u;
+  }catch(e){
+    console.warn('FLUX fallback',e);
+    const u=`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${w}&height=${h}&seed=${seed||Math.floor(Math.random()*1e9)}&nologo=true`;
+    await new Promise((res,rej)=>{const im=new Image();im.onload=res;im.onerror=()=>rej(new Error('image'));im.src=u;setTimeout(()=>rej(new Error('timeout')),120000)});
+    return u;
+  }
+}
+async function blobOf(u){const r=await fetch(u);return await r.blob()}
+
+/* 1. CHARACTER */
 let lastChar=null;
 async function makeChar(){
   const txt=$('cText').value.trim(); if(!txt){toast(t('needText'));$('cText').focus();return}
@@ -491,9 +556,8 @@ async function makeChar(){
   try{
     const en=await toEN(txt), st=getCStyle(), sz=getCSize();
     const prompt=`${en}. ${st.p}. Full character, centered, clean background, masterpiece, ultra detailed, sharp focus`;
-    const seed=Math.floor(Math.random()*1e9);
-    const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${sz.w}&height=${sz.h}&model=flux&nologo=true&enhance=true&seed=${seed}`;
-    await new Promise((res,rej)=>{const im=$('cImg');im.onload=res;im.onerror=()=>rej(new Error('image'));im.src=url;setTimeout(()=>rej(new Error('timeout')),90000)});
+    const url=await genImage(prompt,sz,0,null);
+    await new Promise((res,rej)=>{const im=$('cImg');im.onload=res;im.onerror=()=>rej(new Error('image'));im.src=url});
     lastChar={url,prompt:en,style:st};$('cRes').classList.add('on');$('cRes').scrollIntoView({behavior:'smooth',block:'center'});toast(t('pDone'));
   }catch(e){$('cErr').textContent=t('errBusy')}
   finally{stop();$('cProg').classList.remove('on');busyBtn('cGo',false)}
@@ -553,15 +617,152 @@ $('lGo').onclick=async()=>{
   finally{prog('lProg',false);busyBtn('lGo',false)}
 };
 
+
+/* ===== 0. STORY STUDIO ===== */
+const LANGN={uz:"Uzbek (Latin script, natural modern Uzbek)",ru:"Russian",en:"English",tr:"Turkish"};
+const TYPES=[{k:"tale",tk:"typeTale",d:"a warm fairy tale for children with a clear moral"},{k:"hist",tk:"typeHist",d:"an accurate, engaging history story based on real facts"},{k:"sci",tk:"typeSci",d:"a simple, accurate educational science explanation for kids and families"},{k:"fact",tk:"typeFact",d:"a list-style video of surprising but true facts"},{k:"moral",tk:"typeMoral",d:"a short inspiring story that teaches kindness, honesty or hard work"}];
+const COUNTS=[{n:"4",v:4},{n:"6",v:6},{n:"8",v:8}];
+let getSType,getSStyle=chips($('sStyle'),STYLES,0),getSCount=chips($('sCount'),COUNTS,1);
+function typeChips(){getSType=chips($('sType'),TYPES.map(x=>({...x,n:t(x.tk)})),0)} typeChips();
+document.querySelectorAll('#langs button').forEach(b=>b.addEventListener('click',()=>{typeChips();renderScenes()}));
+let story=null;
+
+async function llm(system,user){
+  // free, no key (Pollinations text). Retry once if rate-limited.
+  for(let a=0;a<3;a++){
+    try{
+      const r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'system',content:system},{role:'user',content:user}],temperature:.8,seed:Math.floor(Math.random()*1e6)})});
+      if(r.ok){const j=await r.json();const c=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;if(c)return c}
+      else if(r.status!==402&&r.status!==429){const g=await fetch('https://text.pollinations.ai/'+encodeURIComponent(user)+'?system='+encodeURIComponent(system)+'&json=true');if(g.ok)return await g.text()}
+    }catch(e){}
+    prog('sProg',true,t('pWrite'),'⏳ 30 s…');await new Promise(r=>setTimeout(r,31000));
+  }
+  throw new Error('busy');
+}
+function parseJSON(x){x=String(x).replace(/```json|```/g,'');const a=x.indexOf('{'),b=x.lastIndexOf('}');return JSON.parse(x.slice(a,b+1))}
+
+$('sGo').onclick=async()=>{
+  const topic=$('sTopic').value.trim(); if(!topic){toast(t('needText'));$('sTopic').focus();return}
+  buzz();busyBtn('sGo',true);$('sErr').textContent='';$('sBoard').classList.remove('on');prog('sProg',true,t('pWrite'),t('pWriteS'),5);
+  const type=getSType(), st=getSStyle(), n=getSCount().v;
+  const sys=`You are a professional children's and educational video scriptwriter. You write short vertical-video scripts (Reels/TikTok/YouTube Shorts) that are accurate, kind, safe for children and useful for people. Never invent fake historical facts; if unsure, keep it general. Output ONLY valid JSON, no markdown.`;
+  const usr=`Topic: ${topic}
+Type: ${type.d}
+Write exactly ${n} scenes. Narration language: ${LANGN[L]}. Each narration is 1–2 short sentences (12–26 words), vivid and easy to listen to; scene 1 is a strong hook, the last scene gives a clear conclusion or lesson.
+For visuals, define ONE consistent main character (if the story has one) and describe each scene as an English image prompt (subject, action, setting, lighting, camera angle). No text, letters or logos in images.
+JSON format:
+{"title":"short catchy title in ${LANGN[L]}","character":"English visual description of the main recurring character (age, face, hair, clothes, colors) or empty string","scenes":[{"narration":"...","image":"English image prompt ..."}]}`;
+  try{
+    story=parseJSON(await llm(sys,usr)); if(!story.scenes||!story.scenes.length)throw new Error('empty');
+    story.style=st; story.seed=Math.floor(Math.random()*1e6); story.fmt=FMTS[0];
+    story.scenes.forEach(x=>{x.img=null;x.clip=null});
+    $('sTitle').textContent='🎬 '+(story.title||topic); renderScenes(); $('sBoard').classList.add('on');
+    prog('sProg',false); busyBtn('sGo',false);
+    $('sBoard').scrollIntoView({behavior:'smooth'});
+    await drawAll();
+  }catch(e){console.error(e);$('sErr').textContent=t('errBusy');prog('sProg',false);busyBtn('sGo',false)}
+};
+function scenePrompt(sc){return `${sc.image}. ${story.character?('Main character: '+story.character+'. '):''}${story.style.p}. Vertical composition, cinematic lighting, ultra detailed, sharp focus, no text, no watermark.`}
+function renderScenes(){
+  if(!story)return; const box=$('sScenes'); box.innerHTML='';
+  story.scenes.forEach((sc,i)=>{
+    const d=document.createElement('div'); d.className='scene'+(sc.busy?' busy':''); d.style.animationDelay=(i*0.07)+'s';
+    d.innerHTML=`<div class="media"><b>${t('scene')} ${i+1}</b></div><div><textarea>${sc.narration.replace(/</g,'&lt;')}</textarea><div class="sa"><button data-a="re">${t('bRe')}</button><button data-a="an">${t('bAn')}</button></div></div>`;
+    const m=d.querySelector('.media');
+    if(sc.clip){const v=document.createElement('video');v.src=sc.clip;v.muted=true;v.loop=true;v.autoplay=true;v.playsInline=true;m.prepend(v)}
+    else if(sc.img){const im=new Image();im.src=sc.img;m.prepend(im)}
+    d.querySelector('textarea').oninput=e=>sc.narration=e.target.value;
+    d.querySelector('[data-a=re]').onclick=async()=>{buzz();await drawOne(i,true)};
+    d.querySelector('[data-a=an]').onclick=async()=>{buzz();await animateOne(i)};
+    box.appendChild(d);
+  });
+}
+async function drawOne(i,force){
+  const sc=story.scenes[i]; if(sc.img&&!force)return;
+  sc.busy=true; renderScenes();
+  try{
+    let ref=null; if(i>0&&story.refBlob)ref=story.refBlob;
+    sc.img=await genImage(scenePrompt(sc),story.fmt,force?Math.floor(Math.random()*1e6):story.seed+i,ref); sc.clip=null;
+    if(i===0&&!story.refBlob){try{story.refBlob=await blobOf(sc.img)}catch(e){}}
+  }catch(e){toast(t('errBusy'))}
+  sc.busy=false; renderScenes();
+}
+async function drawAll(){for(let i=0;i<story.scenes.length;i++){$('sStatus').textContent=t('pImgs')+(i+1)+'/'+story.scenes.length;await drawOne(i,false)} $('sStatus').textContent=''}
+async function animateOne(i){
+  const sc=story.scenes[i]; if(!sc.img){await drawOne(i,false); if(!sc.img)return}
+  sc.busy=true; renderScenes();
+  try{
+    const {Client,handle_file}=await gradio(); const o={}; const k=tok(); if(k)o.hf_token=k;
+    const c=await Client.connect('Lightricks/LTX-2-3',o);
+    const words=sc.narration.split(/\s+/).length, dur=Math.min(10,Math.max(4,Math.round(words/2.4+1)));
+    const r=await c.predict('/generate_video',{input_image:handle_file(await blobOf(sc.img)),prompt:`${sc.image}. The character moves naturally and expressively, smooth fluid animation, gentle cinematic camera motion, keep the same style and character as the image, high detail, no text.`,duration:dur,enhance_prompt:true,seed:42,randomize_seed:true,height:1536,width:1024});
+    sc.clip=urlOf(r.data[0]);
+  }catch(e){console.error(e);toast(t('errBusy'))}
+  sc.busy=false; renderScenes();
+}
+$('sAnimAll').onclick=async()=>{if(!story)return;buzz();for(let i=0;i<story.scenes.length;i++){$('sStatus').textContent='🎬 '+(i+1)+'/'+story.scenes.length;if(!story.scenes[i].clip)await animateOne(i)}$('sStatus').textContent=''};
+$('sCopy').onclick=async()=>{if(!story)return;const txt=story.scenes.map(x=>x.narration).join('\n\n');try{await navigator.clipboard.writeText(txt)}catch(e){}toast(t('copied'))};
+drop('sAud','sDropA','aud');
+
+/* assemble final video in the browser: Ken Burns + crossfade + animated captions + voice */
+$('sMake').onclick=async()=>{
+  if(!story)return; if(story.scenes.some(x=>!x.img)){await drawAll()}
+  buzz();busyBtn('sMake',true);
+  try{
+    await document.fonts.load('40px "Rubik Dirt"').catch(()=>{});
+    const W=720,H=1280,cv=$('sCanvas'),ctx=cv.getContext('2d');cv.style.display='block';
+    const AC=new (window.AudioContext||window.webkitAudioContext)(),dest=AC.createMediaStreamDestination();
+    let voice=null; const af=$('sAud').files[0]; if(af){try{voice=await AC.decodeAudioData(await af.arrayBuffer())}catch(e){}}
+    const lens=story.scenes.map(x=>Math.max(8,x.narration.length));
+    let durs; if(voice){const tot=voice.duration+.6, sum=lens.reduce((a,b)=>a+b,0); durs=lens.map(l=>Math.max(2.2,tot*l/sum))}
+    else durs=story.scenes.map(x=>Math.max(3.2,x.narration.split(/\s+/).length/2.5+1));
+    const starts=[];let acc=0;durs.forEach(d=>{starts.push(acc);acc+=d});const total=acc;
+    // load media
+    $('sStatus').textContent='⏳ …';
+    const media=await Promise.all(story.scenes.map(async sc=>{
+      if(sc.clip){try{const b=await blobOf(sc.clip);const v=document.createElement('video');v.src=URL.createObjectURL(b);v.muted=true;v.loop=true;v.playsInline=true;await new Promise(r=>{v.onloadeddata=r;setTimeout(r,8000)});return {v}}catch(e){}}
+      const b=await blobOf(sc.img); const im=new Image(); im.src=URL.createObjectURL(b); await im.decode().catch(()=>{}); return {im};
+    }));
+    const chunks=story.scenes.map((sc,i)=>{const w=sc.narration.split(/\s+/),out=[];for(let k=0;k<w.length;k+=3)out.push(w.slice(k,k+3).join(' '));const tl=out.reduce((a,c)=>a+c.length,0);let t0=starts[i];return out.map(c=>{const d=durs[i]*c.length/tl;const r={s:t0,e:t0+d,txt:c};t0+=d;return r})}).flat();
+    function cover(src,sw,sh,z,dx,dy,a){const sc=Math.max(W/sw,H/sh)*z;const w=sw*sc,h=sh*sc;ctx.globalAlpha=a;ctx.drawImage(src,(W-w)/2+dx,(H-h)/2+dy,w,h);ctx.globalAlpha=1}
+    function drawScene(i,tt,a){const m=media[i],p=Math.min(1,Math.max(0,(tt-starts[i])/durs[i]));const dir=i%2?1:-1;
+      if(m.v){if(m.v.paused)m.v.play().catch(()=>{});cover(m.v,m.v.videoWidth||W,m.v.videoHeight||H,1.02,0,0,a)}
+      else cover(m.im,m.im.naturalWidth||W,m.im.naturalHeight||H,1.06+0.12*p,dir*30*(p-.5),-12*p,a)}
+    const stream=cv.captureStream(30); dest.stream.getAudioTracks().forEach(x=>stream.addTrack(x));
+    const types=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm'];
+    const mime=types.find(x=>window.MediaRecorder&&MediaRecorder.isTypeSupported(x))||'';
+    const rec=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:9e6}:{});const parts=[];rec.ondataavailable=e=>e.data.size&&parts.push(e.data);const done=new Promise(r=>rec.onstop=r);
+    if(AC.state==='suspended')await AC.resume();
+    rec.start(250); const t0=AC.currentTime+.1;
+    if(voice){const s=AC.createBufferSource();s.buffer=voice;s.connect(dest);s.connect(AC.destination);s.start(t0)}
+    $('sStatus').textContent=t('st_rec');
+    await new Promise(res=>{(function fr(){
+      const tt=AC.currentTime-t0; if(tt<0){requestAnimationFrame(fr);return}
+      let i=starts.findIndex((s,k)=>tt>=s&&tt<s+durs[k]); if(i<0)i=story.scenes.length-1;
+      ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+      const into=tt-starts[i];
+      if(i>0&&into<.45){drawScene(i-1,tt,1);drawScene(i,tt,into/.45)}else drawScene(i,tt,1);
+      const g=ctx.createLinearGradient(0,H*.55,0,H);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.55)');ctx.fillStyle=g;ctx.fillRect(0,H*.55,W,H*.45);
+      if(tt<2.6&&story.title){const a=Math.min(1,tt*3,(2.6-tt)*3);ctx.save();ctx.globalAlpha=a;drawCaption(ctx,story.title,W,H,H*.16,Math.min(tt,1),'Rubik Dirt');ctx.restore()}
+      for(const c of chunks){if(tt>=c.s&&tt<c.e){drawCaption(ctx,c.txt,W,H,H*.78,tt-c.s,'Rubik Dirt');break}}
+      $('sBar').style.width=Math.min(100,tt/total*100)+'%';
+      if(tt>=total){res();return} requestAnimationFrame(fr)})()});
+    rec.stop();await done;media.forEach(m=>m.v&&m.v.pause());
+    const blob=new Blob(parts,{type:mime||'video/webm'});const a=$('sDl');a.href=URL.createObjectURL(blob);a.download='mk-hikoya.'+(mime.includes('mp4')?'mp4':'webm');a.style.pointerEvents='auto';a.style.opacity='1';
+    $('sStatus').textContent=t('st_done');toast(t('pDone'));AC.close();
+  }catch(e){console.error(e);$('sStatus').textContent=t('st_err')+e.message}
+  busyBtn('sMake',false);
+};
+
 /* ideas */
-IDEAS.forEach(x=>{const d=document.createElement('div');d.className='idea';d.innerHTML=`<b>${x.e}</b>${x.t}`;d.onclick=()=>{buzz();show(x.v);const ta=x.v==='char'?$('cText'):$('tText');ta.value=x.t;const box=x.v==='char'?$('cStyle'):$('tStyle');const i=STYLES.findIndex(s=>s.k===x.s);box.children[i]&&box.children[i].click();$('tabs').scrollIntoView({behavior:'smooth'})};$('ideas').appendChild(d)});
+IDEAS.forEach(x=>{const d=document.createElement('div');d.className='idea';d.innerHTML=`<b>${x.e}</b>${x.t}`;d.onclick=()=>{buzz();show(x.v);const ta=x.v==='char'?$('cText'):x.v==='story'?$('sTopic'):$('tText');ta.value=x.t;const box=x.v==='char'?$('cStyle'):x.v==='story'?$('sStyle'):$('tStyle');const i=STYLES.findIndex(s=>s.k===x.s);box.children[i]&&box.children[i].click();$('tabs').scrollIntoView({behavior:'smooth'})};$('ideas').appendChild(d)});
 
 /* reveal animations */
 const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
 
 applyLang();
-show((()=>{try{return localStorage.getItem('mk_view')}catch(e){}})()||'char');
+show((()=>{try{return localStorage.getItem('mk_view')}catch(e){}})()||'story');
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js',{scope:'./'}).catch(()=>{});
 $('oMusic').oninput=e=>$('musicV').textContent=e.target.value+'%';
 $('oCapY').oninput=e=>$('capV').textContent=e.target.value+'%';

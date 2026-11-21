@@ -1,5 +1,5 @@
 // MK Studio AI — network-first service worker (offline fallback for the app shell)
-const C='mk-studio-v3';
+const C='mk-studio-v4';
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(['./','./index.html','./photo.jpg','./manifest.json'])))});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{
