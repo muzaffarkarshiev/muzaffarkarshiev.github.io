@@ -9,6 +9,12 @@
 <meta property="og:description" content="Bepul AI video studiya: rasm → video, ovoz → lab harakati, matn → 3D personaj, video dublyaj.">
 <meta property="og:image" content="photo.jpg">
 <meta name="theme-color" content="#07060f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MK Studio AI">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -125,6 +131,67 @@ footer b{color:var(--txt)}
   .pcard .c1{left:-6%}.pcard .c2{right:-6%}
 }
 @media (max-width:480px){.grid{grid-template-columns:1fr}.logo span{display:none}}
+
+/* ---------- mobile app experience ---------- */
+html,body{-webkit-tap-highlight-color:transparent;overflow-x:clip;max-width:100%}
+input[type=file],textarea,select,input[type=text]{font-size:16px}
+input[type=file]{padding:10px;border-style:dashed;border-color:rgba(124,92,255,.5);cursor:pointer;color:var(--mut)}
+input[type=file]::file-selector-button{border:0;border-radius:10px;padding:10px 14px;margin-right:12px;font:inherit;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));cursor:pointer}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#a6a2c4 50%),linear-gradient(135deg,#a6a2c4 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
+.tabbar{display:none}
+.fsbtn{display:none}
+.panel.fs{position:fixed;inset:0;z-index:50;margin:0;border-radius:0;display:flex;flex-direction:column;background:#07060f}
+.panel.fs .pv:not([hidden]){display:flex;flex-direction:column;flex:1;min-height:0}
+.panel.fs .pbody{flex:1;overflow:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+.panel.fs .frame{height:calc(100dvh - 120px)}
+.panel.fs .ph2{padding-top:calc(14px + env(safe-area-inset-top))}
+.install{display:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:760px){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+  nav .wrap{height:56px;padding-top:env(safe-area-inset-top)}
+  .hero{gap:22px;padding:20px 0 10px}
+  .pcard{width:min(250px,64vw)}
+  .pcard .chip{font-size:11px;padding:6px 9px}
+  .pcard .c1{left:-10%;top:10%}.pcard .c2{right:-10%}
+  .pcard .tag h3{font-size:16px}
+  h1{font-size:clamp(28px,8.6vw,40px);margin:14px 0 10px}
+  .lead{font-size:15.5px}
+  .hero .cta{flex-wrap:nowrap}
+  .hero .cta .btn{flex:1;min-width:0;padding:14px 10px;font-size:15px}
+  .pbody .cta{align-items:center;gap:14px}
+  .pbody .cta .btn{padding:11px 14px;font-size:14px}
+  section{padding:30px 0}
+  .sub{font-size:14.5px;margin-bottom:16px}
+  /* swipeable tool cards */
+  .grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -18px;padding:4px 18px 14px;scrollbar-width:none}
+  .grid::-webkit-scrollbar{display:none}
+  .tool{flex:0 0 72%;scroll-snap-align:center;min-height:0;padding:18px}
+  .tool .ic{width:44px;height:44px;font-size:22px;margin-bottom:10px}
+  .tool.reveal{opacity:1;transform:none}
+  .panel{margin:12px -18px 0;border-radius:22px 22px 0 0;border-left:0;border-right:0}
+  .ph2{padding:12px 16px}
+  .ph2 h3{font-size:16px}
+  .pbody{padding:14px 16px}
+  .frame{height:calc(100dvh - 190px);min-height:520px;border-radius:12px}
+  .fsbtn{display:inline-flex;all:unset;cursor:pointer;font-size:13px;font-weight:700;padding:8px 12px;border-radius:10px;background:linear-gradient(135deg,var(--a1),var(--a2))}
+  .styles{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px 12px;padding:0 16px;scrollbar-width:none}
+  .styles::-webkit-scrollbar{display:none}
+  .styles button{white-space:nowrap;padding:10px 14px}
+  .out{max-width:none;max-height:70vh;border-radius:14px}
+  #dGo{position:sticky;bottom:calc(86px + env(safe-area-inset-bottom));z-index:6}
+  .how div{padding:16px}
+  footer{padding-bottom:20px}
+  /* bottom tab bar */
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;height:64px;border-radius:22px;background:rgba(18,15,36,.82);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border:1px solid rgba(255,255,255,.14);box-shadow:0 18px 40px rgba(0,0,0,.55)}
+  .tabbar button{all:unset;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10.5px;font-weight:600;color:var(--mut);position:relative;transition:color .2s}
+  .tabbar button span:first-child{font-size:21px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+  .tabbar button.on{color:#fff}
+  .tabbar button.on span:first-child{transform:translateY(-3px) scale(1.15)}
+  .tabbar button.on::after{content:"";position:absolute;bottom:6px;width:18px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--a1),var(--a2))}
+  .install{display:flex;align-items:center;gap:10px;margin:14px 0 0;padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);font-size:13.5px}
+  .install button{all:unset;margin-left:auto;font-weight:700;padding:8px 12px;border-radius:10px;background:var(--card);border:1px solid var(--line);cursor:pointer}
+}
 </style>
 </head>
 <body>
@@ -147,6 +214,7 @@ footer b{color:var(--txt)}
       <a class="btn s" href="#how" data-t="howbtn"></a>
     </div>
     <p class="dev"><span data-t="devby"></span> <b>Muzaffar Karshiev</b></p>
+    <div class="install" id="install" hidden>📲 <span data-t="install"></span><button id="installBtn" data-t="installbtn"></button></div>
   </div>
   <div class="stage">
     <div class="pcard" id="pcard">
@@ -173,7 +241,7 @@ footer b{color:var(--txt)}
   <div class="panel" id="panel">
     <!-- image to video -->
     <div class="pv" data-pv="i2v">
-      <div class="ph2"><h3>🖼️ <span data-t="t1"></span></h3><div class="meta"><span class="pill">Wan 2.2 · 14B</span><span class="pill" data-t="free"></span></div></div>
+      <div class="ph2"><h3>🖼️ <span data-t="t1"></span></h3><div class="meta"><span class="pill">Wan 2.2 · 14B</span><span class="pill" data-t="free"></span><button class="fsbtn" data-t2="fs">⛶</button></div></div>
       <div class="pbody">
         <p class="hint" data-t="i2vhint"></p>
         <div class="styles" data-target="i2vp">
@@ -188,7 +256,7 @@ footer b{color:var(--txt)}
     </div>
     <!-- lip sync -->
     <div class="pv" data-pv="lip" hidden>
-      <div class="ph2"><h3>🗣️ <span data-t="t2"></span></h3><div class="meta"><span class="pill">Wan 2.2 S2V</span><span class="pill" data-t="free"></span></div></div>
+      <div class="ph2"><h3>🗣️ <span data-t="t2"></span></h3><div class="meta"><span class="pill">Wan 2.2 S2V</span><span class="pill" data-t="free"></span><button class="fsbtn" data-t2="fs">⛶</button></div></div>
       <div class="pbody">
         <p class="hint" data-t="liphint"></p>
         <div class="cta" style="margin:0 0 14px"><a class="open" target="_blank" rel="noopener" href="https://huggingface.co/spaces/Wan-AI/Wan2.2-S2V" data-t="opennew"></a></div>
@@ -197,7 +265,7 @@ footer b{color:var(--txt)}
     </div>
     <!-- text to 3D character -->
     <div class="pv" data-pv="t2v" hidden>
-      <div class="ph2"><h3>🧸 <span data-t="t3"></span></h3><div class="meta"><span class="pill">LTX 2.3</span><span class="pill" data-t="free"></span></div></div>
+      <div class="ph2"><h3>🧸 <span data-t="t3"></span></h3><div class="meta"><span class="pill">LTX 2.3</span><span class="pill" data-t="free"></span><button class="fsbtn" data-t2="fs">⛶</button></div></div>
       <div class="pbody">
         <p class="hint" data-t="t2vhint"></p>
         <div class="row">
@@ -222,7 +290,7 @@ footer b{color:var(--txt)}
     </div>
     <!-- dub studio (runs in browser) -->
     <div class="pv" data-pv="dub" hidden>
-      <div class="ph2"><h3>🎬 <span data-t="t4"></span></h3><div class="meta"><span class="pill" data-t="local"></span><span class="pill" data-t="free"></span></div></div>
+      <div class="ph2"><h3>🎬 <span data-t="t4"></span></h3><div class="meta"><span class="pill" data-t="local"></span><span class="pill" data-t="free"></span><button class="fsbtn" data-t2="fs">⛶</button></div></div>
       <div class="pbody">
         <p class="hint" data-t="dubhint"></p>
         <div class="row">
@@ -264,6 +332,13 @@ footer b{color:var(--txt)}
   </div>
 </div></section>
 
+<div class="tabbar" id="tabbar" role="navigation">
+  <button data-go="home" class="on"><span>🏠</span><span data-t="home"></span></button>
+  <button data-go="i2v"><span>🖼️</span><span data-t="tb1"></span></button>
+  <button data-go="lip"><span>🗣️</span><span data-t="tb2"></span></button>
+  <button data-go="t2v"><span>🧸</span><span data-t="tb3"></span></button>
+  <button data-go="dub"><span>🎬</span><span data-t="tb4"></span></button>
+</div>
 <footer><div class="wrap">
   <div>© 2026 <b>MK Studio AI</b> — <span data-t="devby"></span> <b>Muzaffar Karshiev</b></div>
   <div data-t="foot"></div>
@@ -272,13 +347,13 @@ footer b{color:var(--txt)}
 <script>
 /* ---------------- i18n ---------------- */
 const T={
-uz:{badge:"100% bepul · ro'yxatdan o'tmasdan",h1a:"Rasm, ovoz va matndan",h1b:"3D AI video yarating",lead:"Rasmni jonlantiring, ovozingizga moslab lab harakatlarini yarating, matndan 3D personaj video oling va tayyor videolarni o'zbek tiliga dublyaj qiling — hammasi bitta joyda.",start:"🚀 Boshlash",howbtn:"Qanday ishlaydi?",devby:"Ishlab chiquvchi:",founder:"MK Studio AI asoschisi",chip1:"Rasm → Video",chip2:"Lab sinxron",toolsh:"AI asboblar",toolss:"Asbobni tanlang. Barcha modellar ochiq kodli va bepul ishlaydi (kunlik bepul GPU limiti bor).",t1:"Rasmni jonlantirish",t1d:"Har qanday rasmni harakatlanuvchi videoga aylantiring.",t2:"Ovozga moslab gapirtirish",t2d:"Rasm + ovoz → og'iz va mimika ovozga mos harakatlanadi.",t3:"Matndan 3D personaj",t3d:"Matnni yozing — 3D uslubdagi personaj videosi tayyor.",t4:"Video dublyaj studiyasi",t4d:"Inglizcha videoni o'zbekcha ovoz va animatsiyali yozuvlar bilan qayta yasang.",free:"Bepul",local:"Brauzeringizda ishlaydi",copy:"Promptni nusxalash",opennew:"↗ Yangi oynada ochish",i2vhint:"<b>1.</b> Pastdagi oynaga rasmingizni yuklang. <b>2.</b> Uslubni tanlab, promptni nusxalang va «Prompt» maydoniga qo'ying. <b>3.</b> «Generate» tugmasini bosing — 1–3 daqiqada video tayyor.",liphint:"<b>1.</b> Yuzingiz aniq ko'ringan rasmni yuklang. <b>2.</b> Ovoz faylini (mp3/wav) yuklang. <b>3.</b> «Generate» ni bosing — og'iz harakati va mimika ovozga moslashadi. Qisqa ovoz (5–15 s) tezroq ishlaydi.",t2vhint:"Matningizni istalgan tilda yozing, uslubni tanlang va «Prompt yaratish» ni bosing. Tayyor promptni nusxalab pastdagi oynaga qo'ying.",yourtext:"Matningiz (sahna nima haqida)",t2vph:"Masalan: Samarqand ko'chasida kichkina bola non sotib olib, kulib yugurib ketadi",style:"Uslub",format:"Format",mkprompt:"Prompt yaratish",dubhint:"Inglizcha videoni yuklang, o'zbekcha ovozni (audio yoki ElevenLabs ekran yozuvi) va matnni qo'shing. Studiya asl odam ovozini olib tashlaydi, musiqani qoldiradi, eski yozuvlarni yashiradi va matnni animatsiyali subtitr qilib, ovozga moslab joylaydi. Yozib olish vaqtida sahifani yopmang.",dvideo:"1. Asl video",dvoice:"2. O'zbekcha ovoz (audio yoki video fayl)",dtext:"3. Matn",dtextph:"Ovozda aytilgan matnni shu yerga qo'ying…",oremove:"Asl odam ovozini olib tashlash (musiqa qoladi)",ohide:"Eski yozuvlarni yashirish (pastki qism)",ozoom:"Yuqoridagi reklamani kesish (kadrni kattalashtirish)",ofit:"Video uzunligini ovozga moslash",omusic:"Musiqa balandligi",ocappos:"Yozuv joyi",ofont:"Shrift",dgo:"Video yasash",ddl:"Yuklab olish",preview:"Natija shu yerda ko'rinadi",howh:"Qanday ishlaydi?",h1:"Asbobni tanlang va rasm, ovoz yoki matnni yuklang.",h2:"AI model bepul GPU'da videoni yaratadi (navbat bo'lsa ozgina kuting).",h3:"Tayyor videoni yuklab oling va Reels, TikTok yoki YouTube'ga joylang.",foot:"Ochiq kodli modellar: Wan 2.2, Wan S2V, LTX 2.3",
+uz:{home:"Asosiy",tb1:"Rasm",tb2:"Ovoz",tb3:"3D",tb4:"Dublyaj",fs:"To'liq ekran",install:"Saytni telefonga ilova qilib o'rnating",installbtn:"O'rnatish",ios:"Ulashish ⎋ → «Bosh ekranga qo'shish»",badge:"100% bepul · ro'yxatdan o'tmasdan",h1a:"Rasm, ovoz va matndan",h1b:"3D AI video yarating",lead:"Rasmni jonlantiring, ovozingizga moslab lab harakatlarini yarating, matndan 3D personaj video oling va tayyor videolarni o'zbek tiliga dublyaj qiling — hammasi bitta joyda.",start:"🚀 Boshlash",howbtn:"Qanday ishlaydi?",devby:"Ishlab chiquvchi:",founder:"MK Studio AI asoschisi",chip1:"Rasm → Video",chip2:"Lab sinxron",toolsh:"AI asboblar",toolss:"Asbobni tanlang. Barcha modellar ochiq kodli va bepul ishlaydi (kunlik bepul GPU limiti bor).",t1:"Rasmni jonlantirish",t1d:"Har qanday rasmni harakatlanuvchi videoga aylantiring.",t2:"Ovozga moslab gapirtirish",t2d:"Rasm + ovoz → og'iz va mimika ovozga mos harakatlanadi.",t3:"Matndan 3D personaj",t3d:"Matnni yozing — 3D uslubdagi personaj videosi tayyor.",t4:"Video dublyaj studiyasi",t4d:"Inglizcha videoni o'zbekcha ovoz va animatsiyali yozuvlar bilan qayta yasang.",free:"Bepul",local:"Brauzeringizda ishlaydi",copy:"Promptni nusxalash",opennew:"↗ Yangi oynada ochish",i2vhint:"<b>1.</b> Pastdagi oynaga rasmingizni yuklang. <b>2.</b> Uslubni tanlab, promptni nusxalang va «Prompt» maydoniga qo'ying. <b>3.</b> «Generate» tugmasini bosing — 1–3 daqiqada video tayyor.",liphint:"<b>1.</b> Yuzingiz aniq ko'ringan rasmni yuklang. <b>2.</b> Ovoz faylini (mp3/wav) yuklang. <b>3.</b> «Generate» ni bosing — og'iz harakati va mimika ovozga moslashadi. Qisqa ovoz (5–15 s) tezroq ishlaydi.",t2vhint:"Matningizni istalgan tilda yozing, uslubni tanlang va «Prompt yaratish» ni bosing. Tayyor promptni nusxalab pastdagi oynaga qo'ying.",yourtext:"Matningiz (sahna nima haqida)",t2vph:"Masalan: Samarqand ko'chasida kichkina bola non sotib olib, kulib yugurib ketadi",style:"Uslub",format:"Format",mkprompt:"Prompt yaratish",dubhint:"Inglizcha videoni yuklang, o'zbekcha ovozni (audio yoki ElevenLabs ekran yozuvi) va matnni qo'shing. Studiya asl odam ovozini olib tashlaydi, musiqani qoldiradi, eski yozuvlarni yashiradi va matnni animatsiyali subtitr qilib, ovozga moslab joylaydi. Yozib olish vaqtida sahifani yopmang.",dvideo:"1. Asl video",dvoice:"2. O'zbekcha ovoz (audio yoki video fayl)",dtext:"3. Matn",dtextph:"Ovozda aytilgan matnni shu yerga qo'ying…",oremove:"Asl odam ovozini olib tashlash (musiqa qoladi)",ohide:"Eski yozuvlarni yashirish (pastki qism)",ozoom:"Yuqoridagi reklamani kesish (kadrni kattalashtirish)",ofit:"Video uzunligini ovozga moslash",omusic:"Musiqa balandligi",ocappos:"Yozuv joyi",ofont:"Shrift",dgo:"Video yasash",ddl:"Yuklab olish",preview:"Natija shu yerda ko'rinadi",howh:"Qanday ishlaydi?",h1:"Asbobni tanlang va rasm, ovoz yoki matnni yuklang.",h2:"AI model bepul GPU'da videoni yaratadi (navbat bo'lsa ozgina kuting).",h3:"Tayyor videoni yuklab oling va Reels, TikTok yoki YouTube'ga joylang.",foot:"Ochiq kodli modellar: Wan 2.2, Wan S2V, LTX 2.3",
  st_need:"Video, ovoz va matnni yuklang.",st_dec:"Ovoz tahlil qilinmoqda…",st_rec:"Video yozilmoqda… sahifani yopmang",st_done:"Tayyor! Yuklab olishingiz mumkin.",st_err:"Xatolik: ",st_mono:"Diqqat: asl video mono — ovozni ajratib bo'lmadi, faqat musiqa pasaytirildi."},
-ru:{badge:"100% бесплатно · без регистрации",h1a:"Из фото, голоса и текста",h1b:"создавайте 3D AI-видео",lead:"Оживляйте фото, синхронизируйте губы с вашим голосом, создавайте 3D-персонажей из текста и дублируйте готовые видео на узбекский — всё в одном месте.",start:"🚀 Начать",howbtn:"Как это работает?",devby:"Разработчик:",founder:"Основатель MK Studio AI",chip1:"Фото → Видео",chip2:"Липсинк",toolsh:"AI-инструменты",toolss:"Выберите инструмент. Все модели открытые и работают бесплатно (есть дневной лимит бесплатного GPU).",t1:"Оживление фото",t1d:"Превратите любое фото в движущееся видео.",t2:"Говорящее фото по голосу",t2d:"Фото + голос → рот и мимика двигаются в такт голосу.",t3:"3D-персонаж из текста",t3d:"Напишите текст — получите видео с 3D-персонажем.",t4:"Студия дубляжа",t4d:"Переделайте английское видео с узбекским голосом и анимированными титрами.",free:"Бесплатно",local:"Работает в браузере",copy:"Скопировать промпт",opennew:"↗ Открыть в новом окне",i2vhint:"<b>1.</b> Загрузите фото в окно ниже. <b>2.</b> Выберите стиль, скопируйте промпт и вставьте в поле «Prompt». <b>3.</b> Нажмите «Generate» — видео готово через 1–3 минуты.",liphint:"<b>1.</b> Загрузите фото с чётко видимым лицом. <b>2.</b> Загрузите аудио (mp3/wav). <b>3.</b> Нажмите «Generate» — губы и мимика подстроятся под голос. Короткое аудио (5–15 с) обрабатывается быстрее.",t2vhint:"Напишите текст на любом языке, выберите стиль и нажмите «Создать промпт». Скопируйте промпт в окно ниже.",yourtext:"Ваш текст (о чём сцена)",t2vph:"Например: мальчик покупает лепёшку на улице Самарканда и с улыбкой убегает",style:"Стиль",format:"Формат",mkprompt:"Создать промпт",dubhint:"Загрузите английское видео, узбекский голос (аудио или запись экрана ElevenLabs) и текст. Студия уберёт голос диктора, оставит музыку, скроет старые титры и наложит анимированные субтитры по голосу. Не закрывайте страницу во время записи.",dvideo:"1. Исходное видео",dvoice:"2. Новый голос (аудио или видео)",dtext:"3. Текст",dtextph:"Вставьте текст, который звучит в голосе…",oremove:"Убрать голос диктора (музыка останется)",ohide:"Скрыть старые титры (низ кадра)",ozoom:"Обрезать рекламу сверху (увеличить кадр)",ofit:"Подогнать длину видео под голос",omusic:"Громкость музыки",ocappos:"Положение титров",ofont:"Шрифт",dgo:"Создать видео",ddl:"Скачать",preview:"Здесь появится результат",howh:"Как это работает?",h1:"Выберите инструмент и загрузите фото, голос или текст.",h2:"AI-модель создаёт видео на бесплатном GPU (при очереди немного подождите).",h3:"Скачайте готовое видео и публикуйте в Reels, TikTok или YouTube.",foot:"Открытые модели: Wan 2.2, Wan S2V, LTX 2.3",
+ru:{home:"Главная",tb1:"Фото",tb2:"Голос",tb3:"3D",tb4:"Дубляж",fs:"На весь экран",install:"Установите сайт на телефон как приложение",installbtn:"Установить",ios:"Поделиться ⎋ → «На экран Домой»",badge:"100% бесплатно · без регистрации",h1a:"Из фото, голоса и текста",h1b:"создавайте 3D AI-видео",lead:"Оживляйте фото, синхронизируйте губы с вашим голосом, создавайте 3D-персонажей из текста и дублируйте готовые видео на узбекский — всё в одном месте.",start:"🚀 Начать",howbtn:"Как это работает?",devby:"Разработчик:",founder:"Основатель MK Studio AI",chip1:"Фото → Видео",chip2:"Липсинк",toolsh:"AI-инструменты",toolss:"Выберите инструмент. Все модели открытые и работают бесплатно (есть дневной лимит бесплатного GPU).",t1:"Оживление фото",t1d:"Превратите любое фото в движущееся видео.",t2:"Говорящее фото по голосу",t2d:"Фото + голос → рот и мимика двигаются в такт голосу.",t3:"3D-персонаж из текста",t3d:"Напишите текст — получите видео с 3D-персонажем.",t4:"Студия дубляжа",t4d:"Переделайте английское видео с узбекским голосом и анимированными титрами.",free:"Бесплатно",local:"Работает в браузере",copy:"Скопировать промпт",opennew:"↗ Открыть в новом окне",i2vhint:"<b>1.</b> Загрузите фото в окно ниже. <b>2.</b> Выберите стиль, скопируйте промпт и вставьте в поле «Prompt». <b>3.</b> Нажмите «Generate» — видео готово через 1–3 минуты.",liphint:"<b>1.</b> Загрузите фото с чётко видимым лицом. <b>2.</b> Загрузите аудио (mp3/wav). <b>3.</b> Нажмите «Generate» — губы и мимика подстроятся под голос. Короткое аудио (5–15 с) обрабатывается быстрее.",t2vhint:"Напишите текст на любом языке, выберите стиль и нажмите «Создать промпт». Скопируйте промпт в окно ниже.",yourtext:"Ваш текст (о чём сцена)",t2vph:"Например: мальчик покупает лепёшку на улице Самарканда и с улыбкой убегает",style:"Стиль",format:"Формат",mkprompt:"Создать промпт",dubhint:"Загрузите английское видео, узбекский голос (аудио или запись экрана ElevenLabs) и текст. Студия уберёт голос диктора, оставит музыку, скроет старые титры и наложит анимированные субтитры по голосу. Не закрывайте страницу во время записи.",dvideo:"1. Исходное видео",dvoice:"2. Новый голос (аудио или видео)",dtext:"3. Текст",dtextph:"Вставьте текст, который звучит в голосе…",oremove:"Убрать голос диктора (музыка останется)",ohide:"Скрыть старые титры (низ кадра)",ozoom:"Обрезать рекламу сверху (увеличить кадр)",ofit:"Подогнать длину видео под голос",omusic:"Громкость музыки",ocappos:"Положение титров",ofont:"Шрифт",dgo:"Создать видео",ddl:"Скачать",preview:"Здесь появится результат",howh:"Как это работает?",h1:"Выберите инструмент и загрузите фото, голос или текст.",h2:"AI-модель создаёт видео на бесплатном GPU (при очереди немного подождите).",h3:"Скачайте готовое видео и публикуйте в Reels, TikTok или YouTube.",foot:"Открытые модели: Wan 2.2, Wan S2V, LTX 2.3",
  st_need:"Загрузите видео, голос и текст.",st_dec:"Анализ голоса…",st_rec:"Идёт запись… не закрывайте страницу",st_done:"Готово! Можно скачать.",st_err:"Ошибка: ",st_mono:"Внимание: видео в моно — голос отделить нельзя, музыка только приглушена."},
-en:{badge:"100% free · no sign-up",h1a:"From photo, voice and text",h1b:"create 3D AI videos",lead:"Animate photos, lip-sync faces to your voice, turn text into 3D character videos and dub finished videos into Uzbek — all in one place.",start:"🚀 Get started",howbtn:"How it works",devby:"Developed by",founder:"Founder of MK Studio AI",chip1:"Photo → Video",chip2:"Lip sync",toolsh:"AI tools",toolss:"Pick a tool. All models are open-source and free to use (with a daily free GPU limit).",t1:"Animate a photo",t1d:"Turn any picture into a moving video.",t2:"Talking photo from voice",t2d:"Photo + voice → mouth and expressions follow the audio.",t3:"Text to 3D character",t3d:"Write a text — get a 3D-style character video.",t4:"Video dubbing studio",t4d:"Remake an English video with a new voice and animated captions.",free:"Free",local:"Runs in your browser",copy:"Copy prompt",opennew:"↗ Open in new tab",i2vhint:"<b>1.</b> Upload your photo in the window below. <b>2.</b> Pick a style, copy the prompt and paste it into «Prompt». <b>3.</b> Press «Generate» — your video is ready in 1–3 minutes.",liphint:"<b>1.</b> Upload a photo with a clearly visible face. <b>2.</b> Upload an audio file (mp3/wav). <b>3.</b> Press «Generate» — lips and expressions follow the voice. Short audio (5–15 s) is faster.",t2vhint:"Write your text in any language, choose a style and press «Build prompt». Copy the prompt into the window below.",yourtext:"Your text (what happens in the scene)",t2vph:"E.g.: a little boy buys bread on a Samarkand street and runs away laughing",style:"Style",format:"Format",mkprompt:"Build prompt",dubhint:"Upload the English video, the new voice (audio or an ElevenLabs screen recording) and the text. The studio removes the original narrator, keeps the music, hides old captions and places animated captions timed to the voice. Keep the page open while recording.",dvideo:"1. Original video",dvoice:"2. New voice (audio or video file)",dtext:"3. Text",dtextph:"Paste the text spoken in the voice…",oremove:"Remove original narrator (keep music)",ohide:"Hide old captions (bottom area)",ozoom:"Crop top promo banner (zoom frame)",ofit:"Fit video length to the voice",omusic:"Music volume",ocappos:"Caption position",ofont:"Font",dgo:"Make video",ddl:"Download",preview:"Your result appears here",howh:"How it works",h1:"Choose a tool and upload a photo, voice or text.",h2:"The AI model renders your video on a free GPU (wait a bit if there is a queue).",h3:"Download the video and post it to Reels, TikTok or YouTube.",foot:"Open-source models: Wan 2.2, Wan S2V, LTX 2.3",
+en:{home:"Home",tb1:"Photo",tb2:"Voice",tb3:"3D",tb4:"Dub",fs:"Full screen",install:"Install this site on your phone as an app",installbtn:"Install",ios:"Share ⎋ → «Add to Home Screen»",badge:"100% free · no sign-up",h1a:"From photo, voice and text",h1b:"create 3D AI videos",lead:"Animate photos, lip-sync faces to your voice, turn text into 3D character videos and dub finished videos into Uzbek — all in one place.",start:"🚀 Get started",howbtn:"How it works",devby:"Developed by",founder:"Founder of MK Studio AI",chip1:"Photo → Video",chip2:"Lip sync",toolsh:"AI tools",toolss:"Pick a tool. All models are open-source and free to use (with a daily free GPU limit).",t1:"Animate a photo",t1d:"Turn any picture into a moving video.",t2:"Talking photo from voice",t2d:"Photo + voice → mouth and expressions follow the audio.",t3:"Text to 3D character",t3d:"Write a text — get a 3D-style character video.",t4:"Video dubbing studio",t4d:"Remake an English video with a new voice and animated captions.",free:"Free",local:"Runs in your browser",copy:"Copy prompt",opennew:"↗ Open in new tab",i2vhint:"<b>1.</b> Upload your photo in the window below. <b>2.</b> Pick a style, copy the prompt and paste it into «Prompt». <b>3.</b> Press «Generate» — your video is ready in 1–3 minutes.",liphint:"<b>1.</b> Upload a photo with a clearly visible face. <b>2.</b> Upload an audio file (mp3/wav). <b>3.</b> Press «Generate» — lips and expressions follow the voice. Short audio (5–15 s) is faster.",t2vhint:"Write your text in any language, choose a style and press «Build prompt». Copy the prompt into the window below.",yourtext:"Your text (what happens in the scene)",t2vph:"E.g.: a little boy buys bread on a Samarkand street and runs away laughing",style:"Style",format:"Format",mkprompt:"Build prompt",dubhint:"Upload the English video, the new voice (audio or an ElevenLabs screen recording) and the text. The studio removes the original narrator, keeps the music, hides old captions and places animated captions timed to the voice. Keep the page open while recording.",dvideo:"1. Original video",dvoice:"2. New voice (audio or video file)",dtext:"3. Text",dtextph:"Paste the text spoken in the voice…",oremove:"Remove original narrator (keep music)",ohide:"Hide old captions (bottom area)",ozoom:"Crop top promo banner (zoom frame)",ofit:"Fit video length to the voice",omusic:"Music volume",ocappos:"Caption position",ofont:"Font",dgo:"Make video",ddl:"Download",preview:"Your result appears here",howh:"How it works",h1:"Choose a tool and upload a photo, voice or text.",h2:"The AI model renders your video on a free GPU (wait a bit if there is a queue).",h3:"Download the video and post it to Reels, TikTok or YouTube.",foot:"Open-source models: Wan 2.2, Wan S2V, LTX 2.3",
  st_need:"Upload the video, the voice and the text.",st_dec:"Analysing voice…",st_rec:"Recording… keep this page open",st_done:"Done! You can download it.",st_err:"Error: ",st_mono:"Note: the video is mono — the narrator can't be separated, music is only lowered."},
-tr:{badge:"%100 ücretsiz · kayıt yok",h1a:"Fotoğraf, ses ve metinden",h1b:"3D AI videolar oluşturun",lead:"Fotoğrafları canlandırın, dudakları sesinize senkronlayın, metinden 3D karakter videosu yapın ve hazır videoları Özbekçeye dublajlayın — hepsi tek yerde.",start:"🚀 Başla",howbtn:"Nasıl çalışır?",devby:"Geliştirici:",founder:"MK Studio AI kurucusu",chip1:"Fotoğraf → Video",chip2:"Dudak senk.",toolsh:"AI araçları",toolss:"Bir araç seçin. Tüm modeller açık kaynaklı ve ücretsizdir (günlük ücretsiz GPU limiti vardır).",t1:"Fotoğrafı canlandır",t1d:"Herhangi bir resmi hareketli videoya dönüştürün.",t2:"Sese göre konuşan fotoğraf",t2d:"Fotoğraf + ses → ağız ve mimikler sese uyar.",t3:"Metinden 3D karakter",t3d:"Metni yazın — 3D tarzda karakter videosu hazır.",t4:"Video dublaj stüdyosu",t4d:"İngilizce videoyu yeni ses ve animasyonlu yazılarla yeniden yapın.",free:"Ücretsiz",local:"Tarayıcınızda çalışır",copy:"Promptu kopyala",opennew:"↗ Yeni sekmede aç",i2vhint:"<b>1.</b> Aşağıdaki pencereye fotoğrafınızı yükleyin. <b>2.</b> Stil seçin, promptu kopyalayıp «Prompt» alanına yapıştırın. <b>3.</b> «Generate»e basın — video 1–3 dakikada hazır.",liphint:"<b>1.</b> Yüzün net göründüğü bir fotoğraf yükleyin. <b>2.</b> Ses dosyası (mp3/wav) yükleyin. <b>3.</b> «Generate»e basın — dudaklar ve mimikler sese uyar. Kısa ses (5–15 sn) daha hızlıdır.",t2vhint:"Metninizi herhangi bir dilde yazın, stil seçin ve «Prompt oluştur»a basın. Promptu aşağıdaki pencereye kopyalayın.",yourtext:"Metniniz (sahnede ne oluyor)",t2vph:"Örn: Semerkant sokağında küçük bir çocuk ekmek alıp gülerek koşuyor",style:"Stil",format:"Format",mkprompt:"Prompt oluştur",dubhint:"İngilizce videoyu, yeni sesi (ses dosyası veya ElevenLabs ekran kaydı) ve metni yükleyin. Stüdyo orijinal anlatıcıyı kaldırır, müziği bırakır, eski yazıları gizler ve sese göre animasyonlu altyazı ekler. Kayıt sırasında sayfayı kapatmayın.",dvideo:"1. Orijinal video",dvoice:"2. Yeni ses (ses veya video dosyası)",dtext:"3. Metin",dtextph:"Seste söylenen metni buraya yapıştırın…",oremove:"Orijinal anlatıcıyı kaldır (müzik kalsın)",ohide:"Eski yazıları gizle (alt kısım)",ozoom:"Üstteki reklamı kırp (kareyi yakınlaştır)",ofit:"Video süresini sese uydur",omusic:"Müzik sesi",ocappos:"Yazı konumu",ofont:"Yazı tipi",dgo:"Video oluştur",ddl:"İndir",preview:"Sonuç burada görünecek",howh:"Nasıl çalışır?",h1:"Bir araç seçin ve fotoğraf, ses veya metin yükleyin.",h2:"AI modeli videoyu ücretsiz GPU'da oluşturur (sıra varsa biraz bekleyin).",h3:"Videoyu indirip Reels, TikTok veya YouTube'da paylaşın.",foot:"Açık kaynak modeller: Wan 2.2, Wan S2V, LTX 2.3",
+tr:{home:"Ana sayfa",tb1:"Foto",tb2:"Ses",tb3:"3D",tb4:"Dublaj",fs:"Tam ekran",install:"Siteyi telefonunuza uygulama olarak yükleyin",installbtn:"Yükle",ios:"Paylaş ⎋ → «Ana Ekrana Ekle»",badge:"%100 ücretsiz · kayıt yok",h1a:"Fotoğraf, ses ve metinden",h1b:"3D AI videolar oluşturun",lead:"Fotoğrafları canlandırın, dudakları sesinize senkronlayın, metinden 3D karakter videosu yapın ve hazır videoları Özbekçeye dublajlayın — hepsi tek yerde.",start:"🚀 Başla",howbtn:"Nasıl çalışır?",devby:"Geliştirici:",founder:"MK Studio AI kurucusu",chip1:"Fotoğraf → Video",chip2:"Dudak senk.",toolsh:"AI araçları",toolss:"Bir araç seçin. Tüm modeller açık kaynaklı ve ücretsizdir (günlük ücretsiz GPU limiti vardır).",t1:"Fotoğrafı canlandır",t1d:"Herhangi bir resmi hareketli videoya dönüştürün.",t2:"Sese göre konuşan fotoğraf",t2d:"Fotoğraf + ses → ağız ve mimikler sese uyar.",t3:"Metinden 3D karakter",t3d:"Metni yazın — 3D tarzda karakter videosu hazır.",t4:"Video dublaj stüdyosu",t4d:"İngilizce videoyu yeni ses ve animasyonlu yazılarla yeniden yapın.",free:"Ücretsiz",local:"Tarayıcınızda çalışır",copy:"Promptu kopyala",opennew:"↗ Yeni sekmede aç",i2vhint:"<b>1.</b> Aşağıdaki pencereye fotoğrafınızı yükleyin. <b>2.</b> Stil seçin, promptu kopyalayıp «Prompt» alanına yapıştırın. <b>3.</b> «Generate»e basın — video 1–3 dakikada hazır.",liphint:"<b>1.</b> Yüzün net göründüğü bir fotoğraf yükleyin. <b>2.</b> Ses dosyası (mp3/wav) yükleyin. <b>3.</b> «Generate»e basın — dudaklar ve mimikler sese uyar. Kısa ses (5–15 sn) daha hızlıdır.",t2vhint:"Metninizi herhangi bir dilde yazın, stil seçin ve «Prompt oluştur»a basın. Promptu aşağıdaki pencereye kopyalayın.",yourtext:"Metniniz (sahnede ne oluyor)",t2vph:"Örn: Semerkant sokağında küçük bir çocuk ekmek alıp gülerek koşuyor",style:"Stil",format:"Format",mkprompt:"Prompt oluştur",dubhint:"İngilizce videoyu, yeni sesi (ses dosyası veya ElevenLabs ekran kaydı) ve metni yükleyin. Stüdyo orijinal anlatıcıyı kaldırır, müziği bırakır, eski yazıları gizler ve sese göre animasyonlu altyazı ekler. Kayıt sırasında sayfayı kapatmayın.",dvideo:"1. Orijinal video",dvoice:"2. Yeni ses (ses veya video dosyası)",dtext:"3. Metin",dtextph:"Seste söylenen metni buraya yapıştırın…",oremove:"Orijinal anlatıcıyı kaldır (müzik kalsın)",ohide:"Eski yazıları gizle (alt kısım)",ozoom:"Üstteki reklamı kırp (kareyi yakınlaştır)",ofit:"Video süresini sese uydur",omusic:"Müzik sesi",ocappos:"Yazı konumu",ofont:"Yazı tipi",dgo:"Video oluştur",ddl:"İndir",preview:"Sonuç burada görünecek",howh:"Nasıl çalışır?",h1:"Bir araç seçin ve fotoğraf, ses veya metin yükleyin.",h2:"AI modeli videoyu ücretsiz GPU'da oluşturur (sıra varsa biraz bekleyin).",h3:"Videoyu indirip Reels, TikTok veya YouTube'da paylaşın.",foot:"Açık kaynak modeller: Wan 2.2, Wan S2V, LTX 2.3",
  st_need:"Video, ses ve metni yükleyin.",st_dec:"Ses analiz ediliyor…",st_rec:"Kaydediliyor… sayfayı kapatmayın",st_done:"Hazır! İndirebilirsiniz.",st_err:"Hata: ",st_mono:"Not: video mono — anlatıcı ayrılamıyor, müzik sadece kısıldı."}
 };
 let L=localStorage.getItem('mk_lang')||((navigator.language||'uz').slice(0,2));
@@ -300,7 +375,7 @@ applyLang();
     const THREE=await import('https://unpkg.com/three@0.160.0/build/three.module.js');
     const cv=document.getElementById('bg3d');
     const r=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
-    r.setPixelRatio(Math.min(devicePixelRatio,2));
+    const mob=innerWidth<760; r.setPixelRatio(Math.min(devicePixelRatio,mob?1.5:2));
     const sc=new THREE.Scene(); sc.fog=new THREE.Fog(0x07060f,8,26);
     const cam=new THREE.PerspectiveCamera(55,1,.1,100); cam.position.z=10;
     sc.add(new THREE.AmbientLight(0xffffff,.35));
@@ -310,14 +385,14 @@ applyLang();
     const geos=[new THREE.IcosahedronGeometry(1,0),new THREE.TorusKnotGeometry(.7,.25,120,16),new THREE.OctahedronGeometry(1,0),new THREE.TorusGeometry(.8,.3,24,64),new THREE.DodecahedronGeometry(.9,0)];
     const mat=new THREE.MeshStandardMaterial({color:0x1a1640,metalness:.85,roughness:.22});
     const objs=[];
-    for(let i=0;i<16;i++){
+    for(let i=0;i<(mob?9:16);i++){
       const m=new THREE.Mesh(geos[i%geos.length],mat);
       m.position.set((Math.random()-.5)*22,(Math.random()-.5)*14,-Math.random()*14);
       const s=.4+Math.random()*1.1; m.scale.setScalar(s);
       m.userData={rx:(Math.random()-.5)*.01,ry:(Math.random()-.5)*.012,fy:Math.random()*6};
       sc.add(m); objs.push(m);
     }
-    const pg=new THREE.BufferGeometry(); const N=900; const pos=new Float32Array(N*3);
+    const pg=new THREE.BufferGeometry(); const N=mob?380:900; const pos=new Float32Array(N*3);
     for(let i=0;i<N*3;i++)pos[i]=(Math.random()-.5)*40;
     pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
     const pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0x9f8cff,size:.05,transparent:true,opacity:.7}));
@@ -332,7 +407,7 @@ applyLang();
       pts.rotation.y=tt*.02;
       cam.position.x+=(mx*2-cam.position.x)*.04; cam.position.y+=(-my*1.5-cam.position.y)*.04;
       cam.position.z=10-Math.min(scrollY/400,3); cam.lookAt(0,0,0);
-      r.render(sc,cam); requestAnimationFrame(loop);
+      if(!document.hidden)r.render(sc,cam); requestAnimationFrame(loop);
     })();
   }catch(e){console.warn('3D bg off',e)}
 })();
@@ -342,8 +417,7 @@ function tilt(el,max){
   el.addEventListener('pointermove',e=>{const b=el.getBoundingClientRect();const x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;el.style.transform=`rotateY(${x*max}deg) rotateX(${-y*max}deg)`});
   el.addEventListener('pointerleave',()=>el.style.transform='');
 }
-tilt(document.getElementById('pcard'),22);
-document.querySelectorAll('.tool').forEach(e=>{e.style.perspective='800px';tilt(e,14)});
+if(matchMedia('(pointer:fine)').matches){tilt(document.getElementById('pcard'),22);document.querySelectorAll('.tool').forEach(e=>{e.style.perspective='800px';tilt(e,14)})}
 const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.15});
 document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
 
@@ -371,6 +445,33 @@ document.getElementById('mkprompt').onclick=()=>{
   const st=document.getElementById('t2vstyle').value, fm=document.getElementById('t2vfmt').value;
   document.getElementById('t2vp').textContent=`${st}. Scene: ${txt}. The main character is expressive with clear facial animation and lip movement, smooth natural motion, dynamic camera, high detail, ${fm}, 4k, no text, no watermark.`;
 };
+
+
+/* ---------- mobile app layer ---------- */
+const isMob=()=>matchMedia('(max-width:760px)').matches;
+function buzz(){try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}}
+document.querySelectorAll('.fsbtn').forEach(b=>{b.title=t('fs');b.onclick=e=>{e.stopPropagation();buzz();const p=document.getElementById('panel');const on=!p.classList.contains('fs');p.classList.toggle('fs',on);b.textContent=on?'✕':'⛶';document.body.style.overflow=on?'hidden':''}});
+const tb=document.getElementById('tabbar');
+tb.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  buzz(); tb.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  const p=document.getElementById('panel'); if(p.classList.contains('fs')){p.classList.remove('fs');document.body.style.overflow='';document.querySelectorAll('.fsbtn').forEach(x=>x.textContent='⛶')}
+  if(b.dataset.go==='home'){scrollTo({top:0,behavior:'smooth'});return}
+  openTool(b.dataset.go);
+  const c=document.querySelector(`.tool[data-tool="${b.dataset.go}"]`); c&&c.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  setTimeout(()=>document.getElementById('panel').scrollIntoView({behavior:'smooth'}),60);
+});
+document.querySelectorAll('.tool').forEach(x=>x.addEventListener('click',()=>{buzz();tb.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.go===x.dataset.tool))}));
+// mark home tab when at top
+addEventListener('scroll',()=>{if(scrollY<200)tb.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.go==='home'))},{passive:true});
+// gyro tilt for the photo card on phones
+addEventListener('deviceorientation',e=>{if(!isMob()||e.gamma==null)return;const c=document.getElementById('pcard');c.style.transform=`rotateY(${Math.max(-18,Math.min(18,e.gamma*.6))}deg) rotateX(${Math.max(-14,Math.min(14,(e.beta-45)*-.4))}deg)`});
+// install as app
+let deferred=null; const ib=document.getElementById('install');
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;ib.hidden=false});
+document.getElementById('installBtn').onclick=async()=>{buzz();if(deferred){deferred.prompt();await deferred.userChoice;deferred=null;ib.hidden=true}else{alert(t('ios'))}};
+const iOS=/iphone|ipad|ipod/i.test(navigator.userAgent), standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+if(iOS&&!standalone)ib.hidden=false;
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js',{scope:'./'}).catch(()=>{});
 
 /* ---------------- Dub studio (browser) ---------------- */
 const $=id=>document.getElementById(id);
