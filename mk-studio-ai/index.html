@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MK Studio AI — Muzaffar Karshiev</title>
+<meta name="description" content="Bepul AI video studiya: rasmni jonlantirish, ovozga moslab lab harakati, matndan 3D personaj video, video dublyaj. Muzaffar Karshiev tomonidan ishlab chiqilgan.">
+<meta property="og:title" content="MK Studio AI — Muzaffar Karshiev">
+<meta property="og:description" content="Bepul AI video studiya: rasm → video, ovoz → lab harakati, matn → 3D personaj, video dublyaj.">
+<meta property="og:image" content="photo.jpg">
+<meta name="theme-color" content="#07060f">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Dirt&family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07060f; --bg2:#0e0c1d; --card:rgba(255,255,255,.055); --line:rgba(255,255,255,.12);
+  --txt:#f3f1ff; --mut:#a6a2c4; --a1:#7c5cff; --a2:#00e0ff; --a3:#ff4fd8; --ok:#3ddc97;
+  --r:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif;overflow-x:hidden;min-height:100vh}
+a{color:inherit}
+#bg3d{position:fixed;inset:0;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 18px}
+/* nav */
+nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(7,6,15,.6);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;font-family:Unbounded;font-weight:900;font-size:17px;letter-spacing:.5px;text-decoration:none}
+.logo b{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:conic-gradient(from 210deg,var(--a1),var(--a2),var(--a3),var(--a1));box-shadow:0 0 22px rgba(124,92,255,.6);font-size:14px;animation:spin3d 6s linear infinite;transform-style:preserve-3d}
+@keyframes spin3d{0%,100%{transform:rotateY(-28deg) rotateX(8deg)}50%{transform:rotateY(28deg) rotateX(-8deg)}}
+.langs{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px}
+.langs button{all:unset;cursor:pointer;font-size:12px;font-weight:700;padding:6px 10px;border-radius:999px;color:var(--mut);transition:.2s}
+.langs button.on{background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff}
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:64px 0 40px;min-height:calc(100vh - 62px)}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 12px var(--ok);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.35}}
+h1{font-family:Unbounded;font-weight:900;font-size:clamp(34px,6vw,64px);line-height:1.05;margin:18px 0 16px;letter-spacing:-1px}
+h1 .g{background:linear-gradient(100deg,var(--a2),var(--a1) 45%,var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:sh 6s ease-in-out infinite}
+@keyframes sh{50%{background-position:100% 0}}
+.lead{color:var(--mut);font-size:18px;line-height:1.6;max-width:560px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:700;padding:14px 22px;border-radius:14px;transition:transform .2s,box-shadow .2s;text-align:center;justify-content:center}
+.btn.p{background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 10px 30px rgba(124,92,255,.45)}
+.btn.s{border:1px solid var(--line);background:var(--card)}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled,.btn[aria-disabled=true]{opacity:.5;pointer-events:none}
+.dev{margin-top:26px;font-size:14px;color:var(--mut)}
+.dev b{color:var(--txt)}
+/* 3D photo card */
+.stage{perspective:1100px;display:grid;place-items:center}
+.pcard{position:relative;width:min(360px,80vw);aspect-ratio:3/4;border-radius:28px;transform-style:preserve-3d;transition:transform .15s ease-out;animation:float 6s ease-in-out infinite}
+@keyframes float{50%{translate:0 -14px}}
+.pcard .ph{position:absolute;inset:0;border-radius:28px;overflow:hidden;border:1px solid rgba(255,255,255,.2);box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 60px rgba(124,92,255,.35);transform:translateZ(30px)}
+.pcard .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.pcard .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(7,6,15,.9));}
+.pcard .glow{position:absolute;inset:-18px;border-radius:36px;background:conic-gradient(from 0deg,var(--a1),var(--a2),var(--a3),var(--a1));filter:blur(28px);opacity:.55;transform:translateZ(-40px);animation:rot 8s linear infinite}
+@keyframes rot{to{rotate:360deg}}
+.pcard .tag{position:absolute;left:18px;right:18px;bottom:18px;transform:translateZ(70px);display:flex;justify-content:space-between;align-items:end}
+.pcard .tag h3{font-family:Unbounded;font-size:20px;line-height:1.1}
+.pcard .tag small{color:var(--mut);font-size:12px}
+.pcard .chip{position:absolute;padding:8px 12px;border-radius:12px;background:rgba(14,12,29,.8);border:1px solid var(--line);font-size:12px;font-weight:700;backdrop-filter:blur(8px);white-space:nowrap}
+.pcard .c1{top:12%;left:-14%;transform:translateZ(90px)}
+.pcard .c2{top:46%;right:-16%;transform:translateZ(110px)}
+.pcard .c3{top:-4%;right:6%;transform:translateZ(60px)}
+/* sections */
+section{padding:56px 0}
+.sh{font-family:Unbounded;font-weight:700;font-size:clamp(24px,3.6vw,36px);margin-bottom:10px}
+.sub{color:var(--mut);margin-bottom:26px;max-width:680px;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tool{position:relative;padding:22px;border-radius:var(--r);background:var(--card);border:1px solid var(--line);cursor:pointer;transform-style:preserve-3d;transition:transform .2s ease-out,border-color .2s;min-height:190px}
+.tool:hover{border-color:rgba(124,92,255,.6)}
+.tool .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:linear-gradient(135deg,rgba(124,92,255,.35),rgba(0,224,255,.25));transform:translateZ(40px);margin-bottom:16px}
+.tool h4{font-size:17px;margin-bottom:8px;transform:translateZ(25px)}
+.tool p{color:var(--mut);font-size:14px;line-height:1.5;transform:translateZ(15px)}
+.tool.on{border-color:var(--a2);box-shadow:0 0 0 1px var(--a2),0 18px 40px rgba(0,224,255,.18)}
+/* panel */
+.panel{margin-top:22px;border-radius:26px;background:rgba(14,12,29,.75);border:1px solid var(--line);overflow:hidden;backdrop-filter:blur(10px)}
+.ph2{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.ph2 h3{font-size:18px}
+.ph2 .meta{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font-size:12px;padding:6px 10px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--mut)}
+.pbody{padding:18px 20px}
+.frame{width:100%;height:min(1000px,88vh);border:0;border-radius:16px;background:#fff}
+.hint{font-size:14px;color:var(--mut);line-height:1.6;margin-bottom:14px}
+.hint b{color:var(--txt)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fld{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.fld label{font-size:13px;font-weight:600;color:var(--mut)}
+input[type=file],textarea,select,input[type=text]{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:12px;font:inherit;font-size:14px}
+textarea{min-height:130px;resize:vertical;line-height:1.5}
+input[type=range]{width:100%;accent-color:var(--a1)}
+.chk{display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:10px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--a1)}
+.out{display:grid;place-items:center;background:#000;border-radius:16px;overflow:hidden;aspect-ratio:9/16;max-height:640px;margin:0 auto;width:100%;max-width:360px;position:relative}
+.out canvas,.out video{width:100%;height:100%;object-fit:contain;display:block}
+.out .ph3{position:absolute;color:var(--mut);font-size:14px;text-align:center;padding:20px}
+.bar{height:8px;border-radius:9px;background:var(--card);overflow:hidden;margin:12px 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a1),var(--a2));transition:width .2s}
+.status{font-size:13px;color:var(--mut);min-height:18px}
+.prompt-out{background:#0b0a18;border:1px dashed rgba(124,92,255,.6);border-radius:12px;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word;margin-bottom:12px}
+.styles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.styles button{all:unset;cursor:pointer;font-size:13px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card)}
+.styles button.on{border-color:var(--a2);background:rgba(0,224,255,.12)}
+.open{font-size:13px;color:var(--a2)}
+footer{padding:40px 0 60px;border-top:1px solid var(--line);margin-top:30px;color:var(--mut);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer b{color:var(--txt)}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.how div{padding:18px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.how span{font-family:Unbounded;font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.how p{color:var(--mut);font-size:14px;margin-top:6px;line-height:1.5}
+.reveal{opacity:0;transform:translateY(30px) rotateX(12deg);transition:opacity .8s,transform .8s}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:30px;min-height:auto;text-align:center}
+  .lead{margin:0 auto}.cta{justify-content:center}
+  .stage{order:-1}
+  .grid{grid-template-columns:1fr 1fr}
+  .row,.how{grid-template-columns:1fr}
+  .pcard .c1{left:-6%}.pcard .c2{right:-6%}
+}
+@media (max-width:480px){.grid{grid-template-columns:1fr}.logo span{display:none}}
+</style>
+</head>
+<body>
+<canvas id="bg3d"></canvas>
+
+<nav><div class="wrap">
+  <a class="logo" href="#"><b>MK</b><span>MK Studio AI</span></a>
+  <div class="langs" id="langs">
+    <button data-l="uz">UZ</button><button data-l="ru">RU</button><button data-l="en">EN</button><button data-l="tr">TR</button>
+  </div>
+</div></nav>
+
+<header class="wrap hero">
+  <div>
+    <span class="badge"><i></i><span data-t="badge"></span></span>
+    <h1><span data-t="h1a"></span><br><span class="g" data-t="h1b"></span></h1>
+    <p class="lead" data-t="lead"></p>
+    <div class="cta">
+      <a class="btn p" href="#tools" data-t="start"></a>
+      <a class="btn s" href="#how" data-t="howbtn"></a>
+    </div>
+    <p class="dev"><span data-t="devby"></span> <b>Muzaffar Karshiev</b></p>
+  </div>
+  <div class="stage">
+    <div class="pcard" id="pcard">
+      <div class="glow"></div>
+      <div class="ph"><img src="photo.jpg" alt="Muzaffar Karshiev"></div>
+      <div class="chip c1">🎞️ <span data-t="chip1"></span></div>
+      <div class="chip c2">🗣️ <span data-t="chip2"></span></div>
+      <div class="chip c3">✨ 3D</div>
+      <div class="tag"><div><h3>Muzaffar<br>Karshiev</h3><small data-t="founder"></small></div></div>
+    </div>
+  </div>
+</header>
+
+<section id="tools"><div class="wrap">
+  <h2 class="sh reveal" data-t="toolsh"></h2>
+  <p class="sub reveal" data-t="toolss"></p>
+  <div class="grid">
+    <div class="tool reveal" data-tool="i2v"><div class="ic">🖼️</div><h4 data-t="t1"></h4><p data-t="t1d"></p></div>
+    <div class="tool reveal" data-tool="lip"><div class="ic">🗣️</div><h4 data-t="t2"></h4><p data-t="t2d"></p></div>
+    <div class="tool reveal" data-tool="t2v"><div class="ic">🧸</div><h4 data-t="t3"></h4><p data-t="t3d"></p></div>
+    <div class="tool reveal" data-tool="dub"><div class="ic">🎬</div><h4 data-t="t4"></h4><p data-t="t4d"></p></div>
+  </div>
+
+  <div class="panel" id="panel">
+    <!-- image to video -->
+    <div class="pv" data-pv="i2v">
+      <div class="ph2"><h3>🖼️ <span data-t="t1"></span></h3><div class="meta"><span class="pill">Wan 2.2 · 14B</span><span class="pill" data-t="free"></span></div></div>
+      <div class="pbody">
+        <p class="hint" data-t="i2vhint"></p>
+        <div class="styles" data-target="i2vp">
+          <button data-p="slow cinematic camera push-in, the person smiles and gently turns head, hair moves in the wind, natural motion, 4k">🎥 Cinematic</button>
+          <button data-p="3D Pixar-style animated character, smooth stylized motion, the character waves hello and smiles, vibrant colors, soft lighting">🧸 3D Pixar</button>
+          <button data-p="clouds moving, sea waves sparkling, leaves swaying, the person breathes and blinks naturally, static camera">🌊 Tabiat</button>
+        </div>
+        <div class="prompt-out" id="i2vp">slow cinematic camera push-in, the person smiles and gently turns head, hair moves in the wind, natural motion, 4k</div>
+        <div class="cta" style="margin:0 0 14px"><button class="btn s copy" data-c="i2vp">📋 <span data-t="copy"></span></button><a class="open" target="_blank" rel="noopener" href="https://huggingface.co/spaces/zerogpu-aoti/wan2-2-fp8da-aoti-faster" data-t="opennew"></a></div>
+        <iframe class="frame" loading="lazy" data-src="https://zerogpu-aoti-wan2-2-fp8da-aoti-faster.hf.space" allow="clipboard-write; fullscreen"></iframe>
+      </div>
+    </div>
+    <!-- lip sync -->
+    <div class="pv" data-pv="lip" hidden>
+      <div class="ph2"><h3>🗣️ <span data-t="t2"></span></h3><div class="meta"><span class="pill">Wan 2.2 S2V</span><span class="pill" data-t="free"></span></div></div>
+      <div class="pbody">
+        <p class="hint" data-t="liphint"></p>
+        <div class="cta" style="margin:0 0 14px"><a class="open" target="_blank" rel="noopener" href="https://huggingface.co/spaces/Wan-AI/Wan2.2-S2V" data-t="opennew"></a></div>
+        <iframe class="frame" loading="lazy" data-src="https://wan-ai-wan2-2-s2v.hf.space" allow="microphone; clipboard-write; fullscreen"></iframe>
+      </div>
+    </div>
+    <!-- text to 3D character -->
+    <div class="pv" data-pv="t2v" hidden>
+      <div class="ph2"><h3>🧸 <span data-t="t3"></span></h3><div class="meta"><span class="pill">LTX 2.3</span><span class="pill" data-t="free"></span></div></div>
+      <div class="pbody">
+        <p class="hint" data-t="t2vhint"></p>
+        <div class="row">
+          <div class="fld"><label data-t="yourtext"></label><textarea id="t2vtext" data-ph="t2vph"></textarea></div>
+          <div class="fld"><label data-t="style"></label>
+            <select id="t2vstyle">
+              <option value="3D Pixar-style animated film, cute expressive character, soft global illumination, vibrant colors">3D Pixar</option>
+              <option value="3D claymation stop-motion style, handcrafted plasticine character, warm studio light">3D Clay</option>
+              <option value="dark stylized 2D/3D cartoon like a history documentary, dramatic green and orange lighting, exaggerated characters">Tarix multfilm</option>
+              <option value="realistic cinematic 3D CGI character, Unreal Engine 5 render, shallow depth of field">3D Realistik</option>
+              <option value="anime 3D cel-shaded character, dynamic camera, bright colors">3D Anime</option>
+            </select>
+            <label data-t="format"></label>
+            <select id="t2vfmt"><option value="vertical 9:16">9:16 (Reels / TikTok)</option><option value="horizontal 16:9">16:9 (YouTube)</option><option value="square 1:1">1:1</option></select>
+          </div>
+        </div>
+        <button class="btn p" id="mkprompt">✨ <span data-t="mkprompt"></span></button>
+        <div class="prompt-out" id="t2vp" style="margin-top:12px">—</div>
+        <div class="cta" style="margin:0 0 14px"><button class="btn s copy" data-c="t2vp">📋 <span data-t="copy"></span></button><a class="open" target="_blank" rel="noopener" href="https://huggingface.co/spaces/Lightricks/LTX-2-3" data-t="opennew"></a></div>
+        <iframe class="frame" loading="lazy" data-src="https://lightricks-ltx-2-3.hf.space" allow="clipboard-write; fullscreen"></iframe>
+      </div>
+    </div>
+    <!-- dub studio (runs in browser) -->
+    <div class="pv" data-pv="dub" hidden>
+      <div class="ph2"><h3>🎬 <span data-t="t4"></span></h3><div class="meta"><span class="pill" data-t="local"></span><span class="pill" data-t="free"></span></div></div>
+      <div class="pbody">
+        <p class="hint" data-t="dubhint"></p>
+        <div class="row">
+          <div>
+            <div class="fld"><label data-t="dvideo"></label><input type="file" id="dVideo" accept="video/*"></div>
+            <div class="fld"><label data-t="dvoice"></label><input type="file" id="dVoice" accept="audio/*,video/*"></div>
+            <div class="fld"><label data-t="dtext"></label><textarea id="dText" data-ph="dtextph"></textarea></div>
+            <label class="chk"><input type="checkbox" id="oRemoveVoice" checked><span data-t="oremove"></span></label>
+            <label class="chk"><input type="checkbox" id="oHideCaps" checked><span data-t="ohide"></span></label>
+            <label class="chk"><input type="checkbox" id="oZoom"><span data-t="ozoom"></span></label>
+            <label class="chk"><input type="checkbox" id="oFit" checked><span data-t="ofit"></span></label>
+            <div class="fld"><label><span data-t="omusic"></span>: <b id="musicV">70%</b></label><input type="range" id="oMusic" min="0" max="150" value="70"></div>
+            <div class="fld"><label><span data-t="ocappos"></span>: <b id="capV">78%</b></label><input type="range" id="oCapY" min="10" max="92" value="78"></div>
+            <div class="fld"><label data-t="ofont"></label>
+              <select id="oFont"><option value="Rubik Dirt">Grunge (asl uslub)</option><option value="Unbounded">Unbounded</option><option value="Inter">Inter Bold</option></select>
+            </div>
+            <div class="cta" style="margin-top:6px">
+              <button class="btn p" id="dGo">▶️ <span data-t="dgo"></span></button>
+              <a class="btn s" id="dDl" aria-disabled="true" download="mk-studio-video.webm">⬇️ <span data-t="ddl"></span></a>
+            </div>
+            <div class="bar"><i id="dBar"></i></div>
+            <div class="status" id="dStatus"></div>
+          </div>
+          <div>
+            <div class="out"><canvas id="dCanvas" width="720" height="1280"></canvas><div class="ph3" id="dPh" data-t="preview"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <h2 class="sh reveal" data-t="howh"></h2>
+  <div class="how">
+    <div class="reveal"><span>01</span><p data-t="h1"></p></div>
+    <div class="reveal"><span>02</span><p data-t="h2"></p></div>
+    <div class="reveal"><span>03</span><p data-t="h3"></p></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div>© 2026 <b>MK Studio AI</b> — <span data-t="devby"></span> <b>Muzaffar Karshiev</b></div>
+  <div data-t="foot"></div>
+</div></footer>
+
+<script>
+/* ---------------- i18n ---------------- */
+const T={
+uz:{badge:"100% bepul · ro'yxatdan o'tmasdan",h1a:"Rasm, ovoz va matndan",h1b:"3D AI video yarating",lead:"Rasmni jonlantiring, ovozingizga moslab lab harakatlarini yarating, matndan 3D personaj video oling va tayyor videolarni o'zbek tiliga dublyaj qiling — hammasi bitta joyda.",start:"🚀 Boshlash",howbtn:"Qanday ishlaydi?",devby:"Ishlab chiquvchi:",founder:"MK Studio AI asoschisi",chip1:"Rasm → Video",chip2:"Lab sinxron",toolsh:"AI asboblar",toolss:"Asbobni tanlang. Barcha modellar ochiq kodli va bepul ishlaydi (kunlik bepul GPU limiti bor).",t1:"Rasmni jonlantirish",t1d:"Har qanday rasmni harakatlanuvchi videoga aylantiring.",t2:"Ovozga moslab gapirtirish",t2d:"Rasm + ovoz → og'iz va mimika ovozga mos harakatlanadi.",t3:"Matndan 3D personaj",t3d:"Matnni yozing — 3D uslubdagi personaj videosi tayyor.",t4:"Video dublyaj studiyasi",t4d:"Inglizcha videoni o'zbekcha ovoz va animatsiyali yozuvlar bilan qayta yasang.",free:"Bepul",local:"Brauzeringizda ishlaydi",copy:"Promptni nusxalash",opennew:"↗ Yangi oynada ochish",i2vhint:"<b>1.</b> Pastdagi oynaga rasmingizni yuklang. <b>2.</b> Uslubni tanlab, promptni nusxalang va «Prompt» maydoniga qo'ying. <b>3.</b> «Generate» tugmasini bosing — 1–3 daqiqada video tayyor.",liphint:"<b>1.</b> Yuzingiz aniq ko'ringan rasmni yuklang. <b>2.</b> Ovoz faylini (mp3/wav) yuklang. <b>3.</b> «Generate» ni bosing — og'iz harakati va mimika ovozga moslashadi. Qisqa ovoz (5–15 s) tezroq ishlaydi.",t2vhint:"Matningizni istalgan tilda yozing, uslubni tanlang va «Prompt yaratish» ni bosing. Tayyor promptni nusxalab pastdagi oynaga qo'ying.",yourtext:"Matningiz (sahna nima haqida)",t2vph:"Masalan: Samarqand ko'chasida kichkina bola non sotib olib, kulib yugurib ketadi",style:"Uslub",format:"Format",mkprompt:"Prompt yaratish",dubhint:"Inglizcha videoni yuklang, o'zbekcha ovozni (audio yoki ElevenLabs ekran yozuvi) va matnni qo'shing. Studiya asl odam ovozini olib tashlaydi, musiqani qoldiradi, eski yozuvlarni yashiradi va matnni animatsiyali subtitr qilib, ovozga moslab joylaydi. Yozib olish vaqtida sahifani yopmang.",dvideo:"1. Asl video",dvoice:"2. O'zbekcha ovoz (audio yoki video fayl)",dtext:"3. Matn",dtextph:"Ovozda aytilgan matnni shu yerga qo'ying…",oremove:"Asl odam ovozini olib tashlash (musiqa qoladi)",ohide:"Eski yozuvlarni yashirish (pastki qism)",ozoom:"Yuqoridagi reklamani kesish (kadrni kattalashtirish)",ofit:"Video uzunligini ovozga moslash",omusic:"Musiqa balandligi",ocappos:"Yozuv joyi",ofont:"Shrift",dgo:"Video yasash",ddl:"Yuklab olish",preview:"Natija shu yerda ko'rinadi",howh:"Qanday ishlaydi?",h1:"Asbobni tanlang va rasm, ovoz yoki matnni yuklang.",h2:"AI model bepul GPU'da videoni yaratadi (navbat bo'lsa ozgina kuting).",h3:"Tayyor videoni yuklab oling va Reels, TikTok yoki YouTube'ga joylang.",foot:"Ochiq kodli modellar: Wan 2.2, Wan S2V, LTX 2.3",
+ st_need:"Video, ovoz va matnni yuklang.",st_dec:"Ovoz tahlil qilinmoqda…",st_rec:"Video yozilmoqda… sahifani yopmang",st_done:"Tayyor! Yuklab olishingiz mumkin.",st_err:"Xatolik: ",st_mono:"Diqqat: asl video mono — ovozni ajratib bo'lmadi, faqat musiqa pasaytirildi."},
+ru:{badge:"100% бесплатно · без регистрации",h1a:"Из фото, голоса и текста",h1b:"создавайте 3D AI-видео",lead:"Оживляйте фото, синхронизируйте губы с вашим голосом, создавайте 3D-персонажей из текста и дублируйте готовые видео на узбекский — всё в одном месте.",start:"🚀 Начать",howbtn:"Как это работает?",devby:"Разработчик:",founder:"Основатель MK Studio AI",chip1:"Фото → Видео",chip2:"Липсинк",toolsh:"AI-инструменты",toolss:"Выберите инструмент. Все модели открытые и работают бесплатно (есть дневной лимит бесплатного GPU).",t1:"Оживление фото",t1d:"Превратите любое фото в движущееся видео.",t2:"Говорящее фото по голосу",t2d:"Фото + голос → рот и мимика двигаются в такт голосу.",t3:"3D-персонаж из текста",t3d:"Напишите текст — получите видео с 3D-персонажем.",t4:"Студия дубляжа",t4d:"Переделайте английское видео с узбекским голосом и анимированными титрами.",free:"Бесплатно",local:"Работает в браузере",copy:"Скопировать промпт",opennew:"↗ Открыть в новом окне",i2vhint:"<b>1.</b> Загрузите фото в окно ниже. <b>2.</b> Выберите стиль, скопируйте промпт и вставьте в поле «Prompt». <b>3.</b> Нажмите «Generate» — видео готово через 1–3 минуты.",liphint:"<b>1.</b> Загрузите фото с чётко видимым лицом. <b>2.</b> Загрузите аудио (mp3/wav). <b>3.</b> Нажмите «Generate» — губы и мимика подстроятся под голос. Короткое аудио (5–15 с) обрабатывается быстрее.",t2vhint:"Напишите текст на любом языке, выберите стиль и нажмите «Создать промпт». Скопируйте промпт в окно ниже.",yourtext:"Ваш текст (о чём сцена)",t2vph:"Например: мальчик покупает лепёшку на улице Самарканда и с улыбкой убегает",style:"Стиль",format:"Формат",mkprompt:"Создать промпт",dubhint:"Загрузите английское видео, узбекский голос (аудио или запись экрана ElevenLabs) и текст. Студия уберёт голос диктора, оставит музыку, скроет старые титры и наложит анимированные субтитры по голосу. Не закрывайте страницу во время записи.",dvideo:"1. Исходное видео",dvoice:"2. Новый голос (аудио или видео)",dtext:"3. Текст",dtextph:"Вставьте текст, который звучит в голосе…",oremove:"Убрать голос диктора (музыка останется)",ohide:"Скрыть старые титры (низ кадра)",ozoom:"Обрезать рекламу сверху (увеличить кадр)",ofit:"Подогнать длину видео под голос",omusic:"Громкость музыки",ocappos:"Положение титров",ofont:"Шрифт",dgo:"Создать видео",ddl:"Скачать",preview:"Здесь появится результат",howh:"Как это работает?",h1:"Выберите инструмент и загрузите фото, голос или текст.",h2:"AI-модель создаёт видео на бесплатном GPU (при очереди немного подождите).",h3:"Скачайте готовое видео и публикуйте в Reels, TikTok или YouTube.",foot:"Открытые модели: Wan 2.2, Wan S2V, LTX 2.3",
+ st_need:"Загрузите видео, голос и текст.",st_dec:"Анализ голоса…",st_rec:"Идёт запись… не закрывайте страницу",st_done:"Готово! Можно скачать.",st_err:"Ошибка: ",st_mono:"Внимание: видео в моно — голос отделить нельзя, музыка только приглушена."},
+en:{badge:"100% free · no sign-up",h1a:"From photo, voice and text",h1b:"create 3D AI videos",lead:"Animate photos, lip-sync faces to your voice, turn text into 3D character videos and dub finished videos into Uzbek — all in one place.",start:"🚀 Get started",howbtn:"How it works",devby:"Developed by",founder:"Founder of MK Studio AI",chip1:"Photo → Video",chip2:"Lip sync",toolsh:"AI tools",toolss:"Pick a tool. All models are open-source and free to use (with a daily free GPU limit).",t1:"Animate a photo",t1d:"Turn any picture into a moving video.",t2:"Talking photo from voice",t2d:"Photo + voice → mouth and expressions follow the audio.",t3:"Text to 3D character",t3d:"Write a text — get a 3D-style character video.",t4:"Video dubbing studio",t4d:"Remake an English video with a new voice and animated captions.",free:"Free",local:"Runs in your browser",copy:"Copy prompt",opennew:"↗ Open in new tab",i2vhint:"<b>1.</b> Upload your photo in the window below. <b>2.</b> Pick a style, copy the prompt and paste it into «Prompt». <b>3.</b> Press «Generate» — your video is ready in 1–3 minutes.",liphint:"<b>1.</b> Upload a photo with a clearly visible face. <b>2.</b> Upload an audio file (mp3/wav). <b>3.</b> Press «Generate» — lips and expressions follow the voice. Short audio (5–15 s) is faster.",t2vhint:"Write your text in any language, choose a style and press «Build prompt». Copy the prompt into the window below.",yourtext:"Your text (what happens in the scene)",t2vph:"E.g.: a little boy buys bread on a Samarkand street and runs away laughing",style:"Style",format:"Format",mkprompt:"Build prompt",dubhint:"Upload the English video, the new voice (audio or an ElevenLabs screen recording) and the text. The studio removes the original narrator, keeps the music, hides old captions and places animated captions timed to the voice. Keep the page open while recording.",dvideo:"1. Original video",dvoice:"2. New voice (audio or video file)",dtext:"3. Text",dtextph:"Paste the text spoken in the voice…",oremove:"Remove original narrator (keep music)",ohide:"Hide old captions (bottom area)",ozoom:"Crop top promo banner (zoom frame)",ofit:"Fit video length to the voice",omusic:"Music volume",ocappos:"Caption position",ofont:"Font",dgo:"Make video",ddl:"Download",preview:"Your result appears here",howh:"How it works",h1:"Choose a tool and upload a photo, voice or text.",h2:"The AI model renders your video on a free GPU (wait a bit if there is a queue).",h3:"Download the video and post it to Reels, TikTok or YouTube.",foot:"Open-source models: Wan 2.2, Wan S2V, LTX 2.3",
+ st_need:"Upload the video, the voice and the text.",st_dec:"Analysing voice…",st_rec:"Recording… keep this page open",st_done:"Done! You can download it.",st_err:"Error: ",st_mono:"Note: the video is mono — the narrator can't be separated, music is only lowered."},
+tr:{badge:"%100 ücretsiz · kayıt yok",h1a:"Fotoğraf, ses ve metinden",h1b:"3D AI videolar oluşturun",lead:"Fotoğrafları canlandırın, dudakları sesinize senkronlayın, metinden 3D karakter videosu yapın ve hazır videoları Özbekçeye dublajlayın — hepsi tek yerde.",start:"🚀 Başla",howbtn:"Nasıl çalışır?",devby:"Geliştirici:",founder:"MK Studio AI kurucusu",chip1:"Fotoğraf → Video",chip2:"Dudak senk.",toolsh:"AI araçları",toolss:"Bir araç seçin. Tüm modeller açık kaynaklı ve ücretsizdir (günlük ücretsiz GPU limiti vardır).",t1:"Fotoğrafı canlandır",t1d:"Herhangi bir resmi hareketli videoya dönüştürün.",t2:"Sese göre konuşan fotoğraf",t2d:"Fotoğraf + ses → ağız ve mimikler sese uyar.",t3:"Metinden 3D karakter",t3d:"Metni yazın — 3D tarzda karakter videosu hazır.",t4:"Video dublaj stüdyosu",t4d:"İngilizce videoyu yeni ses ve animasyonlu yazılarla yeniden yapın.",free:"Ücretsiz",local:"Tarayıcınızda çalışır",copy:"Promptu kopyala",opennew:"↗ Yeni sekmede aç",i2vhint:"<b>1.</b> Aşağıdaki pencereye fotoğrafınızı yükleyin. <b>2.</b> Stil seçin, promptu kopyalayıp «Prompt» alanına yapıştırın. <b>3.</b> «Generate»e basın — video 1–3 dakikada hazır.",liphint:"<b>1.</b> Yüzün net göründüğü bir fotoğraf yükleyin. <b>2.</b> Ses dosyası (mp3/wav) yükleyin. <b>3.</b> «Generate»e basın — dudaklar ve mimikler sese uyar. Kısa ses (5–15 sn) daha hızlıdır.",t2vhint:"Metninizi herhangi bir dilde yazın, stil seçin ve «Prompt oluştur»a basın. Promptu aşağıdaki pencereye kopyalayın.",yourtext:"Metniniz (sahnede ne oluyor)",t2vph:"Örn: Semerkant sokağında küçük bir çocuk ekmek alıp gülerek koşuyor",style:"Stil",format:"Format",mkprompt:"Prompt oluştur",dubhint:"İngilizce videoyu, yeni sesi (ses dosyası veya ElevenLabs ekran kaydı) ve metni yükleyin. Stüdyo orijinal anlatıcıyı kaldırır, müziği bırakır, eski yazıları gizler ve sese göre animasyonlu altyazı ekler. Kayıt sırasında sayfayı kapatmayın.",dvideo:"1. Orijinal video",dvoice:"2. Yeni ses (ses veya video dosyası)",dtext:"3. Metin",dtextph:"Seste söylenen metni buraya yapıştırın…",oremove:"Orijinal anlatıcıyı kaldır (müzik kalsın)",ohide:"Eski yazıları gizle (alt kısım)",ozoom:"Üstteki reklamı kırp (kareyi yakınlaştır)",ofit:"Video süresini sese uydur",omusic:"Müzik sesi",ocappos:"Yazı konumu",ofont:"Yazı tipi",dgo:"Video oluştur",ddl:"İndir",preview:"Sonuç burada görünecek",howh:"Nasıl çalışır?",h1:"Bir araç seçin ve fotoğraf, ses veya metin yükleyin.",h2:"AI modeli videoyu ücretsiz GPU'da oluşturur (sıra varsa biraz bekleyin).",h3:"Videoyu indirip Reels, TikTok veya YouTube'da paylaşın.",foot:"Açık kaynak modeller: Wan 2.2, Wan S2V, LTX 2.3",
+ st_need:"Video, ses ve metni yükleyin.",st_dec:"Ses analiz ediliyor…",st_rec:"Kaydediliyor… sayfayı kapatmayın",st_done:"Hazır! İndirebilirsiniz.",st_err:"Hata: ",st_mono:"Not: video mono — anlatıcı ayrılamıyor, müzik sadece kısıldı."}
+};
+let L=localStorage.getItem('mk_lang')||((navigator.language||'uz').slice(0,2));
+if(!T[L])L='uz';
+function t(k){return (T[L]&&T[L][k])||T.uz[k]||k}
+function applyLang(){
+  document.documentElement.lang=L;
+  document.querySelectorAll('[data-t]').forEach(e=>{e.innerHTML=t(e.dataset.t)});
+  document.querySelectorAll('[data-ph]').forEach(e=>{e.placeholder=t(e.dataset.ph)});
+  document.querySelectorAll('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.l===L));
+  try{localStorage.setItem('mk_lang',L)}catch(e){}
+}
+document.querySelectorAll('#langs button').forEach(b=>b.onclick=()=>{L=b.dataset.l;applyLang()});
+applyLang();
+
+/* ---------------- 3D background (three.js) ---------------- */
+(async()=>{
+  try{
+    const THREE=await import('https://unpkg.com/three@0.160.0/build/three.module.js');
+    const cv=document.getElementById('bg3d');
+    const r=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+    r.setPixelRatio(Math.min(devicePixelRatio,2));
+    const sc=new THREE.Scene(); sc.fog=new THREE.Fog(0x07060f,8,26);
+    const cam=new THREE.PerspectiveCamera(55,1,.1,100); cam.position.z=10;
+    sc.add(new THREE.AmbientLight(0xffffff,.35));
+    const l1=new THREE.PointLight(0x7c5cff,60,40); l1.position.set(-6,4,6); sc.add(l1);
+    const l2=new THREE.PointLight(0x00e0ff,60,40); l2.position.set(6,-3,5); sc.add(l2);
+    const l3=new THREE.PointLight(0xff4fd8,40,40); l3.position.set(0,6,-4); sc.add(l3);
+    const geos=[new THREE.IcosahedronGeometry(1,0),new THREE.TorusKnotGeometry(.7,.25,120,16),new THREE.OctahedronGeometry(1,0),new THREE.TorusGeometry(.8,.3,24,64),new THREE.DodecahedronGeometry(.9,0)];
+    const mat=new THREE.MeshStandardMaterial({color:0x1a1640,metalness:.85,roughness:.22});
+    const objs=[];
+    for(let i=0;i<16;i++){
+      const m=new THREE.Mesh(geos[i%geos.length],mat);
+      m.position.set((Math.random()-.5)*22,(Math.random()-.5)*14,-Math.random()*14);
+      const s=.4+Math.random()*1.1; m.scale.setScalar(s);
+      m.userData={rx:(Math.random()-.5)*.01,ry:(Math.random()-.5)*.012,fy:Math.random()*6};
+      sc.add(m); objs.push(m);
+    }
+    const pg=new THREE.BufferGeometry(); const N=900; const pos=new Float32Array(N*3);
+    for(let i=0;i<N*3;i++)pos[i]=(Math.random()-.5)*40;
+    pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    const pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0x9f8cff,size:.05,transparent:true,opacity:.7}));
+    sc.add(pts);
+    let mx=0,my=0; addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+    function rs(){r.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}
+    addEventListener('resize',rs); rs();
+    const clk=new THREE.Clock();
+    (function loop(){
+      const tt=clk.getElapsedTime();
+      objs.forEach(o=>{o.rotation.x+=o.userData.rx;o.rotation.y+=o.userData.ry;o.position.y+=Math.sin(tt+o.userData.fy)*.003});
+      pts.rotation.y=tt*.02;
+      cam.position.x+=(mx*2-cam.position.x)*.04; cam.position.y+=(-my*1.5-cam.position.y)*.04;
+      cam.position.z=10-Math.min(scrollY/400,3); cam.lookAt(0,0,0);
+      r.render(sc,cam); requestAnimationFrame(loop);
+    })();
+  }catch(e){console.warn('3D bg off',e)}
+})();
+
+/* ---------------- 3D tilt ---------------- */
+function tilt(el,max){
+  el.addEventListener('pointermove',e=>{const b=el.getBoundingClientRect();const x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;el.style.transform=`rotateY(${x*max}deg) rotateX(${-y*max}deg)`});
+  el.addEventListener('pointerleave',()=>el.style.transform='');
+}
+tilt(document.getElementById('pcard'),22);
+document.querySelectorAll('.tool').forEach(e=>{e.style.perspective='800px';tilt(e,14)});
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+
+/* ---------------- tool switching ---------------- */
+function openTool(id){
+  document.querySelectorAll('.tool').forEach(x=>x.classList.toggle('on',x.dataset.tool===id));
+  document.querySelectorAll('.pv').forEach(p=>{
+    const on=p.dataset.pv===id; p.hidden=!on;
+    if(on){const f=p.querySelector('iframe[data-src]'); if(f&&!f.src)f.src=f.dataset.src;}
+  });
+}
+document.querySelectorAll('.tool').forEach(x=>x.onclick=()=>{openTool(x.dataset.tool);document.getElementById('panel').scrollIntoView({behavior:'smooth'})});
+openTool('i2v');
+document.querySelectorAll('.styles').forEach(g=>g.querySelectorAll('button').forEach((b,i)=>{
+  if(i===0)b.classList.add('on');
+  b.onclick=()=>{g.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById(g.dataset.target).textContent=b.dataset.p}
+}));
+document.querySelectorAll('.copy').forEach(b=>b.onclick=async()=>{
+  const txt=document.getElementById(b.dataset.c).textContent;
+  try{await navigator.clipboard.writeText(txt)}catch(e){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}
+  const o=b.innerHTML;b.innerHTML='✅';setTimeout(()=>{b.innerHTML=o},1200);
+});
+document.getElementById('mkprompt').onclick=()=>{
+  const txt=document.getElementById('t2vtext').value.trim()||t('t2vph');
+  const st=document.getElementById('t2vstyle').value, fm=document.getElementById('t2vfmt').value;
+  document.getElementById('t2vp').textContent=`${st}. Scene: ${txt}. The main character is expressive with clear facial animation and lip movement, smooth natural motion, dynamic camera, high detail, ${fm}, 4k, no text, no watermark.`;
+};
+
+/* ---------------- Dub studio (browser) ---------------- */
+const $=id=>document.getElementById(id);
+$('oMusic').oninput=e=>$('musicV').textContent=e.target.value+'%';
+$('oCapY').oninput=e=>$('capV').textContent=e.target.value+'%';
+function status(s){$('dStatus').textContent=s}
+
+function speechSegments(buf){
+  const ch=buf.getChannelData(0), sr=buf.sampleRate, hop=Math.round(sr*.02), n=Math.floor(ch.length/hop), rms=new Float32Array(n);
+  let mx=0; for(let i=0;i<n;i++){let s=0;for(let j=i*hop;j<(i+1)*hop;j++)s+=ch[j]*ch[j];rms[i]=Math.sqrt(s/hop);if(rms[i]>mx)mx=rms[i]}
+  const th=mx*0.06, minSil=Math.round(.25/.02), segs=[]; let st=-1, sil=0;
+  for(let i=0;i<n;i++){
+    if(rms[i]>th){if(st<0)st=i;sil=0}
+    else if(st>=0){sil++;if(sil>=minSil){segs.push([st*.02,(i-sil+1)*.02]);st=-1;sil=0}}
+  }
+  if(st>=0)segs.push([st*.02,n*.02]);
+  return segs.filter(s=>s[1]-s[0]>.12);
+}
+function splitText(txt){
+  const clauses=txt.replace(/\s+/g,' ').split(/(?<=[.!?…:;,—])\s+/).map(s=>s.trim()).filter(Boolean);
+  return clauses.map(c=>{const w=c.split(' '),out=[];let cur=[];
+    for(const x of w){cur.push(x);if(cur.length>=3&&cur.join(' ').length>14){out.push(cur.join(' '));cur=[]}}
+    if(cur.length){if(out.length&&cur.join(' ').length<6)out[out.length-1]+=' '+cur.join(' ');else out.push(cur.join(' '))}
+    return out});
+}
+function timeChunks(clauses,segs){
+  const res=[];
+  const place=(chunks,s,e)=>{const tot=chunks.reduce((a,c)=>a+c.length,0);let t0=s;chunks.forEach(c=>{const d=(e-s)*c.length/tot;res.push({s:t0,e:t0+d,txt:c});t0+=d})};
+  if(segs.length===clauses.length){clauses.forEach((c,i)=>place(c,segs[i][0],segs[i][1]))}
+  else{
+    const flat=clauses.flat(); const speech=segs.reduce((a,s)=>a+s[1]-s[0],0); const tot=flat.reduce((a,c)=>a+c.length,0);
+    let acc=0; const map=x=>{let r=x;for(const s of segs){const d=s[1]-s[0];if(r<=d)return s[0]+r;r-=d}return segs.length?segs[segs.length-1][1]:x};
+    flat.forEach(c=>{const d=speech*c.length/tot;res.push({s:map(acc+.001),e:map(acc+d),txt:c});acc+=d});
+  }
+  res.forEach((c,i)=>{const nx=res[i+1]?res[i+1].s:c.e+.4;c.e=(nx-c.e<.6)?nx:c.e+.2});
+  return res;
+}
+function drawCaption(ctx,txt,W,H,y,dt,font){
+  const pop=dt>=.22?1:(dt/.22<.66?.6+.52*Math.sin(dt/.22*Math.PI*.75)/Math.sin(Math.PI*.75):1.12-.12*(dt/.22-.66)/.34);
+  const size=Math.round(W*.062);
+  ctx.save(); ctx.globalAlpha=Math.min(1,dt*14); ctx.translate(W/2,y); ctx.scale(pop,pop);
+  ctx.font=`${font==='Inter'?'800 ':''}${size}px "${font}"`; ctx.textAlign='center'; ctx.textBaseline='middle';
+  const words=txt.toUpperCase().replace(/'/g,'’').split(' '), lines=[]; let cur='';
+  for(const w of words){const tt=(cur+' '+w).trim(); if(ctx.measureText(tt).width>W*.86&&cur){lines.push(cur);cur=w}else cur=tt}
+  lines.push(cur);
+  const lh=size*1.12;
+  lines.forEach((l,i)=>{const yy=(i-(lines.length-1)/2)*lh;
+    ctx.lineJoin='round';ctx.lineWidth=size*.16;ctx.strokeStyle='rgba(0,0,0,.95)';ctx.shadowColor='rgba(0,0,0,.6)';ctx.shadowOffsetX=2;ctx.shadowOffsetY=3;ctx.shadowBlur=4;
+    ctx.strokeText(l,0,yy); ctx.shadowColor='transparent'; ctx.fillStyle='#fff'; ctx.fillText(l,0,yy)});
+  ctx.restore();
+}
+let busy=false;
+$('dGo').onclick=async()=>{
+  if(busy)return;
+  const vf=$('dVideo').files[0], af=$('dVoice').files[0], txt=$('dText').value.trim();
+  if(!vf||!af||!txt){status(t('st_need'));return}
+  busy=true; $('dGo').disabled=true; $('dDl').setAttribute('aria-disabled','true');
+  try{
+    const font=$('oFont').value; await document.fonts.load(`40px "${font}"`).catch(()=>{});
+    status(t('st_dec'));
+    const AC=new (window.AudioContext||window.webkitAudioContext)();
+    const voice=await AC.decodeAudioData(await af.arrayBuffer());
+    const segs=speechSegments(voice);
+    const lead=segs.length?Math.max(0,segs[0][0]-.25):0;
+    const vEnd=segs.length?Math.min(voice.duration,segs[segs.length-1][1]+.6):voice.duration;
+    const chunks=timeChunks(splitText(txt),segs).map(c=>({...c,s:c.s-lead,e:c.e-lead}));
+    const total=vEnd-lead;
+
+    const v=document.createElement('video'); v.src=URL.createObjectURL(vf); v.playsInline=true; v.crossOrigin='anonymous'; v.preload='auto';
+    await new Promise((res,rej)=>{v.onloadedmetadata=res;v.onerror=()=>rej(new Error('video'))});
+    const W=720,H=Math.round(720*v.videoHeight/v.videoWidth)||1280;
+    const cv=$('dCanvas'); cv.width=W; cv.height=H; const ctx=cv.getContext('2d'); $('dPh').style.display='none';
+    let rate=1; if($('oFit').checked){rate=Math.min(2,Math.max(.5,v.duration/total))}
+    v.playbackRate=rate; if('preservesPitch' in v)v.preservesPitch=true;
+
+    // audio graph
+    const dest=AC.createMediaStreamDestination();
+    const src=AC.createMediaElementSource(v);
+    const music=AC.createGain(); music.gain.value=$('oMusic').value/100;
+    if($('oRemoveVoice').checked){
+      const sp=AC.createChannelSplitter(2), inv=AC.createGain(); inv.gain.value=-1;
+      const side=AC.createGain(); side.gain.value=.9;
+      src.connect(sp); sp.connect(side,0); sp.connect(inv,1); inv.connect(side);
+      const bass=AC.createBiquadFilter(); bass.type='lowpass'; bass.frequency.value=120; src.connect(bass); bass.connect(music);
+      side.connect(music);
+    } else src.connect(music);
+    music.connect(dest); music.connect(AC.destination);
+    const vs=AC.createBufferSource(); vs.buffer=voice; const vg=AC.createGain(); vg.gain.value=1; vs.connect(vg); vg.connect(dest); vg.connect(AC.destination);
+
+    const stream=cv.captureStream(30); dest.stream.getAudioTracks().forEach(tr=>stream.addTrack(tr));
+    const types=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+    const mime=types.find(x=>window.MediaRecorder&&MediaRecorder.isTypeSupported(x))||'';
+    const rec=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:8e6}:{}); const parts=[];
+    rec.ondataavailable=e=>e.data.size&&parts.push(e.data);
+    const done=new Promise(res=>rec.onstop=res);
+
+    const capY=H*$('oCapY').value/100, hideCaps=$('oHideCaps').checked, zoom=$('oZoom').checked;
+    v.currentTime=0; await new Promise(r=>{v.onseeked=r;setTimeout(r,400)});
+    if(AC.state==='suspended')await AC.resume();
+    rec.start(250); await v.play(); const t0=AC.currentTime; vs.start(t0,lead);
+    status(t('st_rec'));
+    await new Promise(res=>{
+      function frame(){
+        const tt=AC.currentTime-t0;
+        // video frame
+        if(zoom){const ch=v.videoHeight*.75,cw=ch*W/H;ctx.drawImage(v,(v.videoWidth-cw)/2,v.videoHeight-ch,cw,ch,0,0,W,H)}
+        else ctx.drawImage(v,0,0,W,H);
+        if(hideCaps){ // blur band where old captions were
+          const by=capY-H*.07,bh=H*.14; ctx.save(); ctx.beginPath(); ctx.rect(0,by,W,bh); ctx.clip();
+          ctx.filter='blur(14px)'; ctx.drawImage(cv,0,by-20,W,bh+40,0,by-20,W,bh+40); ctx.filter='none';
+          const g=ctx.createLinearGradient(0,by,0,by+bh); g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(.5,'rgba(0,0,0,.35)');g.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=g; ctx.fillRect(0,by,W,bh); ctx.restore();
+        }
+        for(const c of chunks){if(tt>=c.s&&tt<c.e){drawCaption(ctx,c.txt,W,H,capY,tt-c.s,font);break}}
+        $('dBar').style.width=Math.min(100,tt/total*100)+'%';
+        if(tt>=total||v.ended&&tt>=total-.05){res();return}
+        if(v.ended){/* hold last frame */}
+        requestAnimationFrame(frame);
+      }
+      frame();
+    });
+    v.pause(); rec.stop(); await done; try{vs.stop()}catch(e){}
+    const blob=new Blob(parts,{type:mime||'video/webm'}); const url=URL.createObjectURL(blob);
+    const a=$('dDl'); a.href=url; a.download='mk-studio-video.'+(mime.includes('mp4')?'mp4':'webm'); a.setAttribute('aria-disabled','false');
+    status(t('st_done'));
+    AC.close();
+  }catch(e){console.error(e);status(t('st_err')+e.message)}
+  busy=false; $('dGo').disabled=false;
+};
+</script>
+</body>
+</html>
